@@ -1,6 +1,5 @@
 ---
 import Picture from "@components/media/Picture.astro";
-import { renderRichText } from "@storyblok/astro";
 import { Icon } from "astro-icon/components";
 import Lightbox from "@components/media/Lightbox.vue";
 import Tooltip from "@components/helpers/Tooltip.vue";
@@ -96,7 +95,7 @@ const getLayout = () => {
                 <div class="text-lg font-bold -mt-1">{offer.name}</div>
                 <div
                   class="text-sm"
-                  set:html={renderRichText(offer.offer_text)}
+                  set:html={offer.offer_text}
                 />
               </div>
               <div
@@ -113,7 +112,7 @@ const getLayout = () => {
       content.intro && (
         <div
           class="max-w-lg text-pretty pt-1"
-          set:html={renderRichText(content.intro)}
+          set:html={content.intro}
         />
       )
     }

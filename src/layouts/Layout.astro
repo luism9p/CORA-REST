@@ -4,7 +4,6 @@ import Sidebar from "@components/navigation/Sidebar.vue";
 import Link from "@components/navigation/Link.astro";
 import LangSwitch from "@components/navigation/LangSwitch.vue";
 import ScrollDown from "@components/navigation/ScrollDown.vue";
-import SbBridge from "@components/helpers/SbBridge.vue";
 import Init from "@components/helpers/Init.vue";
 import { Icon } from "astro-icon/components";
 import { SEO } from "astro-seo";
@@ -21,9 +20,8 @@ interface Meta {
 }
 interface Props {
   meta: Meta;
-  settings: SettingsStoryblok;
+  settings: any;
   localeUrls?: Record<string, string>[];
-  bridge?: boolean;
 }
 
 const hex2rgb = (hex: string) => {
@@ -33,7 +31,7 @@ const hex2rgb = (hex: string) => {
   return `${r} ${g} ${b}`;
 };
 
-const { settings, meta, localeUrls, bridge } = Astro.props;
+const { settings, meta, localeUrls } = Astro.props;
 const {
   main_menu,
   company_name,
@@ -66,7 +64,7 @@ const lang = getLangFromUrl(Astro.url);
 
 const t = useTranslations(lang);
 
-const cssColors: { [key: string]: Color } = {
+const cssColors: { [key: string]: any } = {
   dark_fg,
   dark_bg,
   light_fg,
@@ -101,7 +99,7 @@ const labels = {
   back_to_home: t("back_to_home"),
 };
 
-let socialImage = meta.image + "/m/1200x630/smart/filters:format(png)";
+let socialImage = meta.image ? meta.image + "/m/1200x630/smart/filters:format(png)" : "";
 ---
 
 <!doctype html>
@@ -184,20 +182,10 @@ let socialImage = meta.image + "/m/1200x630/smart/filters:format(png)";
         }
       }
     </style>
-    {
-      bridge && (
-        <script
-          src="//app.storyblok.com/f/storyblok-v2-latest.js"
-          type="text/javascript"
-          is:inline
-        />
-      )
-    }
 
-    {!bridge && <ClientRouter />}
+    <ClientRouter />
   </head>
   <body class={`${surface_page || ""}`}>
-    {bridge && <SbBridge client:load />}
     <header
       class="pointer-events-none fixed inset-x-0 top-0 z-50 transition-all duration-500"
     >

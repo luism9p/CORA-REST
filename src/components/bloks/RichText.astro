@@ -1,19 +1,17 @@
 ---
-import { storyblokEditable, renderRichText } from "@storyblok/astro";
 import Link from "@components/navigation/Link.astro"; 
 interface Props {
-  blok: TextMediaStoryblok;
+  blok: any;
 }
 
 const { blok } = Astro.props;
 
 const { content, surface, align, links } = blok;
 
-const renderedRichText = renderRichText(content);
+const renderedRichText = content || "";
 ---
 
   <div
-  {...storyblokEditable(blok)}
     class={`${surface || ""} intersecting`}
 >
   <div class="content-grid">

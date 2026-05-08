@@ -1,28 +1,7 @@
 <script setup>
-import { onMounted } from "vue";
-import { loadStoryblokBridge } from "@storyblok/astro";
-onMounted(() => {
-  loadStoryblokBridge().then(() => {
-    const { StoryblokBridge, location } = window;
-
-    const storyblokInstance = new StoryblokBridge({
-      /* preventClicks: true, */
-    });
-
-    /* storyblokInstance.on(
-      ["published", "change", "input"],
-      handleStoryblokMessage,
-    ); */
-    storyblokInstance.on(["published", "change"], (event) => {
-      if (!event.slugChanged) {
-
-        location.reload(true);
-      }
-    });
-  });
-});
+/* Storyblok Bridge removed - static site mode */
 </script>
 
 <template>
-  <!-- Storyblok Bridge Loaded-->
+  <!-- Storyblok Bridge removed -->
 </template>

@@ -1,6 +1,5 @@
 ---
 import Picture from "@components/media/Picture.astro";
-import { renderRichText } from "@storyblok/astro";
 import { Icon } from "astro-icon/components";
 import Lightbox from "@components/media/Lightbox.vue";
 import Tooltip from "@components/helpers/Tooltip.vue";
@@ -74,7 +73,7 @@ const show_price = prices && prices.length > 0;
                 <h3 class="text-xl">{offer.name}</h3>
                 <div
                   class="text-sm"
-                  set:html={renderRichText(offer.offer_text)}
+                  set:html={offer.offer_text}
                 />
               </div>
               <div
@@ -109,7 +108,7 @@ const show_price = prices && prices.length > 0;
         content.intro && !show_offer && (
           <div
             class="text-overline line-clamp-5 text-pretty pt-1"
-            set:html={renderRichText(content.intro)}
+            set:html={content.intro}
           />
         )
       }

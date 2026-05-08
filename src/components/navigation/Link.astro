@@ -1,5 +1,4 @@
 ---
-import { storyblokEditable } from "@storyblok/astro";
 import { Icon } from "astro-icon/components";
 import { SITE_LANG } from "astro:env/server";
 import { getLangFromUrl } from "@util/translate";
@@ -23,14 +22,13 @@ if (href?.linktype == "story") {
   link = `mailto:${href.cached_url}`;
 } else {
   link = href.url;
-  if (href.url.startsWith("/") && lang !== SITE_LANG) {
+  if (href.url?.startsWith("/") && lang !== SITE_LANG) {
     link = `/${lang}${link}`;
   }
 }
 ---
 
 <a
-  {...storyblokEditable(blok)}
   href={link}
   target={linkTarget}
   rel={linkRel}

@@ -1,11 +1,10 @@
 ---
-import { renderRichText } from "@storyblok/astro";
 import Link from "@components/navigation/Link.astro";
 import OpeningHours from "@components/helpers/OpeningHours.astro";
 import { Icon } from "astro-icon/components";
 
 interface Props {
-  settings: SettingsStoryblok;
+  settings: any;
   lang: string;
 }
 const { settings, lang } = Astro.props;
@@ -81,7 +80,7 @@ const {
             is:inline
           />
 
-          <div class="pb-4 text-sm" set:html={renderRichText(footer_text)} />
+          <div class="pb-4 text-sm" set:html={footer_text} />
 
           <div class="grid gap-3 text-sm">
             {address && <p class="">{address}</p>}

@@ -1,0 +1,253 @@
+{
+  "settings": {
+    "company_name": "Astrorante",
+    "slogan": "Fast website for Fine Dining",
+    "email": "hello@test.email",
+    "phone": "0000000",
+    "phone_label": "+34 000 000 00",
+    "whatsapp": "0000000",
+    "address": "Cala Sol d'en Serra s/n, 07849 Cala Llonga, Balearic Islands",
+    "font_body": "--font-system-ui",
+    "font_headings": "--font-system-ui",
+    "font_weight_body": "400",
+    "font_weight_headings": "900",
+    "surface_menu": "surface-secondary",
+    "surface_page": "surface-primary",
+    "surface_footer": "surface-accent",
+    "dark_fg": { "color": "#f7fee7" },
+    "dark_bg": { "color": "#404040" },
+    "light_fg": { "color": "#0f766e" },
+    "light_bg": { "color": "#f7fee7" },
+    "primary_fg": { "color": "#ffffff" },
+    "primary_bg": { "color": "#14b8a6" },
+    "secondary_fg": { "color": "#0f766e" },
+    "secondary_bg": { "color": "#d9f99d" },
+    "accent_fg": { "color": "#f7fee7" },
+    "accent_bg": { "color": "#0f766e" },
+    "info_fg": { "color": "#f7fee7" },
+    "info_bg": { "color": "#38bdf8" },
+    "warning_fg": { "color": "#f7fee7" },
+    "warning_bg": { "color": "#d97706" },
+    "danger_fg": { "color": "#f7fee7" },
+    "danger_bg": { "color": "#f87171" },
+    "success_fg": { "color": "#f7fee7" },
+    "success_bg": { "color": "#84cc16" },
+    "main_menu": [
+      {
+        "_uid": "a079a74b-menu-home",
+        "href": { "url": "/", "linktype": "url", "cached_url": "/" },
+        "icon": "home",
+        "label": "Home",
+        "surface": "",
+        "component": "link"
+      },
+      {
+        "_uid": "31f92117-menu-news",
+        "href": { "url": "#menu", "linktype": "url", "cached_url": "#menu" },
+        "icon": "food",
+        "label": "Menu",
+        "surface": "",
+        "component": "link"
+      }
+    ],
+    "links": [
+      {
+        "_uid": "f0826d87-social-fb",
+        "href": { "url": "#", "target": "_blank", "linktype": "url", "cached_url": "#" },
+        "icon": "facebook",
+        "label": "facebook",
+        "surface": "",
+        "component": "link"
+      },
+      {
+        "_uid": "adde1844-social-ig",
+        "href": { "url": "#", "target": "_blank", "linktype": "url", "cached_url": "#" },
+        "icon": "instagram",
+        "label": "instagram",
+        "surface": "",
+        "component": "link"
+      }
+    ],
+    "footer_text": "<p><strong>AstroRante </strong>is a state-of-the-art website theme crafted for fine dining establishments.</p>",
+    "footer_menu_1_label": "Information",
+    "footer_menu_1": [
+      {
+        "_uid": "bee93b15-footer-home",
+        "href": { "url": "/", "linktype": "url", "cached_url": "/" },
+        "icon": "",
+        "label": "Home",
+        "surface": "",
+        "component": "link"
+      },
+      {
+        "_uid": "945b838e-footer-github",
+        "href": { "url": "https://github.com/unfolding-io/Astrorante", "target": "_blank", "linktype": "url", "cached_url": "https://github.com/unfolding-io/Astrorante" },
+        "icon": "",
+        "label": "GitHub",
+        "surface": "",
+        "component": "link"
+      }
+    ],
+    "footer_menu_2_label": "Food",
+    "footer_menu_2": [
+      {
+        "_uid": "f9c7aead-footer-menu",
+        "href": { "url": "#menu", "linktype": "url", "cached_url": "#menu" },
+        "icon": "",
+        "label": "Menu",
+        "surface": "",
+        "component": "link"
+      }
+    ],
+    "footer_3_label": "Opening Hours",
+    "opening_hours": [
+      { "day": "2", "_uid": "oh-tue", "time": { "time": { "end": "00:00", "start": "08:00" } }, "component": "opening_hour" },
+      { "day": "3", "_uid": "oh-wed", "time": { "time": { "end": "00:00", "start": "08:00" } }, "component": "opening_hour" },
+      { "day": "4", "_uid": "oh-thu", "time": { "time": { "end": "00:00", "start": "08:00" } }, "component": "opening_hour" },
+      { "day": "6", "_uid": "oh-sat", "time": { "time": { "end": "00:00", "start": "08:00" } }, "component": "opening_hour" },
+      { "day": "0", "_uid": "oh-sun", "time": { "time": { "end": "00:00", "start": "08:00" } }, "component": "opening_hour" }
+    ]
+  },
+  "hero": {
+    "title": "Welcome to <b>Astrorante</b>",
+    "content": "<p>A state-of-the-art website theme crafted for fine dining establishments.</p>",
+    "surface": "surface-dark",
+    "accent_color": "--primary-bg",
+    "bg_opacity": "opacity-40",
+    "thumbnail": {
+      "filename": "https://a.storyblok.com/f/294188/1920x1280/fde48f6a9b/pexels-nuno-campos-756632-9351340.jpg",
+      "alt": "Astrorante Hero"
+    },
+    "links": [
+      {
+        "_uid": "hero-link-menu",
+        "href": { "url": "#menu", "linktype": "url", "cached_url": "#menu" },
+        "icon": "",
+        "label": "See our Menu",
+        "surface": "surface-primary",
+        "component": "link"
+      }
+    ]
+  },
+  "menu": {
+    "surface": "",
+    "categories": [
+      {
+        "slug": "tapas",
+        "content": {
+          "title": "Tapas",
+          "icon": "burger",
+          "content": "<p>Savor the essence of Spain with our delectable tapas.</p><p>From <strong>spicy patatas</strong> bravas to savory jamón ibérico, each dish is crafted to delight your palate. Perfect for <strong>sharing</strong> and pairing with our exquisite drinks, our tapas promise a culinary adventure.</p>"
+        },
+        "items": [
+          {
+            "title": "Patatas Bravas",
+            "intro": "<p>Crispy fried potatoes topped with spicy tomato sauce and aioli.</p>",
+            "price": [{ "name": "", "price": "6.50", "is_offer": false, "component": "price" }],
+            "labels": [],
+            "allergic_ingredients": [],
+            "component": "menu_item"
+          },
+          {
+            "title": "Gambas al Ajillo",
+            "intro": "<p>Sizzling garlic shrimp in olive oil with chili flakes.</p>",
+            "price": [{ "name": "", "price": "9.95", "is_offer": false, "component": "price" }],
+            "labels": [],
+            "allergic_ingredients": ["crustacens"],
+            "component": "menu_item"
+          },
+          {
+            "title": "Jamón Ibérico",
+            "intro": "<p>Thinly sliced premium Iberian ham, aged 36 months.</p>",
+            "price": [{ "name": "", "price": "14.50", "is_offer": false, "component": "price" }],
+            "labels": ["organic"],
+            "allergic_ingredients": [],
+            "component": "menu_item"
+          },
+          {
+            "title": "Pimientos de Padrón",
+            "intro": "<p>Blistered green peppers seasoned with sea salt.</p>",
+            "price": [{ "name": "", "price": "5.95", "is_offer": false, "component": "price" }],
+            "labels": [],
+            "allergic_ingredients": [],
+            "component": "menu_item"
+          },
+          {
+            "title": "Tortilla Española",
+            "intro": "<p>Classic Spanish omelette with potatoes and onions.</p>",
+            "price": [{ "name": "", "price": "7.50", "is_offer": false, "component": "price" }],
+            "labels": [],
+            "allergic_ingredients": ["eggs"],
+            "component": "menu_item"
+          },
+          {
+            "title": "Croquetas de Jamón",
+            "intro": "<p>Creamy ham croquettes, crispy on the outside.</p>",
+            "price": [{ "name": "", "price": "8.50", "is_offer": false, "component": "price" }],
+            "labels": [],
+            "allergic_ingredients": ["milk", "wheat"],
+            "component": "menu_item"
+          }
+        ]
+      },
+      {
+        "slug": "cocktails",
+        "content": {
+          "title": "Cocktails 🍹",
+          "icon": "cocktail",
+          "content": "<p>Indulge in our <strong>handcrafted cocktails,</strong> where classic flavors meet innovative twists.</p><p>From refreshing mojitos to bold martinis, each drink is a celebration in a glass. Perfect for any occasion, our cocktails promise an unforgettable experience.</p>"
+        },
+        "items": [
+          {
+            "title": "Espresso Martini",
+            "intro": "<p>Perfect for coffee lovers seeking a kick.</p><ul><li><strong>Ingredients:</strong> Vodka, Coffee Liqueur, Freshly Brewed Espresso</li><li><strong>Garnish:</strong> Coffee Beans</li></ul>",
+            "price": [{ "name": "", "price": "7.95", "is_offer": false, "component": "price" }],
+            "labels": ["organic"],
+            "allergic_ingredients": ["milk", "sulphurdioxide"],
+            "component": "menu_item"
+          },
+          {
+            "title": "Pina Colada",
+            "intro": "<p>A tropical escape in a glass.</p><ul><li><strong>Ingredients:</strong> White Rum, Coconut Cream, Pineapple Juice</li><li><strong>Garnish:</strong> Pineapple Slice, Cherry</li></ul>",
+            "price": [{ "name": "", "price": "7.50", "is_offer": false, "component": "price" }],
+            "labels": [],
+            "allergic_ingredients": [],
+            "component": "menu_item"
+          },
+          {
+            "title": "Cosmopolitan",
+            "intro": "<p>A chic and stylish cocktail with a hint of tartness.</p><ul><li><strong>Ingredients:</strong> Vodka, Triple Sec, Cranberry Juice, Fresh Lime Juice</li><li><strong>Garnish:</strong> Lime Wheel</li></ul>",
+            "price": [{ "name": "", "price": "8.95", "is_offer": false, "component": "price" }],
+            "labels": [],
+            "allergic_ingredients": [],
+            "component": "menu_item"
+          },
+          {
+            "title": "Negroni",
+            "intro": "<p>A bold and bitter Italian classic.</p><ul><li><strong>Ingredients:</strong> Gin, Campari, Sweet Vermouth</li><li><strong>Garnish:</strong> Orange Twist</li></ul>",
+            "price": [{ "name": "", "price": "6.50", "is_offer": false, "component": "price" }],
+            "labels": [],
+            "allergic_ingredients": [],
+            "component": "menu_item"
+          },
+          {
+            "title": "Mojito",
+            "intro": "<p>A refreshing Cuban cocktail with a citrus twist.</p><ul><li><strong>Ingredients:</strong> White Rum, Fresh Lime Juice, Sugar, Mint Leaves, Soda Water</li><li><strong>Garnish:</strong> Mint Sprig, Lime Wheel</li></ul>",
+            "price": [{ "name": "", "price": "7.50", "is_offer": false, "component": "price" }],
+            "labels": [],
+            "allergic_ingredients": [],
+            "component": "menu_item"
+          },
+          {
+            "title": "Margarita",
+            "intro": "<p>The classic tequila cocktail.</p><ul><li><strong>Ingredients:</strong> Tequila, Triple Sec, Fresh Lime Juice</li><li><strong>Garnish:</strong> Salt Rim, Lime Wedge</li></ul>",
+            "price": [{ "name": "", "price": "8.50", "is_offer": false, "component": "price" }],
+            "labels": [],
+            "allergic_ingredients": [],
+            "component": "menu_item"
+          }
+        ]
+      }
+    ]
+  }
+}

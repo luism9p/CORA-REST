@@ -1,17 +1,14 @@
 ---
-import { storyblokEditable, renderRichText } from "@storyblok/astro";
 import Picture from "@components/media/Picture.astro";
-import StoryblokComponent from "@storyblok/astro/StoryblokComponent.astro";
 
 interface Props {
-  blok: PostStoryblok;
-  status?: "draft" | "published" | undefined;
+  blok: any;
 }
-const { blok, status } = Astro.props;
-const { title, content, thumbnail, surface, body } = blok;
+const { blok } = Astro.props;
+const { title, content, thumbnail, surface } = blok;
 ---
 
-<main {...storyblokEditable(blok)} class={`${surface || "surface-light"}`}>
+<main class={`${surface || "surface-light"}`}>
   <section class="grid min-h-svh w-full grid-cols-1 md:grid-cols-5">
     <div
       class="relative before:absolute before:inset-y-0 before:left-0 before:w-1/2 before:bg-black/10 before:content-[''] md:col-span-2"
@@ -57,10 +54,10 @@ const { title, content, thumbnail, surface, body } = blok;
 
         <div
           class="richtext max-w-2xl text-pretty"
-          set:html={renderRichText(content)}
+          set:html={content}
         />
       </div>
     </div>
   </section>
-  {body?.map((blok) => <StoryblokComponent blok={blok} {status} />)}
+  <slot />
 </main>

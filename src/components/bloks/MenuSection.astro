@@ -2,26 +2,35 @@
 import MenuItemCard from "@components/cards/MenuItemCard.astro";
 
 interface Props {
-  blok: any;
+  id?: string;
+  menu: {
+    surface?: string;
+    categories: {
+      slug: string;
+      content: {
+        title: string;
+        icon?: string;
+        content?: string;
+      };
+      items: any[];
+    }[];
+  };
 }
 
-const { blok } = Astro.props;
-const { surface } = blok;
-
-/* Data now comes from blok prop directly instead of getMenu API */
-const categories = blok.categories || [];
-const menuData = blok.menu || [];
+const { id, menu } = Astro.props;
+const { categories, surface } = menu;
 ---
 
 <section
   class={`content-grid py-14 ${surface || ""}`}
+  id={id}
 >
   {
     categories && categories.length > 1 && (
       <ul
         class={`breakout sticky top-0 z-30 mb-8 flex flex-wrap justify-start gap-2 py-2`}
       >
-        {categories.map((cat: any) => (
+        {categories.map((cat) => (
           <li class="flex gap-2">
             <a class={`btn-sm`} href={`#${cat.slug}`}>
               {cat.content.title}
@@ -34,20 +43,20 @@ const menuData = blok.menu || [];
 
   <div class="breakout grid gap-28">
     {
-      menuData.map((cat: any) => (
-        <div class="grid scroll-mt-20 gap-8 md:gap-14" id={cat.category.slug}>
+      categories.map((cat) => (
+        <div class="grid scroll-mt-20 gap-8 md:gap-14" id={cat.slug}>
           <div>
-            <h2 class="text-4xl uppercase">{cat.category.content.title}</h2>
-            {cat.category?.content?.content && (
+            <h2 class="text-4xl uppercase">{cat.content.title}</h2>
+            {cat.content?.content && (
               <div
                 class="richtext max-w-xl text-balance"
-                set:html={cat.category.content.content}
+                set:html={cat.content.content}
               />
             )}
           </div>
 
           <div class="grid grid-flow-dense grid-cols-1 gap-10 sm:grid-cols-2 xl:gap-x-24">
-            {cat.items.map((item: any) => (
+            {cat.items.map((item) => (
               <MenuItemCard content={item} />
             ))}
           </div>

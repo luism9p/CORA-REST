@@ -1,0 +1,22 @@
+---
+import Layout from "@layouts/Layout.astro";
+import Hero from "@components/bloks/Hero.astro";
+import MenuSection from "@components/bloks/MenuSection.astro";
+import siteData from "@/data/menu.json";
+
+const { settings, hero, menu } = siteData;
+
+const meta = {
+  title: settings.company_name + " - " + settings.slogan,
+  description: "A state-of-the-art website theme crafted for fine dining establishments.",
+  og_image: "",
+  image: hero.thumbnail?.filename || "",
+};
+---
+
+<Layout meta={meta} settings={settings}>
+  <main class="min-h-svh">
+    <Hero blok={hero} />
+    <MenuSection id="menu" menu={menu} />
+  </main>
+</Layout>

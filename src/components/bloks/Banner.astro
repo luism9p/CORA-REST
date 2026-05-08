@@ -1,10 +1,9 @@
 ---
-import { storyblokEditable, renderRichText } from "@storyblok/astro";
 import VideoInline from "@components/media/VideoInline.vue";
 import Picture from "@components/media/Picture.astro";
 import Link from "@components/navigation/Link.astro"; 
 interface Props {
-  blok: TextMediaStoryblok;
+  blok: any;
 }
 
 const { blok } = Astro.props;
@@ -12,7 +11,7 @@ const { blok } = Astro.props;
 const { content, video, image, surface, container, align, links, opacity } =
   blok;
 
-const renderedRichText = renderRichText(content);
+const renderedRichText = content || "";
 
 function getSizes() {
   if (!container) return `100vw `;
@@ -30,7 +29,6 @@ function getContainerClass() {
 ---
 
 <div
-  {...storyblokEditable(blok)}
   class={` ${surface || ""} intersecting`}
 >
   <div class="content-grid isolate">
