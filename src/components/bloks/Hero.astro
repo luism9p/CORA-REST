@@ -83,7 +83,7 @@ const text = content || "";
       {
         links && links.length > 0 && (
           <div class="mt-2 flex w-fit gap-2">
-            {links.map((link) => (
+            {links.map((link: any) => (
               <Link blok={link} />
             ))}
           </div>

@@ -1,8 +1,7 @@
 ---
 import { Image } from "astro:assets";
 import Lightbox from "@components/media/Lightbox.vue";
-import Tooltip from "@components/helpers/Tooltip.vue";
-import { useTranslations, getLangFromUrl, formatPrice } from "@util/translate";
+import { getLangFromUrl } from "@util/translate";
 
 interface MenuItem {
   id: string;
@@ -17,9 +16,8 @@ interface Props {
   accent?: string;
 }
 const blok = Astro.props;
-let { content, show_offer, accent } = blok;
+let { content } = blok;
 const lang = getLangFromUrl(Astro.url);
-const t = useTranslations(lang);
 
 // Extract Spanish translation as default
 const translation = content.translations?.es || { name: "", description: "" };

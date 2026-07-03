@@ -119,7 +119,7 @@ const { id, surface, menu } = Astro.props;
   }
 
   // Listen to the custom event
-  window.addEventListener('languageChanged', (e) => {
+  window.addEventListener('languageChanged', () => {
     updateTranslations();
   });
 

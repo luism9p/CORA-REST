@@ -40,8 +40,8 @@
 
 <script>
   function initAllergenFilters() {
-    const buttons = document.querySelectorAll('.allergen-btn');
-    const cards = document.querySelectorAll('.dish-card');
+    const buttons = document.querySelectorAll<HTMLElement>('.allergen-btn');
+    const cards = document.querySelectorAll<HTMLElement>('.dish-card');
 
     console.log(`[Filtros] Inicializando: ${buttons.length} botones, ${cards.length} tarjetas encontradas.`);
 
@@ -52,8 +52,10 @@
 
     buttons.forEach(button => {
       // Remover listeners previos para evitar duplicaciones en navegaciones de Astro
-      const newBtn = button.cloneNode(true);
-      button.parentNode.replaceChild(newBtn, button);
+      const newBtn = button.cloneNode(true) as HTMLElement;
+      if (button.parentNode) {
+        button.parentNode.replaceChild(newBtn, button);
+      }
 
       newBtn.addEventListener('click', () => {
         // 1. Estado Visual

@@ -31,7 +31,7 @@ const hex2rgb = (hex: string) => {
   return `${r} ${g} ${b}`;
 };
 
-const { settings, meta, localeUrls } = Astro.props;
+const { settings, meta } = Astro.props;
 const {
   main_menu,
   company_name,
@@ -213,7 +213,7 @@ let socialImage = meta.image ? meta.image + "/m/1200x630/smart/filters:format(pn
             {
               main_menu &&
                 main_menu.length > 0 &&
-                main_menu.map((link) => (
+                main_menu.map((link: any) => (
                   <li>
                     <Link
                       blok={link}
