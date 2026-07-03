@@ -1,0 +1,62 @@
+---
+// src/components/LanguageSelector.astro
+---
+
+<div class="language-selector bg-white/90 dark:bg-black/90 backdrop-blur-md border border-gray-200 dark:border-gray-800 rounded-full flex items-center p-1 gap-1 shadow-sm">
+  <button data-lang="es" type="button" class="lang-btn text-xs font-bold px-2.5 py-1.5 rounded-full transition-all duration-200 hover:opacity-100 hover:bg-gray-100 dark:hover:bg-gray-800">ES</button>
+  <button data-lang="en" type="button" class="lang-btn text-xs font-bold px-2.5 py-1.5 rounded-full transition-all duration-200 hover:opacity-100 hover:bg-gray-100 dark:hover:bg-gray-800">EN</button>
+  <button data-lang="fr" type="button" class="lang-btn text-xs font-bold px-2.5 py-1.5 rounded-full transition-all duration-200 hover:opacity-100 hover:bg-gray-100 dark:hover:bg-gray-800">FR</button>
+  <button data-lang="it" type="button" class="lang-btn text-xs font-bold px-2.5 py-1.5 rounded-full transition-all duration-200 hover:opacity-100 hover:bg-gray-100 dark:hover:bg-gray-800">IT</button>
+  <button data-lang="de" type="button" class="lang-btn text-xs font-bold px-2.5 py-1.5 rounded-full transition-all duration-200 hover:opacity-100 hover:bg-gray-100 dark:hover:bg-gray-800">DE</button>
+</div>
+
+<script>
+  function initLangSelector() {
+    const buttons = document.querySelectorAll('.lang-btn');
+    if (!buttons.length) return;
+
+    // Detección y Almacenamiento
+    const savedLang = localStorage.getItem('preferredLanguage') || 'es';
+
+    const updateUI = (activeLang: string) => {
+      buttons.forEach(btn => {
+        if (btn.getAttribute('data-lang') === activeLang) {
+          // Activo
+          btn.classList.add('bg-black', 'text-white', 'dark:bg-white', 'dark:text-black', 'opacity-100');
+          btn.classList.remove('opacity-60', 'hover:bg-gray-100', 'dark:hover:bg-gray-800');
+        } else {
+          // Inactivo
+          btn.classList.remove('bg-black', 'text-white', 'dark:bg-white', 'dark:text-black', 'opacity-100');
+          btn.classList.add('opacity-60', 'hover:bg-gray-100', 'dark:hover:bg-gray-800');
+        }
+      });
+    };
+
+    // Inicializar visualmente y despachar evento al cargar
+    updateUI(savedLang);
+    window.dispatchEvent(new CustomEvent('languageChanged', { detail: savedLang }));
+
+    // Interactividad
+    buttons.forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        const target = e.currentTarget as HTMLButtonElement;
+        const newLang = target.getAttribute('data-lang');
+        
+        if (newLang && newLang !== localStorage.getItem('preferredLanguage')) {
+          localStorage.setItem('preferredLanguage', newLang);
+          updateUI(newLang);
+          // Dispara un evento global personalizado en window llamado languageChanged
+          window.dispatchEvent(new CustomEvent('languageChanged', { detail: newLang }));
+        }
+      });
+    });
+  }
+
+  // Ejecutar el script (Soporta View Transitions de Astro si estuvieran activas)
+  document.addEventListener('astro:page-load', initLangSelector);
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initLangSelector);
+  } else {
+    initLangSelector();
+  }
+</script>

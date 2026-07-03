@@ -2,13 +2,14 @@
 import Layout from "@layouts/Layout.astro";
 import Hero from "@components/bloks/Hero.astro";
 import MenuSection from "@components/bloks/MenuSection.astro";
+import AllergenFilter from "@components/AllergenFilter.astro";
 import siteData from "@/data/menu.json";
 
 const { settings, hero, menu } = siteData;
 
 const meta = {
-  title: settings.company_name + " - " + settings.slogan,
-  description: "A state-of-the-art website theme crafted for fine dining establishments.",
+  title: settings.company_name + " — " + settings.slogan,
+  description: "CORA · Cocina Peruana en Lobitos, Piura. Abierto de Lunes a Domingo (Martes cerrado). Aceptamos Efectivo, Visa, Yape y Plin.",
   og_image: "",
   image: hero.thumbnail?.filename || "",
 };
@@ -17,6 +18,7 @@ const meta = {
 <Layout meta={meta} settings={settings}>
   <main class="min-h-svh">
     <Hero blok={hero} />
+    <AllergenFilter />
     <MenuSection id="menu" menu={menu} />
   </main>
 </Layout>

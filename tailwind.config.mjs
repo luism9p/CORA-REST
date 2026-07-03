@@ -4,7 +4,19 @@ import animate from "tailwindcss-animate";
 /** @type {import('tailwindcss').Config} */
 export default {
   darkMode: ["class"],
-  safelist: ["dark"],
+  safelist: [
+    "dark",
+    // AllergenFilter: active chip state (added via classList.add in JS)
+    "bg-black", "text-white", "border-black",
+    "dark:bg-white", "dark:text-black", "dark:border-white",
+    // AllergenFilter: inactive chip state
+    "bg-white", "border-gray-300", "hover:bg-gray-100",
+    "dark:bg-black", "dark:border-gray-700", "dark:hover:bg-gray-800",
+    // LanguageSelector: active lang button state
+    "dark:bg-white", "dark:text-black",
+    // Dish filter
+    "hidden",
+  ],
   prefix: "",
 
   content: ["./src/**/*.{astro,html,js,jsx,md,mdx,svelte,ts,tsx,vue}"],

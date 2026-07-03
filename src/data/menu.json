@@ -1,253 +1,1519 @@
 {
   "settings": {
-    "company_name": "Astrorante",
-    "slogan": "Fast website for Fine Dining",
-    "email": "hello@test.email",
-    "phone": "0000000",
-    "phone_label": "+34 000 000 00",
-    "whatsapp": "0000000",
-    "address": "Cala Sol d'en Serra s/n, 07849 Cala Llonga, Balearic Islands",
+    "company_name": "CORA",
+    "slogan": "Cocina Peruana · Lobitos, Perú",
+    "email": "",
+    "phone": "",
+    "phone_label": "",
+    "whatsapp": "51975808856",
+    "whatsapp_label": "+51 975 808 856",
+    "address": "",
+    "payment_methods": "Efectivo, Visa, Yape, Plin",
     "font_body": "--font-system-ui",
     "font_headings": "--font-system-ui",
     "font_weight_body": "400",
     "font_weight_headings": "900",
-    "surface_menu": "surface-secondary",
-    "surface_page": "surface-primary",
+    "surface_menu": "surface-light",
+    "surface_page": "surface-light",
     "surface_footer": "surface-accent",
-    "dark_fg": { "color": "#f7fee7" },
-    "dark_bg": { "color": "#404040" },
-    "light_fg": { "color": "#0f766e" },
-    "light_bg": { "color": "#f7fee7" },
-    "primary_fg": { "color": "#ffffff" },
-    "primary_bg": { "color": "#14b8a6" },
-    "secondary_fg": { "color": "#0f766e" },
-    "secondary_bg": { "color": "#d9f99d" },
-    "accent_fg": { "color": "#f7fee7" },
-    "accent_bg": { "color": "#0f766e" },
-    "info_fg": { "color": "#f7fee7" },
-    "info_bg": { "color": "#38bdf8" },
-    "warning_fg": { "color": "#f7fee7" },
-    "warning_bg": { "color": "#d97706" },
-    "danger_fg": { "color": "#f7fee7" },
-    "danger_bg": { "color": "#f87171" },
-    "success_fg": { "color": "#f7fee7" },
-    "success_bg": { "color": "#84cc16" },
+    "dark_fg": { "color": "#FAFAFA" },
+    "dark_bg": { "color": "#1A1A1A" },
+    "light_fg": { "color": "#111111" },
+    "light_bg": { "color": "#FFFFFF" },
+    "primary_fg": { "color": "#FFFFFF" },
+    "primary_bg": { "color": "#CC0000" },
+    "secondary_fg": { "color": "#1F2937" },
+    "secondary_bg": { "color": "#F3F4F6" },
+    "accent_fg": { "color": "#F9FAFB" },
+    "accent_bg": { "color": "#1F2937" },
+    "info_fg": { "color": "#FFFFFF" },
+    "info_bg": { "color": "#3B82F6" },
+    "warning_fg": { "color": "#FFFFFF" },
+    "warning_bg": { "color": "#F59E0B" },
+    "danger_fg": { "color": "#FFFFFF" },
+    "danger_bg": { "color": "#EF4444" },
+    "success_fg": { "color": "#FFFFFF" },
+    "success_bg": { "color": "#22C55E" },
     "main_menu": [
       {
         "_uid": "a079a74b-menu-home",
         "href": { "url": "/", "linktype": "url", "cached_url": "/" },
         "icon": "home",
-        "label": "Home",
+        "label": "Inicio",
         "surface": "",
         "component": "link"
       },
       {
-        "_uid": "31f92117-menu-news",
+        "_uid": "31f92117-menu-carta",
         "href": { "url": "#menu", "linktype": "url", "cached_url": "#menu" },
         "icon": "food",
-        "label": "Menu",
+        "label": "Carta",
         "surface": "",
         "component": "link"
       }
     ],
     "links": [
       {
-        "_uid": "f0826d87-social-fb",
-        "href": { "url": "#", "target": "_blank", "linktype": "url", "cached_url": "#" },
-        "icon": "facebook",
-        "label": "facebook",
-        "surface": "",
-        "component": "link"
-      },
-      {
         "_uid": "adde1844-social-ig",
-        "href": { "url": "#", "target": "_blank", "linktype": "url", "cached_url": "#" },
+        "href": {
+          "url": "https://www.instagram.com/cora_cocina_peruana?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==",
+          "target": "_blank",
+          "linktype": "url",
+          "cached_url": "https://www.instagram.com/cora_cocina_peruana?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw=="
+        },
         "icon": "instagram",
-        "label": "instagram",
+        "label": "Instagram",
         "surface": "",
         "component": "link"
       }
     ],
-    "footer_text": "<p><strong>AstroRante </strong>is a state-of-the-art website theme crafted for fine dining establishments.</p>",
-    "footer_menu_1_label": "Information",
+    "footer_text": "<p><strong>CORA</strong> — Cocina Peruana en Lobitos. Sabores del mar y la tierra en un rincón único del Pacífico.</p>",
+    "footer_menu_1_label": "Navegación",
     "footer_menu_1": [
       {
         "_uid": "bee93b15-footer-home",
         "href": { "url": "/", "linktype": "url", "cached_url": "/" },
         "icon": "",
-        "label": "Home",
+        "label": "Inicio",
         "surface": "",
         "component": "link"
       },
       {
-        "_uid": "945b838e-footer-github",
-        "href": { "url": "https://github.com/unfolding-io/Astrorante", "target": "_blank", "linktype": "url", "cached_url": "https://github.com/unfolding-io/Astrorante" },
-        "icon": "",
-        "label": "GitHub",
-        "surface": "",
-        "component": "link"
-      }
-    ],
-    "footer_menu_2_label": "Food",
-    "footer_menu_2": [
-      {
-        "_uid": "f9c7aead-footer-menu",
+        "_uid": "f9c7aead-footer-carta",
         "href": { "url": "#menu", "linktype": "url", "cached_url": "#menu" },
         "icon": "",
-        "label": "Menu",
+        "label": "Carta",
         "surface": "",
         "component": "link"
       }
     ],
-    "footer_3_label": "Opening Hours",
+    "footer_menu_2_label": "Contacto",
+    "footer_menu_2": [
+      {
+        "_uid": "wa-footer-link",
+        "href": {
+          "url": "https://wa.me/51975808856",
+          "target": "_blank",
+          "linktype": "url",
+          "cached_url": "https://wa.me/51975808856"
+        },
+        "icon": "",
+        "label": "WhatsApp: +51 975 808 856",
+        "surface": "",
+        "component": "link"
+      },
+      {
+        "_uid": "ig-footer-link",
+        "href": {
+          "url": "https://www.instagram.com/cora_cocina_peruana?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==",
+          "target": "_blank",
+          "linktype": "url",
+          "cached_url": "https://www.instagram.com/cora_cocina_peruana?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw=="
+        },
+        "icon": "",
+        "label": "@cora_cocina_peruana",
+        "surface": "",
+        "component": "link"
+      }
+    ],
+    "footer_3_label": "Horario",
     "opening_hours": [
-      { "day": "2", "_uid": "oh-tue", "time": { "time": { "end": "00:00", "start": "08:00" } }, "component": "opening_hour" },
-      { "day": "3", "_uid": "oh-wed", "time": { "time": { "end": "00:00", "start": "08:00" } }, "component": "opening_hour" },
-      { "day": "4", "_uid": "oh-thu", "time": { "time": { "end": "00:00", "start": "08:00" } }, "component": "opening_hour" },
-      { "day": "6", "_uid": "oh-sat", "time": { "time": { "end": "00:00", "start": "08:00" } }, "component": "opening_hour" },
-      { "day": "0", "_uid": "oh-sun", "time": { "time": { "end": "00:00", "start": "08:00" } }, "component": "opening_hour" }
+      { "day": "0", "_uid": "oh-sun", "time": { "time": { "end": "17:00", "start": "11:30" } }, "component": "opening_hour" },
+      { "day": "1", "_uid": "oh-mon", "time": { "time": { "end": "17:00", "start": "11:30" } }, "component": "opening_hour" },
+      { "day": "3", "_uid": "oh-wed", "time": { "time": { "end": "17:00", "start": "11:30" } }, "component": "opening_hour" },
+      { "day": "4", "_uid": "oh-thu", "time": { "time": { "end": "17:00", "start": "11:30" } }, "component": "opening_hour" },
+      { "day": "5", "_uid": "oh-fri", "time": { "time": { "end": "17:00", "start": "11:30" } }, "component": "opening_hour" },
+      { "day": "6", "_uid": "oh-sat", "time": { "time": { "end": "17:00", "start": "11:30" } }, "component": "opening_hour" }
     ]
   },
   "hero": {
-    "title": "Welcome to <b>Astrorante</b>",
-    "content": "<p>A state-of-the-art website theme crafted for fine dining establishments.</p>",
+    "title": "Bienvenidos a <b>CORA</b>",
+    "content": "<p>Cocina Peruana</p>",
     "surface": "surface-dark",
     "accent_color": "--primary-bg",
     "bg_opacity": "opacity-40",
     "thumbnail": {
       "filename": "https://a.storyblok.com/f/294188/1920x1280/fde48f6a9b/pexels-nuno-campos-756632-9351340.jpg",
-      "alt": "Astrorante Hero"
+      "alt": "CORA Cocina Peruana"
     },
     "links": [
       {
         "_uid": "hero-link-menu",
         "href": { "url": "#menu", "linktype": "url", "cached_url": "#menu" },
         "icon": "",
-        "label": "See our Menu",
+        "label": "Ver nuestra Carta",
         "surface": "surface-primary",
         "component": "link"
       }
     ]
   },
-  "menu": {
-    "surface": "",
-    "categories": [
-      {
-        "slug": "tapas",
-        "content": {
-          "title": "Tapas",
-          "icon": "burger",
-          "content": "<p>Savor the essence of Spain with our delectable tapas.</p><p>From <strong>spicy patatas</strong> bravas to savory jamón ibérico, each dish is crafted to delight your palate. Perfect for <strong>sharing</strong> and pairing with our exquisite drinks, our tapas promise a culinary adventure.</p>"
-        },
-        "items": [
-          {
-            "title": "Patatas Bravas",
-            "intro": "<p>Crispy fried potatoes topped with spicy tomato sauce and aioli.</p>",
-            "price": [{ "name": "", "price": "6.50", "is_offer": false, "component": "price" }],
-            "labels": [],
-            "allergic_ingredients": [],
-            "component": "menu_item"
-          },
-          {
-            "title": "Gambas al Ajillo",
-            "intro": "<p>Sizzling garlic shrimp in olive oil with chili flakes.</p>",
-            "price": [{ "name": "", "price": "9.95", "is_offer": false, "component": "price" }],
-            "labels": [],
-            "allergic_ingredients": ["crustacens"],
-            "component": "menu_item"
-          },
-          {
-            "title": "Jamón Ibérico",
-            "intro": "<p>Thinly sliced premium Iberian ham, aged 36 months.</p>",
-            "price": [{ "name": "", "price": "14.50", "is_offer": false, "component": "price" }],
-            "labels": ["organic"],
-            "allergic_ingredients": [],
-            "component": "menu_item"
-          },
-          {
-            "title": "Pimientos de Padrón",
-            "intro": "<p>Blistered green peppers seasoned with sea salt.</p>",
-            "price": [{ "name": "", "price": "5.95", "is_offer": false, "component": "price" }],
-            "labels": [],
-            "allergic_ingredients": [],
-            "component": "menu_item"
-          },
-          {
-            "title": "Tortilla Española",
-            "intro": "<p>Classic Spanish omelette with potatoes and onions.</p>",
-            "price": [{ "name": "", "price": "7.50", "is_offer": false, "component": "price" }],
-            "labels": [],
-            "allergic_ingredients": ["eggs"],
-            "component": "menu_item"
-          },
-          {
-            "title": "Croquetas de Jamón",
-            "intro": "<p>Creamy ham croquettes, crispy on the outside.</p>",
-            "price": [{ "name": "", "price": "8.50", "is_offer": false, "component": "price" }],
-            "labels": [],
-            "allergic_ingredients": ["milk", "wheat"],
-            "component": "menu_item"
-          }
-        ]
+  "menu": [
+    {
+      "category_id": "para-compartir",
+      "category_translations": {
+        "es": "Para Compartir",
+        "en": "To Share",
+        "fr": "À Partager",
+        "it": "Da Condividere",
+        "de": "Zum Teilen"
       },
-      {
-        "slug": "cocktails",
-        "content": {
-          "title": "Cocktails 🍹",
-          "icon": "cocktail",
-          "content": "<p>Indulge in our <strong>handcrafted cocktails,</strong> where classic flavors meet innovative twists.</p><p>From refreshing mojitos to bold martinis, each drink is a celebration in a glass. Perfect for any occasion, our cocktails promise an unforgettable experience.</p>"
+      "items": [
+        {
+          "id": "ceviche-de-la-casa",
+          "translations": {
+            "es": {
+              "name": "Ceviche de la Casa",
+              "description": "Filetes frescos de CABRILLA, pesca diaria, marinados en jugo de limón y mezclados con cebolla y cilantro."
+            },
+            "en": {
+              "name": "House Ceviche",
+              "description": "Fresh CABRILLA fillets, daily catch, marinated in lime juice and mixed with onion and cilantro."
+            },
+            "fr": {
+              "name": "Ceviche Maison",
+              "description": "Filets frais de CABRILLA, pêche du jour, marinés dans du jus de citron vert et mélangés avec de l'oignon et de la coriandre."
+            },
+            "it": {
+              "name": "Ceviche della Casa",
+              "description": "Filetti freschi di CABRILLA, pescato del giorno, marinati in succo di lime e mescolati con cipolla e coriandolo."
+            },
+            "de": {
+              "name": "Haus-Ceviche",
+              "description": "Frische CABRILLA-Filets, Tagesfang, in Limettensaft mariniert und mit Zwiebeln und Koriander vermengt."
+            }
+          },
+          "prices": [
+            { "label": "Personal", "amount": 25.00 },
+            { "label": "Mediano", "amount": 40.00 },
+            { "label": "Familiar", "amount": 60.00 }
+          ],
+          "allergens": ["pescado", "cítricos"]
         },
-        "items": [
-          {
-            "title": "Espresso Martini",
-            "intro": "<p>Perfect for coffee lovers seeking a kick.</p><ul><li><strong>Ingredients:</strong> Vodka, Coffee Liqueur, Freshly Brewed Espresso</li><li><strong>Garnish:</strong> Coffee Beans</li></ul>",
-            "price": [{ "name": "", "price": "7.95", "is_offer": false, "component": "price" }],
-            "labels": ["organic"],
-            "allergic_ingredients": ["milk", "sulphurdioxide"],
-            "component": "menu_item"
+        {
+          "id": "ceviche-tropical",
+          "translations": {
+            "es": {
+              "name": "Ceviche Tropical",
+              "description": "Pescado ESPADA seleccionado, marinado en jugo de limón y mezclado con cebolla y cilantro."
+            },
+            "en": {
+              "name": "Tropical Ceviche",
+              "description": "Selected SWORDFISH, marinated in lime juice and mixed with onion and cilantro."
+            },
+            "fr": {
+              "name": "Ceviche Tropical",
+              "description": "ESPADON sélectionné, mariné dans du jus de citron vert et mélangé avec de l'oignon et de la coriandre."
+            },
+            "it": {
+              "name": "Ceviche Tropicale",
+              "description": "PESCE SPADA selezionato, marinato in succo di lime e mescolato con cipolla e coriandolo."
+            },
+            "de": {
+              "name": "Tropisches Ceviche",
+              "description": "Ausgewählter SCHWERTFISCH, in Limettensaft mariniert und mit Zwiebeln und Koriander vermengt."
+            }
           },
-          {
-            "title": "Pina Colada",
-            "intro": "<p>A tropical escape in a glass.</p><ul><li><strong>Ingredients:</strong> White Rum, Coconut Cream, Pineapple Juice</li><li><strong>Garnish:</strong> Pineapple Slice, Cherry</li></ul>",
-            "price": [{ "name": "", "price": "7.50", "is_offer": false, "component": "price" }],
-            "labels": [],
-            "allergic_ingredients": [],
-            "component": "menu_item"
+          "prices": [
+            { "label": "Mediano", "amount": 40.00 },
+            { "label": "Familiar", "amount": 60.00 }
+          ],
+          "allergens": ["pescado", "cítricos"]
+        },
+        {
+          "id": "ceviche-lobiteno",
+          "translations": {
+            "es": {
+              "name": "Ceviche Lobiteño",
+              "description": "Una mezcla de filete de CABRILLA con PERCEBES exóticos, marinado en jugo de limón y mezclados con cebolla y cilantro."
+            },
+            "en": {
+              "name": "Lobiteño Ceviche",
+              "description": "A blend of CABRILLA fillet with exotic BARNACLES, marinated in lime juice and mixed with onion and cilantro."
+            },
+            "fr": {
+              "name": "Ceviche Lobiteño",
+              "description": "Un mélange de filet de CABRILLA avec des BALANES exotiques, mariné dans du jus de citron vert et mélangé avec de l'oignon et de la coriandre."
+            },
+            "it": {
+              "name": "Ceviche Lobiteño",
+              "description": "Un mix di filetto di CABRILLA con BALANI esotici, marinati in succo di lime e mescolati con cipolla e coriandolo."
+            },
+            "de": {
+              "name": "Lobiteño-Ceviche",
+              "description": "Eine Mischung aus CABRILLA-Filet und exotischen SEEPOCKEN, in Limettensaft mariniert und mit Zwiebeln und Koriander vermengt."
+            }
           },
-          {
-            "title": "Cosmopolitan",
-            "intro": "<p>A chic and stylish cocktail with a hint of tartness.</p><ul><li><strong>Ingredients:</strong> Vodka, Triple Sec, Cranberry Juice, Fresh Lime Juice</li><li><strong>Garnish:</strong> Lime Wheel</li></ul>",
-            "price": [{ "name": "", "price": "8.95", "is_offer": false, "component": "price" }],
-            "labels": [],
-            "allergic_ingredients": [],
-            "component": "menu_item"
+          "prices": [
+            { "label": "Mediano", "amount": 40.00 },
+            { "label": "Familiar", "amount": 60.00 }
+          ],
+          "allergens": ["pescado", "mariscos", "cítricos"]
+        },
+        {
+          "id": "ceviche-de-las-rocas",
+          "translations": {
+            "es": {
+              "name": "Ceviche de las Rocas",
+              "description": "PERCEBES frescos y suaves, marinados en jugo de limón y mezclados con cebolla y cilantro."
+            },
+            "en": {
+              "name": "Rocky Shore Ceviche",
+              "description": "Fresh and tender BARNACLES, marinated in lime juice and mixed with onion and cilantro."
+            },
+            "fr": {
+              "name": "Ceviche des Rochers",
+              "description": "BALANES frais et tendres, marinés dans du jus de citron vert et mélangés avec de l'oignon et de la coriandre."
+            },
+            "it": {
+              "name": "Ceviche degli Scogli",
+              "description": "BALANI freschi e teneri, marinati in succo di lime e mescolati con cipolla e coriandolo."
+            },
+            "de": {
+              "name": "Felsen-Ceviche",
+              "description": "Frische und zarte SEEPOCKEN, in Limettensaft mariniert und mit Zwiebeln und Koriander vermengt."
+            }
           },
-          {
-            "title": "Negroni",
-            "intro": "<p>A bold and bitter Italian classic.</p><ul><li><strong>Ingredients:</strong> Gin, Campari, Sweet Vermouth</li><li><strong>Garnish:</strong> Orange Twist</li></ul>",
-            "price": [{ "name": "", "price": "6.50", "is_offer": false, "component": "price" }],
-            "labels": [],
-            "allergic_ingredients": [],
-            "component": "menu_item"
+          "prices": [
+            { "label": "Mediano", "amount": 30.00 },
+            { "label": "Familiar", "amount": 50.00 }
+          ],
+          "allergens": ["mariscos", "cítricos"]
+        },
+        {
+          "id": "ceviche-del-oceano",
+          "translations": {
+            "es": {
+              "name": "Ceviche del Océano",
+              "description": "Filete de PESCADO fresco y una selección de MARISCOS, marinados en jugo de limón, especias, cebolla y cilantro."
+            },
+            "en": {
+              "name": "Ocean Ceviche",
+              "description": "Fresh FISH fillet and a selection of SEAFOOD, marinated in lime juice, spices, onion and cilantro."
+            },
+            "fr": {
+              "name": "Ceviche de l'Océan",
+              "description": "Filet de POISSON frais et une sélection de FRUITS DE MER, marinés dans du jus de citron vert, des épices, de l'oignon et de la coriandre."
+            },
+            "it": {
+              "name": "Ceviche dell'Oceano",
+              "description": "Filetto di PESCE fresco e una selezione di FRUTTI DI MARE, marinati in succo di lime, spezie, cipolla e coriandolo."
+            },
+            "de": {
+              "name": "Ozean-Ceviche",
+              "description": "Frisches FISCHFILET und eine Auswahl an MEERESFRÜCHTEN, in Limettensaft, Gewürzen, Zwiebeln und Koriander mariniert."
+            }
           },
-          {
-            "title": "Mojito",
-            "intro": "<p>A refreshing Cuban cocktail with a citrus twist.</p><ul><li><strong>Ingredients:</strong> White Rum, Fresh Lime Juice, Sugar, Mint Leaves, Soda Water</li><li><strong>Garnish:</strong> Mint Sprig, Lime Wheel</li></ul>",
-            "price": [{ "name": "", "price": "7.50", "is_offer": false, "component": "price" }],
-            "labels": [],
-            "allergic_ingredients": [],
-            "component": "menu_item"
+          "prices": [
+            { "label": "Mediano", "amount": 50.00 },
+            { "label": "Familiar", "amount": 70.00 }
+          ],
+          "allergens": ["pescado", "mariscos", "cítricos"]
+        },
+        {
+          "id": "cabrilla-frita",
+          "translations": {
+            "es": {
+              "name": "Cabrilla Frita",
+              "description": "Un plato clásico del mar. Pescado fresco de la zona, frito a la perfección con una capa crujiente y dorada."
+            },
+            "en": {
+              "name": "Fried Cabrilla",
+              "description": "A classic seafood dish. Fresh local fish, fried to perfection with a crispy golden crust."
+            },
+            "fr": {
+              "name": "Cabrilla Frite",
+              "description": "Un plat marin classique. Poisson frais local, frit à la perfection avec une croûte croustillante et dorée."
+            },
+            "it": {
+              "name": "Cabrilla Fritta",
+              "description": "Un classico piatto di mare. Pesce fresco locale, fritto alla perfezione con una crosta croccante e dorata."
+            },
+            "de": {
+              "name": "Gebratener Cabrilla",
+              "description": "Ein klassisches Meeresfrüchtegericht. Frischer lokaler Fisch, perfekt gebraten mit einer knusprigen goldenen Kruste."
+            }
           },
-          {
-            "title": "Margarita",
-            "intro": "<p>The classic tequila cocktail.</p><ul><li><strong>Ingredients:</strong> Tequila, Triple Sec, Fresh Lime Juice</li><li><strong>Garnish:</strong> Salt Rim, Lime Wedge</li></ul>",
-            "price": [{ "name": "", "price": "8.50", "is_offer": false, "component": "price" }],
-            "labels": [],
-            "allergic_ingredients": [],
-            "component": "menu_item"
-          }
-        ]
-      }
-    ]
-  }
+          "prices": [
+            { "label": "Mediano", "amount": 40.00 },
+            { "label": "Familiar", "amount": 60.00 }
+          ],
+          "allergens": ["pescado"]
+        },
+        {
+          "id": "sudado",
+          "translations": {
+            "es": {
+              "name": "Sudado",
+              "description": "Un plato sabroso del mar. Una especie de sopa con pescado fresco, cebolla, tomate, escabeche, acompañado con arroz."
+            },
+            "en": {
+              "name": "Sudado",
+              "description": "A flavorful seafood dish. A type of stew with fresh fish, onion, tomato and pickled vegetables, served with rice."
+            },
+            "fr": {
+              "name": "Sudado",
+              "description": "Un plat marin savoureux. Une sorte de ragoût avec du poisson frais, de l'oignon, de la tomate et des légumes marinés, servi avec du riz."
+            },
+            "it": {
+              "name": "Sudado",
+              "description": "Un saporito piatto di mare. Una sorta di stufato con pesce fresco, cipolla, pomodoro e verdure in agrodolce, servito con riso."
+            },
+            "de": {
+              "name": "Sudado",
+              "description": "Ein schmackhaftes Meeresfrüchtegericht. Eine Art Eintopf mit frischem Fisch, Zwiebeln, Tomaten und eingelegtem Gemüse, serviert mit Reis."
+            }
+          },
+          "prices": [
+            { "label": "Mediano", "amount": 40.00 },
+            { "label": "Familiar", "amount": 60.00 }
+          ],
+          "allergens": ["pescado"]
+        },
+        {
+          "id": "chicharron-pescado-pollo",
+          "translations": {
+            "es": {
+              "name": "Chicharrón de Pescado o Pollo",
+              "description": "Filetes aderezados con un toque de magia norteña y fritos a la perfección, crujiente por fuera y suave por dentro, acompañado de papas fritas."
+            },
+            "en": {
+              "name": "Fish or Chicken Chicharrón",
+              "description": "Seasoned fillets with a touch of northern Peruvian magic, fried to perfection — crispy on the outside, tender on the inside, served with french fries."
+            },
+            "fr": {
+              "name": "Chicharrón de Poisson ou de Poulet",
+              "description": "Filets assaisonnés avec une touche de magie du nord péruvien, frits à la perfection — croustillants à l'extérieur et tendres à l'intérieur, accompagnés de frites."
+            },
+            "it": {
+              "name": "Chicharrón di Pesce o Pollo",
+              "description": "Filetti conditi con un tocco di magia del nord del Perù, fritti alla perfezione — croccanti fuori e teneri dentro, serviti con patatine fritte."
+            },
+            "de": {
+              "name": "Fisch- oder Hähnchenchicharrón",
+              "description": "Gewürzte Filets mit einer Prise nordperuanischer Magie, perfekt gebraten — außen knusprig und innen zart, serviert mit Pommes frites."
+            }
+          },
+          "prices": [
+            { "label": "Mediano", "amount": 40.00 },
+            { "label": "Familiar", "amount": 60.00 }
+          ],
+          "allergens": ["pescado", "gluten"]
+        },
+        {
+          "id": "arroz-con-mariscos",
+          "translations": {
+            "es": {
+              "name": "Arroz con Mariscos",
+              "description": "Una mezcla de arroz cremoso con mariscos frescos y deliciosos. Una fusión de sabores y texturas del mar."
+            },
+            "en": {
+              "name": "Seafood Rice",
+              "description": "A creamy rice blend with fresh and delicious seafood. A fusion of sea flavors and textures."
+            },
+            "fr": {
+              "name": "Riz aux Fruits de Mer",
+              "description": "Un mélange de riz crémeux avec des fruits de mer frais et délicieux. Une fusion de saveurs et de textures marines."
+            },
+            "it": {
+              "name": "Riso ai Frutti di Mare",
+              "description": "Un mix di riso cremoso con frutti di mare freschi e deliziosi. Una fusione di sapori e texture del mare."
+            },
+            "de": {
+              "name": "Meeresfrüchtereis",
+              "description": "Eine cremige Reismischung mit frischen und köstlichen Meeresfrüchten. Eine Fusion aus Meeresgeschmäckern und Texturen."
+            }
+          },
+          "prices": [
+            { "label": "Mediano", "amount": 40.00 },
+            { "label": "Familiar", "amount": 60.00 }
+          ],
+          "allergens": ["mariscos"]
+        },
+        {
+          "id": "majariscos-norteno",
+          "translations": {
+            "es": {
+              "name": "Majariscos Norteño",
+              "description": "Una deliciosa combinación de plátano verde majado con mariscos seleccionados."
+            },
+            "en": {
+              "name": "Northern Majariscos",
+              "description": "A delicious combination of mashed green plantain with a selection of prime seafood."
+            },
+            "fr": {
+              "name": "Majariscos du Nord",
+              "description": "Une délicieuse combinaison de banane plantain verte écrasée avec une sélection de fruits de mer choisis."
+            },
+            "it": {
+              "name": "Majariscos del Nord",
+              "description": "Una deliziosa combinazione di platano verde schiacciato con una selezione di frutti di mare pregiati."
+            },
+            "de": {
+              "name": "Nördliche Majariscos",
+              "description": "Eine köstliche Kombination aus gestampfter grüner Kochbanane mit ausgewählten Meeresfrüchten."
+            }
+          },
+          "prices": [
+            { "label": "Mediano", "amount": 40.00 },
+            { "label": "Familiar", "amount": 60.00 }
+          ],
+          "allergens": ["mariscos"]
+        },
+        {
+          "id": "cecina-amazonica",
+          "translations": {
+            "es": {
+              "name": "Cecina Amazónica",
+              "description": "La cecina es un delicioso y tradicional alimento de la selva peruana. Tesoro culinario acompañada de patacones."
+            },
+            "en": {
+              "name": "Amazonian Cecina",
+              "description": "Cecina is a delicious traditional food from the Peruvian jungle. A culinary treasure served with fried green plantain."
+            },
+            "fr": {
+              "name": "Cécina Amazonienne",
+              "description": "La cécina est un délicieux aliment traditionnel de la jungle péruvienne. Un trésor culinaire accompagné de patacones."
+            },
+            "it": {
+              "name": "Cecina Amazzonica",
+              "description": "La cecina è un delizioso alimento tradizionale della giungla peruviana. Un tesoro culinario accompagnato da patacones."
+            },
+            "de": {
+              "name": "Amazonas-Cecina",
+              "description": "Cecina ist eine köstliche traditionelle Speise aus dem peruanischen Dschungel. Ein kulinarischer Schatz, serviert mit gebratenen Kochbananenscheiben."
+            }
+          },
+          "prices": [
+            { "label": "Mediano", "amount": 40.00 },
+            { "label": "Familiar", "amount": 60.00 }
+          ],
+          "allergens": []
+        },
+        {
+          "id": "seco-de-chabelo",
+          "translations": {
+            "es": {
+              "name": "Seco de Chabelo",
+              "description": "Deliciosa combinación de una salsa rica y aromática, plátano verde majado y su carne sabrosa."
+            },
+            "en": {
+              "name": "Seco de Chabelo",
+              "description": "A delicious combination of a rich and aromatic sauce, mashed green plantain and flavorful meat."
+            },
+            "fr": {
+              "name": "Seco de Chabelo",
+              "description": "Une délicieuse combinaison d'une sauce riche et aromatique, de banane plantain verte écrasée et de viande savoureuse."
+            },
+            "it": {
+              "name": "Seco de Chabelo",
+              "description": "Una deliziosa combinazione di una salsa ricca e aromatica, platano verde schiacciato e carne saporita."
+            },
+            "de": {
+              "name": "Seco de Chabelo",
+              "description": "Eine köstliche Kombination aus einer reichen und aromatischen Sauce, gestampfter grüner Kochbanane und würzigem Fleisch."
+            }
+          },
+          "prices": [
+            { "label": "Mediano", "amount": 40.00 },
+            { "label": "Familiar", "amount": 60.00 }
+          ],
+          "allergens": []
+        }
+      ]
+    },
+    {
+      "category_id": "fondos-bien-taipa",
+      "category_translations": {
+        "es": "Fondos Bien Taipa",
+        "en": "Hearty Main Courses",
+        "fr": "Plats Principaux Généreux",
+        "it": "Secondi Sostanziosi",
+        "de": "Herzhafte Hauptgerichte"
+      },
+      "items": [
+        {
+          "id": "salteado-de-pescado",
+          "translations": {
+            "es": {
+              "name": "Salteado de Pescado",
+              "description": "Trozos flameados con verduras, un toque de salsa de soya, servido con arroz blanco y papas fritas crujientes."
+            },
+            "en": {
+              "name": "Fish Stir-Fry",
+              "description": "Flambéed fish pieces with vegetables, a touch of soy sauce, served with white rice and crispy french fries."
+            },
+            "fr": {
+              "name": "Sauté de Poisson",
+              "description": "Morceaux de poisson flambés avec des légumes, une touche de sauce soja, servis avec du riz blanc et des frites croustillantes."
+            },
+            "it": {
+              "name": "Saltato di Pesce",
+              "description": "Pezzi di pesce flambati con verdure, un tocco di salsa di soia, serviti con riso bianco e patatine fritte croccanti."
+            },
+            "de": {
+              "name": "Gebratener Fisch",
+              "description": "Flambierte Fischstücke mit Gemüse, einem Hauch Sojasoße, serviert mit weißem Reis und knusprigen Pommes frites."
+            }
+          },
+          "prices": [
+            { "label": "", "amount": 30.00 }
+          ],
+          "allergens": ["pescado", "soya", "gluten"]
+        },
+        {
+          "id": "salteado-de-langostinos",
+          "translations": {
+            "es": {
+              "name": "Salteado de Langostinos",
+              "description": "Trozos flameados con verduras, un toque de salsa de soya, servido con arroz blanco y papas fritas crujientes."
+            },
+            "en": {
+              "name": "Prawn Stir-Fry",
+              "description": "Flambéed prawn pieces with vegetables, a touch of soy sauce, served with white rice and crispy french fries."
+            },
+            "fr": {
+              "name": "Sauté de Crevettes",
+              "description": "Morceaux de crevettes flambés avec des légumes, une touche de sauce soja, servis avec du riz blanc et des frites croustillantes."
+            },
+            "it": {
+              "name": "Saltato di Gamberi",
+              "description": "Pezzi di gamberi flambati con verdure, un tocco di salsa di soia, serviti con riso bianco e patatine fritte croccanti."
+            },
+            "de": {
+              "name": "Garnelen-Pfanne",
+              "description": "Flambierte Garnelenteile mit Gemüse, einem Hauch Sojasoße, serviert mit weißem Reis und knusprigen Pommes frites."
+            }
+          },
+          "prices": [
+            { "label": "", "amount": 30.00 }
+          ],
+          "allergens": ["mariscos", "soya", "gluten"]
+        },
+        {
+          "id": "lomo-salteado",
+          "translations": {
+            "es": {
+              "name": "Lomo Salteado",
+              "description": "Trozos flameados con verduras, un toque de salsa de soya, servido con arroz blanco y papas fritas crujientes."
+            },
+            "en": {
+              "name": "Lomo Saltado",
+              "description": "Flambéed beef strips with vegetables, a touch of soy sauce, served with white rice and crispy french fries."
+            },
+            "fr": {
+              "name": "Lomo Saltado",
+              "description": "Lanières de bœuf flambées avec des légumes, une touche de sauce soja, servies avec du riz blanc et des frites croustillantes."
+            },
+            "it": {
+              "name": "Lomo Saltado",
+              "description": "Strisce di manzo flambate con verdure, un tocco di salsa di soia, servite con riso bianco e patatine fritte croccanti."
+            },
+            "de": {
+              "name": "Lomo Saltado",
+              "description": "Flambierte Rinderstreifen mit Gemüse, einem Hauch Sojasoße, serviert mit weißem Reis und knusprigen Pommes frites."
+            }
+          },
+          "prices": [
+            { "label": "", "amount": 30.00 }
+          ],
+          "allergens": ["soya", "gluten"]
+        },
+        {
+          "id": "salteado-de-pollo",
+          "translations": {
+            "es": {
+              "name": "Salteado de Pollo",
+              "description": "Trozos flameados con verduras, un toque de salsa de soya, servido con arroz blanco y papas fritas crujientes."
+            },
+            "en": {
+              "name": "Chicken Stir-Fry",
+              "description": "Flambéed chicken pieces with vegetables, a touch of soy sauce, served with white rice and crispy french fries."
+            },
+            "fr": {
+              "name": "Sauté de Poulet",
+              "description": "Morceaux de poulet flambés avec des légumes, une touche de sauce soja, servis avec du riz blanc et des frites croustillantes."
+            },
+            "it": {
+              "name": "Saltato di Pollo",
+              "description": "Pezzi di pollo flambati con verdure, un tocco di salsa di soia, serviti con riso bianco e patatine fritte croccanti."
+            },
+            "de": {
+              "name": "Hähnchenrührbraten",
+              "description": "Flambierte Hühnchenstücke mit Gemüse, einem Hauch Sojasoße, serviert mit weißem Reis und knusprigen Pommes frites."
+            }
+          },
+          "prices": [
+            { "label": "", "amount": 28.00 }
+          ],
+          "allergens": ["soya", "gluten"]
+        },
+        {
+          "id": "salteado-de-verduras",
+          "translations": {
+            "es": {
+              "name": "Salteado de Verduras",
+              "description": "Trozos flameados con verduras, un toque de salsa de soya, servido con arroz blanco y papas fritas crujientes."
+            },
+            "en": {
+              "name": "Vegetable Stir-Fry",
+              "description": "Flambéed vegetables with a touch of soy sauce, served with white rice and crispy french fries."
+            },
+            "fr": {
+              "name": "Sauté de Légumes",
+              "description": "Légumes flambés avec une touche de sauce soja, servis avec du riz blanc et des frites croustillantes."
+            },
+            "it": {
+              "name": "Saltato di Verdure",
+              "description": "Verdure flambate con un tocco di salsa di soia, servite con riso bianco e patatine fritte croccanti."
+            },
+            "de": {
+              "name": "Gemüsepfanne",
+              "description": "Flambiertes Gemüse mit einem Hauch Sojasoße, serviert mit weißem Reis und knusprigen Pommes frites."
+            }
+          },
+          "prices": [
+            { "label": "", "amount": 28.00 }
+          ],
+          "allergens": ["soya", "gluten"]
+        }
+      ]
+    },
+    {
+      "category_id": "filetes-fritos",
+      "category_translations": {
+        "es": "Filetes Fritos",
+        "en": "Fried Fillets",
+        "fr": "Filets Frits",
+        "it": "Filetti Fritti",
+        "de": "Gebratene Filets"
+      },
+      "items": [
+        {
+          "id": "filete-de-pollo-frito",
+          "translations": {
+            "es": {
+              "name": "Filete de Pollo Frito",
+              "description": "Filete suave y fresco, frito en poco aceite, acompañado de arroz blanco y papas fritas crujientes."
+            },
+            "en": {
+              "name": "Fried Chicken Fillet",
+              "description": "Soft and fresh fillet, lightly fried in oil, served with white rice and crispy french fries."
+            },
+            "fr": {
+              "name": "Filet de Poulet Frit",
+              "description": "Filet tendre et frais, frit dans peu d'huile, accompagné de riz blanc et de frites croustillantes."
+            },
+            "it": {
+              "name": "Filetto di Pollo Fritto",
+              "description": "Filetto morbido e fresco, fritto con poco olio, servito con riso bianco e patatine fritte croccanti."
+            },
+            "de": {
+              "name": "Gebratenes Hähnchenfilet",
+              "description": "Zartes und frisches Filet, in wenig Öl gebraten, serviert mit weißem Reis und knusprigen Pommes frites."
+            }
+          },
+          "prices": [
+            { "label": "", "amount": 18.00 }
+          ],
+          "allergens": []
+        },
+        {
+          "id": "filete-de-pescado",
+          "translations": {
+            "es": {
+              "name": "Filete de Pescado",
+              "description": "Filete suave y fresco, frito en poco aceite, acompañado de arroz blanco y papas fritas crujientes."
+            },
+            "en": {
+              "name": "Fried Fish Fillet",
+              "description": "Soft and fresh fillet, lightly fried in oil, served with white rice and crispy french fries."
+            },
+            "fr": {
+              "name": "Filet de Poisson Frit",
+              "description": "Filet tendre et frais, frit dans peu d'huile, accompagné de riz blanc et de frites croustillantes."
+            },
+            "it": {
+              "name": "Filetto di Pesce Fritto",
+              "description": "Filetto morbido e fresco, fritto con poco olio, servito con riso bianco e patatine fritte croccanti."
+            },
+            "de": {
+              "name": "Gebratenes Fischfilet",
+              "description": "Zartes und frisches Filet, in wenig Öl gebraten, serviert mit weißem Reis und knusprigen Pommes frites."
+            }
+          },
+          "prices": [
+            { "label": "", "amount": 18.00 }
+          ],
+          "allergens": ["pescado"]
+        },
+        {
+          "id": "chuleta-res-cerdo",
+          "translations": {
+            "es": {
+              "name": "Chuleta de Res/Cerdo",
+              "description": "Filete suave y fresco, frito en poco aceite, acompañado de arroz blanco y papas fritas crujientes."
+            },
+            "en": {
+              "name": "Beef/Pork Chop",
+              "description": "Soft and fresh chop, lightly fried in oil, served with white rice and crispy french fries."
+            },
+            "fr": {
+              "name": "Côtelette de Bœuf/Porc",
+              "description": "Côtelette tendre et fraîche, frite dans peu d'huile, accompagnée de riz blanc et de frites croustillantes."
+            },
+            "it": {
+              "name": "Costoletta di Manzo/Maiale",
+              "description": "Cotoletta morbida e fresca, fritta con poco olio, servita con riso bianco e patatine fritte croccanti."
+            },
+            "de": {
+              "name": "Rind-/Schweinekotelett",
+              "description": "Zartes und frisches Kotelett, in wenig Öl gebraten, serviert mit weißem Reis und knusprigen Pommes frites."
+            }
+          },
+          "prices": [
+            { "label": "", "amount": 18.00 }
+          ],
+          "allergens": []
+        },
+        {
+          "id": "bisteck-frito",
+          "translations": {
+            "es": {
+              "name": "Bisteck Frito",
+              "description": "Filete suave y fresco, frito en poco aceite, acompañado de arroz blanco y papas fritas crujientes."
+            },
+            "en": {
+              "name": "Fried Steak",
+              "description": "Soft and fresh steak, lightly fried in oil, served with white rice and crispy french fries."
+            },
+            "fr": {
+              "name": "Steak Frit",
+              "description": "Steak tendre et frais, frit dans peu d'huile, accompagné de riz blanc et de frites croustillantes."
+            },
+            "it": {
+              "name": "Bistecca Fritta",
+              "description": "Bistecca morbida e fresca, fritta con poco olio, servita con riso bianco e patatine fritte croccanti."
+            },
+            "de": {
+              "name": "Gebratenes Steak",
+              "description": "Zartes und frisches Steak, in wenig Öl gebraten, serviert mit weißem Reis und knusprigen Pommes frites."
+            }
+          },
+          "prices": [
+            { "label": "", "amount": 25.00 }
+          ],
+          "allergens": []
+        }
+      ]
+    },
+    {
+      "category_id": "milanesas",
+      "category_translations": {
+        "es": "Milanesas",
+        "en": "Milanese",
+        "fr": "Milanaises",
+        "it": "Milanesi",
+        "de": "Mailänder Schnitzel"
+      },
+      "items": [
+        {
+          "id": "milanesa-de-pescado",
+          "translations": {
+            "es": {
+              "name": "Milanesa de Pescado",
+              "description": "Filete apanado y frito, acompañado con arroz blanco, papas fritas y ensalada fresca."
+            },
+            "en": {
+              "name": "Fish Milanese",
+              "description": "Breaded and fried fillet, served with white rice, french fries and fresh salad."
+            },
+            "fr": {
+              "name": "Milanaise de Poisson",
+              "description": "Filet pané et frit, accompagné de riz blanc, de frites et d'une salade fraîche."
+            },
+            "it": {
+              "name": "Milanese di Pesce",
+              "description": "Filetto impanato e fritto, servito con riso bianco, patatine fritte e insalata fresca."
+            },
+            "de": {
+              "name": "Fisch-Schnitzel",
+              "description": "Paniertes und gebratenes Filet, serviert mit weißem Reis, Pommes frites und frischem Salat."
+            }
+          },
+          "prices": [
+            { "label": "", "amount": 30.00 }
+          ],
+          "allergens": ["pescado", "gluten", "huevo"]
+        },
+        {
+          "id": "milanesa-de-pollo",
+          "translations": {
+            "es": {
+              "name": "Milanesa de Pollo",
+              "description": "Filete apanado y frito, acompañado con arroz blanco, papas fritas y ensalada fresca."
+            },
+            "en": {
+              "name": "Chicken Milanese",
+              "description": "Breaded and fried fillet, served with white rice, french fries and fresh salad."
+            },
+            "fr": {
+              "name": "Milanaise de Poulet",
+              "description": "Filet pané et frit, accompagné de riz blanc, de frites et d'une salade fraîche."
+            },
+            "it": {
+              "name": "Milanese di Pollo",
+              "description": "Filetto impanato e fritto, servito con riso bianco, patatine fritte e insalata fresca."
+            },
+            "de": {
+              "name": "Hähnchen-Schnitzel",
+              "description": "Paniertes und gebratenes Filet, serviert mit weißem Reis, Pommes frites und frischem Salat."
+            }
+          },
+          "prices": [
+            { "label": "", "amount": 30.00 }
+          ],
+          "allergens": ["gluten", "huevo"]
+        }
+      ]
+    },
+    {
+      "category_id": "platos-especiales-del-mar",
+      "category_translations": {
+        "es": "Platos Especiales del Mar",
+        "en": "Special Seafood Dishes",
+        "fr": "Spécialités Marines",
+        "it": "Piatti Speciali di Mare",
+        "de": "Meeresfrüchte-Spezialitäten"
+      },
+      "items": [
+        {
+          "id": "cora-del-mar",
+          "translations": {
+            "es": {
+              "name": "Cora del Mar",
+              "description": "Una exquisita combinación de chaufa con salteado de pescado, acompañado de papas fritas crujientes."
+            },
+            "en": {
+              "name": "Cora del Mar",
+              "description": "An exquisite combination of chaufa rice with stir-fried fish, accompanied by crispy french fries."
+            },
+            "fr": {
+              "name": "Cora del Mar",
+              "description": "Une exquise combinaison de riz chaufa avec du poisson sauté, accompagnée de frites croustillantes."
+            },
+            "it": {
+              "name": "Cora del Mar",
+              "description": "Un'equisita combinazione di riso chaufa con pesce saltato, accompagnata da patatine fritte croccanti."
+            },
+            "de": {
+              "name": "Cora del Mar",
+              "description": "Eine exquisite Kombination aus Chaufa-Reis mit gebratenem Fisch, begleitet von knusprigen Pommes frites."
+            }
+          },
+          "prices": [
+            { "label": "", "amount": 40.00 }
+          ],
+          "allergens": ["pescado", "soya", "huevo"]
+        },
+        {
+          "id": "tentaculos-al-olivo",
+          "translations": {
+            "es": {
+              "name": "Tentáculos al Olivo",
+              "description": "Láminas de pulpo cocinado en una salsa de aceitunas y aceite de oliva, con un toque de limón, acompañado con palta y pan baguette/galleta."
+            },
+            "en": {
+              "name": "Octopus in Olive Sauce",
+              "description": "Sliced octopus cooked in an olive and extra-virgin olive oil sauce, with a touch of lemon, accompanied by avocado and baguette/crackers."
+            },
+            "fr": {
+              "name": "Tentacules à l'Olive",
+              "description": "Lamelles de poulpe cuites dans une sauce aux olives et à l'huile d'olive, avec une touche de citron, accompagnées d'avocat et de pain baguette/crackers."
+            },
+            "it": {
+              "name": "Tentacoli all'Oliva",
+              "description": "Lamelle di polpo cotte in una salsa di olive e olio d'oliva extra vergine, con un tocco di limone, servite con avocado e pane baguette/gallette."
+            },
+            "de": {
+              "name": "Tintenfisch in Olivensoße",
+              "description": "Geschnittener Oktopus in Oliven- und Olivenölsoße, mit einem Hauch Zitrone, begleitet von Avocado und Baguette/Crackern."
+            }
+          },
+          "prices": [
+            { "label": "", "amount": 50.00 }
+          ],
+          "allergens": ["mariscos", "gluten", "huevo"]
+        },
+        {
+          "id": "pulpo-parrillero",
+          "translations": {
+            "es": {
+              "name": "Pulpo Parrillero",
+              "description": "Pulpo aderezado, a la parrilla, servido con camote glaseado y ensalada fresca."
+            },
+            "en": {
+              "name": "Grilled Octopus",
+              "description": "Seasoned octopus, grilled to perfection, served with glazed sweet potato and fresh salad."
+            },
+            "fr": {
+              "name": "Poulpe Grillé",
+              "description": "Poulpe assaisonné, grillé à la perfection, servi avec de la patate douce glacée et une salade fraîche."
+            },
+            "it": {
+              "name": "Polpo alla Griglia",
+              "description": "Polpo condito, grigliato alla perfezione, servito con patata dolce glassata e insalata fresca."
+            },
+            "de": {
+              "name": "Gegrillter Oktopus",
+              "description": "Gewürzter Oktopus, perfekt gegrillt, serviert mit glasierter Süßkartoffel und frischem Salat."
+            }
+          },
+          "prices": [
+            { "label": "", "amount": 50.00 }
+          ],
+          "allergens": ["mariscos"]
+        }
+      ]
+    },
+    {
+      "category_id": "en-salsas",
+      "category_translations": {
+        "es": "En Salsas",
+        "en": "In Sauces",
+        "fr": "En Sauces",
+        "it": "In Salsa",
+        "de": "In Soßen"
+      },
+      "items": [
+        {
+          "id": "pescado-marinero",
+          "translations": {
+            "es": {
+              "name": "Pescado Marinero",
+              "description": "Filete de pescado frito bañado en una salsa especial de mariscos, servido con arroz blanco y papa dorada."
+            },
+            "en": {
+              "name": "Sailor's Fish",
+              "description": "Fried fish fillet bathed in a special seafood sauce, served with white rice and golden potato."
+            },
+            "fr": {
+              "name": "Poisson du Matelot",
+              "description": "Filet de poisson frit nappé d'une sauce spéciale aux fruits de mer, servi avec du riz blanc et des pommes de terre dorées."
+            },
+            "it": {
+              "name": "Pesce del Marinaio",
+              "description": "Filetto di pesce fritto immerso in una salsa speciale ai frutti di mare, servito con riso bianco e patate dorate."
+            },
+            "de": {
+              "name": "Matrosenfisch",
+              "description": "Gebratenes Fischfilet in besonderer Meeresfrüchtesoße, serviert mit weißem Reis und goldenen Kartoffeln."
+            }
+          },
+          "prices": [
+            { "label": "", "amount": 35.00 }
+          ],
+          "allergens": ["pescado", "mariscos"]
+        },
+        {
+          "id": "ajos-y-olas",
+          "translations": {
+            "es": {
+              "name": "Ajos y Olas",
+              "description": "Filete de pescado frito bañado en una rica salsa de ajo, servido con arroz blanco y papa dorada."
+            },
+            "en": {
+              "name": "Garlic Waves",
+              "description": "Fried fish fillet drenched in a rich garlic sauce, served with white rice and golden potato."
+            },
+            "fr": {
+              "name": "Ail et Vagues",
+              "description": "Filet de poisson frit nappé d'une riche sauce à l'ail, servi avec du riz blanc et des pommes de terre dorées."
+            },
+            "it": {
+              "name": "Aglio e Onde",
+              "description": "Filetto di pesce fritto avvolto in una ricca salsa all'aglio, servito con riso bianco e patate dorate."
+            },
+            "de": {
+              "name": "Knoblauch und Wellen",
+              "description": "Gebratenes Fischfilet in reichhaltiger Knoblauchsoße, serviert mit weißem Reis und goldenen Kartoffeln."
+            }
+          },
+          "prices": [
+            { "label": "", "amount": 28.00 }
+          ],
+          "allergens": ["pescado"]
+        }
+      ]
+    },
+    {
+      "category_id": "a-lo-pobre",
+      "category_translations": {
+        "es": "A lo Pobre",
+        "en": "Poor Man's Style",
+        "fr": "À la Façon du Pauvre",
+        "it": "Alla Povera",
+        "de": "Nach Arme-Leute-Art"
+      },
+      "items": [
+        {
+          "id": "pescado-a-lo-pobre",
+          "translations": {
+            "es": {
+              "name": "Pescado a lo Pobre",
+              "description": "Filete frito en poco aceite, servido con arroz, huevo, chorizo, plátanos y papas fritas crujientes."
+            },
+            "en": {
+              "name": "Fish Poor Man's Style",
+              "description": "Lightly fried fillet, served with rice, egg, chorizo, plantains and crispy french fries."
+            },
+            "fr": {
+              "name": "Poisson à la Façon du Pauvre",
+              "description": "Filet frit dans peu d'huile, servi avec du riz, un oeuf, du chorizo, des bananes plantains et des frites croustillantes."
+            },
+            "it": {
+              "name": "Pesce alla Povera",
+              "description": "Filetto fritto con poco olio, servito con riso, uovo, chorizo, banane platano e patatine fritte croccanti."
+            },
+            "de": {
+              "name": "Fisch nach Arme-Leute-Art",
+              "description": "In wenig Öl gebratenes Filet, serviert mit Reis, Ei, Chorizo, Kochbananen und knusprigen Pommes frites."
+            }
+          },
+          "prices": [
+            { "label": "", "amount": 30.00 }
+          ],
+          "allergens": ["pescado", "huevo"]
+        },
+        {
+          "id": "bisteck-a-lo-pobre",
+          "translations": {
+            "es": {
+              "name": "Bisteck a lo Pobre",
+              "description": "Filete frito en poco aceite, servido con arroz, huevo, chorizo, plátanos y papas fritas crujientes."
+            },
+            "en": {
+              "name": "Steak Poor Man's Style",
+              "description": "Lightly fried steak, served with rice, egg, chorizo, plantains and crispy french fries."
+            },
+            "fr": {
+              "name": "Steak à la Façon du Pauvre",
+              "description": "Steak frit dans peu d'huile, servi avec du riz, un oeuf, du chorizo, des bananes plantains et des frites croustillantes."
+            },
+            "it": {
+              "name": "Bistecca alla Povera",
+              "description": "Bistecca fritta con poco olio, servita con riso, uovo, chorizo, banane platano e patatine fritte croccanti."
+            },
+            "de": {
+              "name": "Steak nach Arme-Leute-Art",
+              "description": "In wenig Öl gebratenes Steak, serviert mit Reis, Ei, Chorizo, Kochbananen und knusprigen Pommes frites."
+            }
+          },
+          "prices": [
+            { "label": "", "amount": 30.00 }
+          ],
+          "allergens": ["huevo"]
+        },
+        {
+          "id": "pollo-a-lo-pobre",
+          "translations": {
+            "es": {
+              "name": "Pollo a lo Pobre",
+              "description": "Filete frito en poco aceite, servido con arroz, huevo, chorizo, plátanos y papas fritas crujientes."
+            },
+            "en": {
+              "name": "Chicken Poor Man's Style",
+              "description": "Lightly fried chicken, served with rice, egg, chorizo, plantains and crispy french fries."
+            },
+            "fr": {
+              "name": "Poulet à la Façon du Pauvre",
+              "description": "Poulet frit dans peu d'huile, servi avec du riz, un oeuf, du chorizo, des bananes plantains et des frites croustillantes."
+            },
+            "it": {
+              "name": "Pollo alla Povera",
+              "description": "Pollo fritto con poco olio, servito con riso, uovo, chorizo, banane platano e patatine fritte croccanti."
+            },
+            "de": {
+              "name": "Hähnchen nach Arme-Leute-Art",
+              "description": "In wenig Öl gebratenes Hähnchen, serviert mit Reis, Ei, Chorizo, Kochbananen und knusprigen Pommes frites."
+            }
+          },
+          "prices": [
+            { "label": "", "amount": 28.00 }
+          ],
+          "allergens": ["huevo"]
+        }
+      ]
+    },
+    {
+      "category_id": "tortillas",
+      "category_translations": {
+        "es": "Tortillas",
+        "en": "Omelettes",
+        "fr": "Omelettes",
+        "it": "Frittate",
+        "de": "Omeletts"
+      },
+      "items": [
+        {
+          "id": "tortilla-de-langostinos",
+          "translations": {
+            "es": {
+              "name": "Tortilla de Langostinos",
+              "description": "Tortilla a base de huevo, acompañada con arroz blanco y papas fritas crujientes."
+            },
+            "en": {
+              "name": "Prawn Omelette",
+              "description": "Egg-based omelette with succulent prawns, served with white rice and crispy french fries."
+            },
+            "fr": {
+              "name": "Omelette aux Crevettes",
+              "description": "Omelette à base d'oeufs avec de succulentes crevettes, accompagnée de riz blanc et de frites croustillantes."
+            },
+            "it": {
+              "name": "Frittata di Gamberi",
+              "description": "Frittata a base di uova con gamberi succulenti, servita con riso bianco e patatine fritte croccanti."
+            },
+            "de": {
+              "name": "Garnelen-Omelett",
+              "description": "Eibasiertes Omelett mit saftigen Garnelen, serviert mit weißem Reis und knusprigen Pommes frites."
+            }
+          },
+          "prices": [
+            { "label": "", "amount": 28.00 }
+          ],
+          "allergens": ["huevo", "mariscos"]
+        },
+        {
+          "id": "tortilla-de-percebes",
+          "translations": {
+            "es": {
+              "name": "Tortilla de Percebes",
+              "description": "Tortilla a base de huevo, acompañada con arroz blanco y papas fritas crujientes."
+            },
+            "en": {
+              "name": "Barnacle Omelette",
+              "description": "Egg-based omelette with fresh barnacles, served with white rice and crispy french fries."
+            },
+            "fr": {
+              "name": "Omelette aux Balanes",
+              "description": "Omelette à base d'oeufs avec des balanes fraîches, accompagnée de riz blanc et de frites croustillantes."
+            },
+            "it": {
+              "name": "Frittata di Balani",
+              "description": "Frittata a base di uova con balani freschi, servita con riso bianco e patatine fritte croccanti."
+            },
+            "de": {
+              "name": "Seepocken-Omelett",
+              "description": "Eibasiertes Omelett mit frischen Seepocken, serviert mit weißem Reis und knusprigen Pommes frites."
+            }
+          },
+          "prices": [
+            { "label": "", "amount": 28.00 }
+          ],
+          "allergens": ["huevo", "mariscos"]
+        }
+      ]
+    },
+    {
+      "category_id": "chaufa",
+      "category_translations": {
+        "es": "Chaufa",
+        "en": "Chaufa (Peruvian Fried Rice)",
+        "fr": "Chaufa (Riz Sauté Péruvien)",
+        "it": "Chaufa (Riso Fritto Peruviano)",
+        "de": "Chaufa (Peruanischer Gebratener Reis)"
+      },
+      "items": [
+        {
+          "id": "chaufa-de-pescado",
+          "translations": {
+            "es": {
+              "name": "Chaufa de Pescado",
+              "description": "Arroz salteado al wok con huevo, cebolla china, especias y su clásico saborcito oriental."
+            },
+            "en": {
+              "name": "Fish Chaufa",
+              "description": "Wok-fried rice with egg, spring onion, spices and that classic oriental flavor."
+            },
+            "fr": {
+              "name": "Chaufa de Poisson",
+              "description": "Riz sauté au wok avec de l'oeuf, de l'oignon nouveau, des épices et cette saveur orientale classique."
+            },
+            "it": {
+              "name": "Chaufa di Pesce",
+              "description": "Riso saltato al wok con uovo, cipollotto, spezie e quel classico sapore orientale."
+            },
+            "de": {
+              "name": "Fisch-Chaufa",
+              "description": "Im Wok gebratener Reis mit Ei, Frühlingszwiebeln, Gewürzen und dem klassischen orientalischen Geschmack."
+            }
+          },
+          "prices": [
+            { "label": "", "amount": 18.00 }
+          ],
+          "allergens": ["huevo", "soya", "gluten", "pescado"]
+        },
+        {
+          "id": "chaufa-de-pollo",
+          "translations": {
+            "es": {
+              "name": "Chaufa de Pollo",
+              "description": "Arroz salteado al wok con huevo, cebolla china, especias y su clásico saborcito oriental."
+            },
+            "en": {
+              "name": "Chicken Chaufa",
+              "description": "Wok-fried rice with egg, spring onion, spices and that classic oriental flavor."
+            },
+            "fr": {
+              "name": "Chaufa de Poulet",
+              "description": "Riz sauté au wok avec de l'oeuf, de l'oignon nouveau, des épices et cette saveur orientale classique."
+            },
+            "it": {
+              "name": "Chaufa di Pollo",
+              "description": "Riso saltato al wok con uovo, cipollotto, spezie e quel classico sapore orientale."
+            },
+            "de": {
+              "name": "Hähnchen-Chaufa",
+              "description": "Im Wok gebratener Reis mit Ei, Frühlingszwiebeln, Gewürzen und dem klassischen orientalischen Geschmack."
+            }
+          },
+          "prices": [
+            { "label": "", "amount": 28.00 }
+          ],
+          "allergens": ["huevo", "soya", "gluten"]
+        },
+        {
+          "id": "chaufa-de-langostinos",
+          "translations": {
+            "es": {
+              "name": "Chaufa de Langostinos",
+              "description": "Arroz salteado al wok con huevo, cebolla china, especias y su clásico saborcito oriental."
+            },
+            "en": {
+              "name": "Prawn Chaufa",
+              "description": "Wok-fried rice with egg, spring onion, spices and that classic oriental flavor."
+            },
+            "fr": {
+              "name": "Chaufa de Crevettes",
+              "description": "Riz sauté au wok avec de l'oeuf, de l'oignon nouveau, des épices et cette saveur orientale classique."
+            },
+            "it": {
+              "name": "Chaufa di Gamberi",
+              "description": "Riso saltato al wok con uovo, cipollotto, spezie e quel classico sapore orientale."
+            },
+            "de": {
+              "name": "Garnelen-Chaufa",
+              "description": "Im Wok gebratener Reis mit Ei, Frühlingszwiebeln, Gewürzen und dem klassischen orientalischen Geschmack."
+            }
+          },
+          "prices": [
+            { "label": "", "amount": 30.00 }
+          ],
+          "allergens": ["huevo", "soya", "gluten", "mariscos"]
+        },
+        {
+          "id": "chaufa-de-mariscos",
+          "translations": {
+            "es": {
+              "name": "Chaufa de Mariscos",
+              "description": "Arroz salteado al wok con huevo, cebolla china, especias y su clásico saborcito oriental."
+            },
+            "en": {
+              "name": "Seafood Chaufa",
+              "description": "Wok-fried rice with egg, spring onion, spices and that classic oriental flavor."
+            },
+            "fr": {
+              "name": "Chaufa de Fruits de Mer",
+              "description": "Riz sauté au wok avec de l'oeuf, de l'oignon nouveau, des épices et cette saveur orientale classique."
+            },
+            "it": {
+              "name": "Chaufa di Frutti di Mare",
+              "description": "Riso saltato al wok con uovo, cipollotto, spezie e quel classico sapore orientale."
+            },
+            "de": {
+              "name": "Meeresfrüchte-Chaufa",
+              "description": "Im Wok gebratener Reis mit Ei, Frühlingszwiebeln, Gewürzen und dem klassischen orientalischen Geschmack."
+            }
+          },
+          "prices": [
+            { "label": "", "amount": 18.00 }
+          ],
+          "allergens": ["huevo", "soya", "gluten", "mariscos"]
+        },
+        {
+          "id": "chaufa-de-bisteck",
+          "translations": {
+            "es": {
+              "name": "Chaufa de Bisteck",
+              "description": "Arroz salteado al wok con huevo, cebolla china, especias y su clásico saborcito oriental."
+            },
+            "en": {
+              "name": "Beef Chaufa",
+              "description": "Wok-fried rice with egg, spring onion, spices and that classic oriental flavor."
+            },
+            "fr": {
+              "name": "Chaufa de Boeuf",
+              "description": "Riz sauté au wok avec de l'oeuf, de l'oignon nouveau, des épices et cette saveur orientale classique."
+            },
+            "it": {
+              "name": "Chaufa di Manzo",
+              "description": "Riso saltato al wok con uovo, cipollotto, spezie e quel classico sapore orientale."
+            },
+            "de": {
+              "name": "Rinder-Chaufa",
+              "description": "Im Wok gebratener Reis mit Ei, Frühlingszwiebeln, Gewürzen und dem klassischen orientalischen Geschmack."
+            }
+          },
+          "prices": [
+            { "label": "", "amount": 25.00 }
+          ],
+          "allergens": ["huevo", "soya", "gluten"]
+        },
+        {
+          "id": "chaufa-de-verduras",
+          "translations": {
+            "es": {
+              "name": "Chaufa de Verduras",
+              "description": "Arroz salteado al wok con huevo, cebolla china, especias y su clásico saborcito oriental."
+            },
+            "en": {
+              "name": "Vegetable Chaufa",
+              "description": "Wok-fried rice with egg, spring onion, spices and that classic oriental flavor."
+            },
+            "fr": {
+              "name": "Chaufa de Légumes",
+              "description": "Riz sauté au wok avec de l'oeuf, de l'oignon nouveau, des épices et cette saveur orientale classique."
+            },
+            "it": {
+              "name": "Chaufa di Verdure",
+              "description": "Riso saltato al wok con uovo, cipollotto, spezie e quel classico sapore orientale."
+            },
+            "de": {
+              "name": "Gemüse-Chaufa",
+              "description": "Im Wok gebratener Reis mit Ei, Frühlingszwiebeln, Gewürzen und dem klassischen orientalischen Geschmack."
+            }
+          },
+          "prices": [
+            { "label": "", "amount": 18.00 }
+          ],
+          "allergens": ["huevo", "soya", "gluten"]
+        }
+      ]
+    },
+    {
+      "category_id": "adicionales",
+      "category_translations": {
+        "es": "Adicionales",
+        "en": "Sides",
+        "fr": "Accompagnements",
+        "it": "Contorni",
+        "de": "Beilagen"
+      },
+      "items": [
+        {
+          "id": "arroz-blanco",
+          "translations": {
+            "es": { "name": "Arroz Blanco", "description": "" },
+            "en": { "name": "White Rice", "description": "" },
+            "fr": { "name": "Riz Blanc", "description": "" },
+            "it": { "name": "Riso Bianco", "description": "" },
+            "de": { "name": "Weißer Reis", "description": "" }
+          },
+          "prices": [
+            { "label": "", "amount": 4.00 }
+          ],
+          "allergens": []
+        },
+        {
+          "id": "platanos-fritos",
+          "translations": {
+            "es": { "name": "Plátanos Fritos", "description": "" },
+            "en": { "name": "Fried Plantains", "description": "" },
+            "fr": { "name": "Bananes Plantains Frites", "description": "" },
+            "it": { "name": "Platani Fritti", "description": "" },
+            "de": { "name": "Gebratene Kochbananen", "description": "" }
+          },
+          "prices": [
+            { "label": "", "amount": 8.00 }
+          ],
+          "allergens": []
+        },
+        {
+          "id": "papas-fritas",
+          "translations": {
+            "es": { "name": "Papas Fritas", "description": "" },
+            "en": { "name": "French Fries", "description": "" },
+            "fr": { "name": "Frites", "description": "" },
+            "it": { "name": "Patatine Fritte", "description": "" },
+            "de": { "name": "Pommes Frites", "description": "" }
+          },
+          "prices": [
+            { "label": "", "amount": 8.00 }
+          ],
+          "allergens": []
+        },
+        {
+          "id": "ensalada-fresca",
+          "translations": {
+            "es": { "name": "Ensalada Fresca", "description": "" },
+            "en": { "name": "Fresh Salad", "description": "" },
+            "fr": { "name": "Salade Fraîche", "description": "" },
+            "it": { "name": "Insalata Fresca", "description": "" },
+            "de": { "name": "Frischer Salat", "description": "" }
+          },
+          "prices": [
+            { "label": "", "amount": 8.00 }
+          ],
+          "allergens": []
+        },
+        {
+          "id": "camote-sancochado",
+          "translations": {
+            "es": { "name": "Camote Sancochado", "description": "" },
+            "en": { "name": "Boiled Sweet Potato", "description": "" },
+            "fr": { "name": "Patate Douce Bouillie", "description": "" },
+            "it": { "name": "Patata Dolce Bollita", "description": "" },
+            "de": { "name": "Gekochte Süßkartoffel", "description": "" }
+          },
+          "prices": [
+            { "label": "", "amount": 6.00 }
+          ],
+          "allergens": []
+        }
+      ]
+    },
+    {
+      "category_id": "bebidas-naturales",
+      "category_translations": {
+        "es": "Bebidas Naturales",
+        "en": "Natural Beverages",
+        "fr": "Boissons Naturelles",
+        "it": "Bevande Naturali",
+        "de": "Natürliche Getränke"
+      },
+      "items": []
+    },
+    {
+      "category_id": "gaseosas",
+      "category_translations": {
+        "es": "Gaseosas",
+        "en": "Soft Drinks",
+        "fr": "Boissons Gazeuses",
+        "it": "Bibite",
+        "de": "Softdrinks"
+      },
+      "items": []
+    },
+    {
+      "category_id": "cervezas",
+      "category_translations": {
+        "es": "Cervezas",
+        "en": "Beers",
+        "fr": "Bières",
+        "it": "Birre",
+        "de": "Biere"
+      },
+      "items": []
+    }
+  ]
 }

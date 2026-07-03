@@ -1,0 +1,100 @@
+---
+// src/components/AllergenFilter.astro
+---
+
+<div class="allergen-filter-container w-full bg-white/95 dark:bg-black/95 backdrop-blur-md sticky top-[60px] z-40 border-b border-gray-200 dark:border-gray-800 transition-colors">
+  <div class="flex flex-nowrap items-center gap-2 overflow-x-auto scrollbar-hide px-4 sm:px-6 lg:px-8 py-3 w-full">
+    <button data-exclude="todos" type="button" class="allergen-btn flex-shrink-0 whitespace-nowrap px-4 py-2 rounded-full border text-xs sm:text-sm font-medium transition-colors bg-black text-white border-black dark:bg-white dark:text-black dark:border-white">
+      Todos
+    </button>
+    <button data-exclude="mariscos" type="button" class="allergen-btn flex-shrink-0 whitespace-nowrap px-4 py-2 rounded-full border text-xs sm:text-sm font-medium transition-colors bg-white text-gray-700 border-gray-300 hover:bg-gray-100 dark:bg-black dark:text-gray-300 dark:border-gray-700 dark:hover:bg-gray-800">
+      Sin Mariscos
+    </button>
+    <button data-exclude="pescado" type="button" class="allergen-btn flex-shrink-0 whitespace-nowrap px-4 py-2 rounded-full border text-xs sm:text-sm font-medium transition-colors bg-white text-gray-700 border-gray-300 hover:bg-gray-100 dark:bg-black dark:text-gray-300 dark:border-gray-700 dark:hover:bg-gray-800">
+      Sin Pescado
+    </button>
+    <button data-exclude="cítricos" type="button" class="allergen-btn flex-shrink-0 whitespace-nowrap px-4 py-2 rounded-full border text-xs sm:text-sm font-medium transition-colors bg-white text-gray-700 border-gray-300 hover:bg-gray-100 dark:bg-black dark:text-gray-300 dark:border-gray-700 dark:hover:bg-gray-800">
+      Sin Cítricos
+    </button>
+    <button data-exclude="gluten" type="button" class="allergen-btn flex-shrink-0 whitespace-nowrap px-4 py-2 rounded-full border text-xs sm:text-sm font-medium transition-colors bg-white text-gray-700 border-gray-300 hover:bg-gray-100 dark:bg-black dark:text-gray-300 dark:border-gray-700 dark:hover:bg-gray-800">
+      Sin Gluten
+    </button>
+    <button data-exclude="huevo" type="button" class="allergen-btn flex-shrink-0 whitespace-nowrap px-4 py-2 rounded-full border text-xs sm:text-sm font-medium transition-colors bg-white text-gray-700 border-gray-300 hover:bg-gray-100 dark:bg-black dark:text-gray-300 dark:border-gray-700 dark:hover:bg-gray-800">
+      Sin Huevo
+    </button>
+    <button data-exclude="soya" type="button" class="allergen-btn flex-shrink-0 whitespace-nowrap px-4 py-2 rounded-full border text-xs sm:text-sm font-medium transition-colors bg-white text-gray-700 border-gray-300 hover:bg-gray-100 dark:bg-black dark:text-gray-300 dark:border-gray-700 dark:hover:bg-gray-800">
+      Sin Soya
+    </button>
+  </div>
+</div>
+
+<style>
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
+  }
+  .scrollbar-hide {
+    -ms-overflow-style: none; /* IE and Edge */
+    scrollbar-width: none; /* Firefox */
+  }
+</style>
+
+<script>
+  function initAllergenFilters() {
+    const buttons = document.querySelectorAll('.allergen-btn');
+    const cards = document.querySelectorAll('.dish-card');
+
+    console.log(`[Filtros] Inicializando: ${buttons.length} botones, ${cards.length} tarjetas encontradas.`);
+
+    if (cards.length === 0) {
+      console.error("[Filtros] ERROR: No se encontraron elementos con la clase '.dish-card'. Revisa MenuItemCard.astro");
+      return;
+    }
+
+    buttons.forEach(button => {
+      // Remover listeners previos para evitar duplicaciones en navegaciones de Astro
+      const newBtn = button.cloneNode(true);
+      button.parentNode.replaceChild(newBtn, button);
+
+      newBtn.addEventListener('click', () => {
+        // 1. Estado Visual
+        document.querySelectorAll('.allergen-btn').forEach(b => {
+          b.classList.remove('bg-black', 'text-white', 'border-black');
+          b.classList.add('bg-white', 'text-black');
+        });
+        newBtn.classList.remove('bg-white', 'text-black');
+        newBtn.classList.add('bg-black', 'text-white', 'border-black');
+
+        // 2. Filtrado
+        const excludeWord = newBtn.getAttribute('data-exclude');
+        console.log(`[Filtros] Excluyendo: ${excludeWord}`);
+
+        cards.forEach(card => {
+          if (excludeWord === 'todos') {
+            // Quitar el estilo en línea para que vuelva a su display original (grid/flex)
+            card.style.display = '';
+            return;
+          }
+
+          const allergensRaw = card.getAttribute('data-allergens');
+          try {
+            const allergens = allergensRaw ? JSON.parse(allergensRaw) : [];
+            
+            if (allergens.includes(excludeWord)) {
+              // Ocultar forzosamente anulando a Tailwind
+              card.style.display = 'none';
+            } else {
+              // Mostrar la tarjeta
+              card.style.display = '';
+            }
+          } catch (e) {
+            console.error("[Filtros] Error parseando JSON en tarjeta:", allergensRaw);
+          }
+        });
+      });
+    });
+  }
+
+  // Ejecutar al cargar la página y en navegaciones de Astro
+  document.addEventListener('DOMContentLoaded', initAllergenFilters);
+  document.addEventListener('astro:page-load', initAllergenFilters);
+</script>

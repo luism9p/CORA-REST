@@ -70,17 +70,18 @@ const {
     </div>
   </div>
 
-  <div class="mx-6 py-10 text-center md:text-left">
+  <div class="px-4 sm:px-6 lg:px-8 py-10 text-center md:text-left">
     <div class="content-grid">
-      <div class="breakout grid-1 grid gap-8 md:grid-cols-2 lg:grid-cols-4">
+      <div class="breakout grid-1 grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
         <div>
-          <Icon
-            name="logo_full"
-            class="mx-auto mb-2 h-10 w-auto md:mx-0"
-            is:inline
-          />
+          <h2 class="mx-auto mb-2 text-4xl font-black tracking-tight md:mx-0">CORA</h2>
 
-          <div class="pb-4 text-sm" set:html={footer_text} />
+          <div class="pb-2 text-sm" set:html={footer_text} />
+          {settings.payment_methods && (
+            <p class="pb-4 text-sm opacity-80">
+              <strong>Pagos:</strong> {settings.payment_methods}
+            </p>
+          )}
 
           <div class="grid gap-3 text-sm">
             {address && <p class="">{address}</p>}
@@ -167,7 +168,7 @@ const {
     class="relative flex flex-wrap justify-center bg-dark/10 p-6 text-center text-xs"
   >
     <div>
-      <span>© 2023 </span>
+      <span>© {new Date().getFullYear()} </span>
       {company_name}
     </div>
     <!-- 👉👉 CC BY-ND 4.0 ©️unfolding.io  👈👈 -->

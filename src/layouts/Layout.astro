@@ -2,7 +2,7 @@
 import Footer from "./Footer.astro";
 import Sidebar from "@components/navigation/Sidebar.vue";
 import Link from "@components/navigation/Link.astro";
-import LangSwitch from "@components/navigation/LangSwitch.vue";
+import LanguageSelector from "@components/LanguageSelector.astro";
 import ScrollDown from "@components/navigation/ScrollDown.vue";
 import Init from "@components/helpers/Init.vue";
 import { Icon } from "astro-icon/components";
@@ -185,25 +185,16 @@ let socialImage = meta.image ? meta.image + "/m/1200x630/smart/filters:format(pn
 
     <ClientRouter />
   </head>
-  <body class={`${surface_page || ""}`}>
+  <body class={`${surface_page || ""} overflow-x-hidden`}>
     <header
       class="pointer-events-none fixed inset-x-0 top-0 z-50 transition-all duration-500"
     >
       <nav
-        class="relative z-50 flex items-center justify-end gap-3 p-3 text-xl sm:text-3xl"
+        class="relative z-50 flex items-center justify-between w-full gap-3 p-3 text-xl sm:text-3xl"
       >
-        {
-          localeUrls && localeUrls.length > 1 && (
-            <div class="pointer-events-auto">
-              <LangSwitch
-                client:idle
-                {localeUrls}
-                {lang}
-                surface={surface_menu}
-              />
-            </div>
-          )
-        }
+        <div class="pointer-events-auto">
+          <LanguageSelector />
+        </div>
 
         <Sidebar {labels} surface={surface_menu} client:idle>
           <Icon name="menu_icon" is:inline slot="icon" />

@@ -1,12 +1,18 @@
 ---
-import Picture from "@components/media/Picture.astro";
-import { Icon } from "astro-icon/components";
+import { Image } from "astro:assets";
 import Lightbox from "@components/media/Lightbox.vue";
 import Tooltip from "@components/helpers/Tooltip.vue";
 import { useTranslations, getLangFromUrl, formatPrice } from "@util/translate";
 
+interface MenuItem {
+  id: string;
+  translations: Record<string, { name: string; description: string }>;
+  prices: { label: string; amount: number }[];
+  allergens: string[];
+}
+
 interface Props {
-  content: MenuItemStoryblok;
+  content: MenuItem;
   show_offer?: boolean;
   accent?: string;
 }
@@ -15,27 +21,30 @@ let { content, show_offer, accent } = blok;
 const lang = getLangFromUrl(Astro.url);
 const t = useTranslations(lang);
 
-const prices = content?.price?.filter((price) => !price.is_offer);
-const offers = content?.price?.filter((price) => price.is_offer);
-show_offer = show_offer && offers && offers.length > 0;
+// Extract Spanish translation as default
+const translation = content.translations?.es || { name: "", description: "" };
 
-const show_price = prices && prices.length > 0;
+const prices = content.prices || [];
+const normalPrices = prices; 
+const show_price = normalPrices && normalPrices.length > 0;
+const alergenos = content.allergens || [];
 
 const getLayout = () => {
   let cls = "card";
-  if (content.image?.id) {
+  // Keeping image check in case it's added back to the schema later
+  if ((content as any).image?.id) {
     cls += "-image";
   }
-  if (content.intro) {
+  if (translation.description) {
     cls += "-intro";
   }
   if (
-    content.allergic_ingredients &&
-    content?.allergic_ingredients?.length > 0
+    alergenos &&
+    alergenos.length > 0
   ) {
     cls += "-tags";
   }
-  if (prices && prices.length > 1) {
+  if (normalPrices && normalPrices.length > 1) {
     cls += "-price";
   }
 
@@ -43,21 +52,23 @@ const getLayout = () => {
 };
 ---
 
-<div class={`menu-item relative grid offer ${getLayout()} h-fit`}>
+<div class={`dish-card menu-item relative grid offer ${getLayout()} h-fit`} data-allergens={JSON.stringify(content.allergens || [])}>
   {
-    content.image?.id && (
+    (content as any).image?.id && (
       <div class="image">
         <Lightbox
           className="aspect-square overflow-hidden rounded-full block transition-all    "
           client:visible
-          src={content.image.filename}
+          src={(content as any).image.filename}
         >
-          <Picture
-            src={content.image.filename}
-            alt={content.title}
-            sizes="5rem"
-            layout="fill"
-            breakpoints={[200, 320, 420, 640]}
+          <Image
+            src={(content as any).image.filename}
+            alt={translation.name}
+            width={80}
+            height={80}
+            decoding="async"
+            loading="lazy"
+            class="object-cover w-full h-full"
           />
         </Lightbox>
       </div>
@@ -65,20 +76,19 @@ const getLayout = () => {
   }
 
   <div class="info">
-    <h3 class="font-base line-clamp-5 flex w-full text-2xl">
+    <h3 class="font-base line-clamp-5 flex w-full text-base md:text-xl font-bold leading-snug">
       <span>
-        {content.title}
+        <span class="i18n-element" data-translations={JSON.stringify(content.translations)} data-key="name">{translation.name}</span>
 
         {
-          content.labels && content.labels.length > 0 && (
-            <>
-              {content.labels.map((name) => (
-                <Tooltip client:visible>
-                  <Icon name={name} class="h-7 w-7" />
-                  <span slot="tooltip"> {t("label." + name)}</span>
-                </Tooltip>
+          (content as any).labels && (content as any).labels.length > 0 && (
+            <div class="flex gap-2 ml-2 items-center">
+              {(content as any).labels.map((name: string) => (
+                <span class="text-[10px] uppercase font-bold tracking-wider bg-primary text-white px-2 py-0.5 rounded-full">
+                  {name}
+                </span>
               ))}
-            </>
+            </div>
           )
         }
       </span>
@@ -87,44 +97,20 @@ const getLayout = () => {
     </h3>
 
     {
-      show_offer && (
-        <div class={`${accent} my-3 flex flex-wrap rounded-sm p-2`}>
-          {offers?.map((offer) => (
-            
-              <div>
-                <div class="text-lg font-bold -mt-1">{offer.name}</div>
-                <div
-                  class="text-sm"
-                  set:html={offer.offer_text}
-                />
-              </div>
-              <div
-                set:html={formatPrice(offer.price)}
-                class={`ml-auto text-xl font-bold`}
-              />
-         
-          ))}
+      content.translations && (
+        <div class="max-w-lg text-pretty pt-1 text-sm md:text-base text-gray-600 dark:text-gray-400 i18n-element" data-translations={JSON.stringify(content.translations)} data-key="description">
+          {translation.description}
         </div>
-      )
-    }
-
-    {
-      content.intro && (
-        <div
-          class="max-w-lg text-pretty pt-1"
-          set:html={content.intro}
-        />
       )
     }
   </div>
   {
-    content.allergic_ingredients && content.allergic_ingredients.length > 0 && (
-      <div class="tags flex w-full flex-wrap items-end justify-end gap-2">
-        {content.allergic_ingredients.map((name) => (
-          <Tooltip client:visible>
-            <Icon name={name} class="h-7 w-7" />
-            <span slot="tooltip"> {t("label." + name)}</span>
-          </Tooltip>
+    alergenos && alergenos.length > 0 && (
+      <div class="tags flex w-full flex-wrap items-end justify-end gap-2 mt-3">
+        {alergenos.map((alergeno) => (
+          <span class="text-[10px] md:text-xs uppercase font-bold tracking-wider bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-400 px-2 py-1 rounded-md">
+            {alergeno}
+          </span>
         ))}
       </div>
     )
@@ -133,18 +119,15 @@ const getLayout = () => {
   {
     show_price && (
       <div
-        class={`price grid auto-rows-min gap-1 ${prices && prices.length > 1 && "mt-2"}`}
+        class={`price flex flex-col md:flex-row md:flex-wrap md:items-center justify-end gap-1 ${normalPrices && normalPrices.length > 1 ? "mt-2" : ""}`}
       >
-        {show_price &&
-          prices.map((price, index) => (
-            <div class={`flex justify-between gap-2 text-sm`}>
-              <span class={`text-sm tracking-wider`}>{price.name}</span>
-              <span
-                set:html={formatPrice(price.price)}
-                class={`${index === 0 ? "text-base font-bold" : "text-base font-bold"} `}
-              />
-            </div>
-          ))}
+        {normalPrices.map((price, index) => (
+          <span class="flex items-center gap-1 text-sm md:text-base font-bold">
+            {index > 0 && <span class="mx-1 opacity-50 hidden md:inline">·</span>}
+            {price.label && <span class="text-xs md:text-sm font-normal text-gray-500 mr-0.5">{price.label}</span>}
+            <span>S/ {price.amount.toFixed(2)}</span>
+          </span>
+        ))}
       </div>
     )
   }

@@ -1,39 +1,43 @@
 ---
 import MenuItemCard from "@components/cards/MenuItemCard.astro";
 
-interface Props {
-  id?: string;
-  menu: {
-    surface?: string;
-    categories: {
-      slug: string;
-      content: {
-        title: string;
-        icon?: string;
-        content?: string;
-      };
-      items: any[];
-    }[];
-  };
+// 1. Tipado estricto para nuestra nueva estructura JSON
+interface MenuItem {
+  id: string;
+  translations: Record<string, { name: string; description: string }>;
+  prices: { label: string; amount: number }[];
+  allergens: string[];
 }
 
-const { id, menu } = Astro.props;
-const { categories, surface } = menu;
+interface MenuCategory {
+  category_id: string;
+  category_translations: Record<string, string>;
+  items: MenuItem[];
+}
+
+interface Props {
+  id?: string;
+  surface?: string;
+  menu: MenuCategory[]; // Ahora menu espera directamente el array de categorías
+}
+
+const { id, surface, menu } = Astro.props;
 ---
 
 <section
   class={`content-grid py-14 ${surface || ""}`}
   id={id}
 >
+  {/* Renderizado de la navegación horizontal por categorías */}
   {
-    categories && categories.length > 1 && (
+    menu && menu.length > 1 && (
       <ul
-        class={`breakout sticky top-0 z-30 mb-8 flex flex-wrap justify-start gap-2 py-2`}
+        class={`breakout sticky top-[52px] z-30 mb-6 flex flex-nowrap items-center gap-2 overflow-x-auto scrollbar-hide py-3 w-full bg-white/80 dark:bg-black/80 backdrop-blur-sm border-b border-gray-100 dark:border-gray-900`}
       >
-        {categories.map((cat) => (
-          <li class="flex gap-2">
-            <a class={`btn-sm`} href={`#${cat.slug}`}>
-              {cat.content.title}
+        {menu.map((cat) => (
+          <li class="flex shrink-0">
+            <a class={`btn-sm flex-shrink-0 whitespace-nowrap text-xs sm:text-sm i18n-element`} data-translations={JSON.stringify(cat.category_translations)} href={`#${cat.category_id}`}>
+              {cat.category_translations.es}
             </a>
           </li>
         ))}
@@ -41,21 +45,17 @@ const { categories, surface } = menu;
     )
   }
 
-  <div class="breakout grid gap-28">
+  {/* Renderizado de las secciones y platos */}
+  <div class="breakout grid gap-16 md:gap-24">
     {
-      categories.map((cat) => (
-        <div class="grid scroll-mt-20 gap-8 md:gap-14" id={cat.slug}>
+      menu.map((cat) => (
+        <div class="grid scroll-mt-28 gap-6 md:gap-10" id={cat.category_id}>
           <div>
-            <h2 class="text-4xl uppercase">{cat.content.title}</h2>
-            {cat.content?.content && (
-              <div
-                class="richtext max-w-xl text-balance"
-                set:html={cat.content.content}
-              />
-            )}
+            <h2 class="text-3xl md:text-4xl lg:text-5xl font-black uppercase mb-2 tracking-tight i18n-element" data-translations={JSON.stringify(cat.category_translations)}>{cat.category_translations.es}</h2>
+            <div class="h-0.5 w-16 bg-current opacity-30 mb-6 md:mb-10"></div>
           </div>
 
-          <div class="grid grid-flow-dense grid-cols-1 gap-10 sm:grid-cols-2 xl:gap-x-24">
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-x-16 md:gap-y-10">
             {cat.items.map((item) => (
               <MenuItemCard content={item} />
             ))}
@@ -65,3 +65,69 @@ const { categories, surface } = menu;
     }
   </div>
 </section>
+
+<style>
+  /* Ocultar scrollbar en móviles pero mantener la funcionalidad */
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
+  }
+  .scrollbar-hide {
+    -ms-overflow-style: none; /* IE and Edge */
+    scrollbar-width: none; /* Firefox */
+  }
+</style>
+
+<script>
+  function updateTranslations() {
+    const lang = localStorage.getItem('preferredLanguage') || 'es';
+    const elements = document.querySelectorAll('.i18n-element');
+    
+    elements.forEach(el => {
+      try {
+        const rawTranslations = el.getAttribute('data-translations');
+        if (!rawTranslations) return;
+        
+        const translations = JSON.parse(rawTranslations);
+        const key = el.getAttribute('data-key');
+        
+        let text = '';
+        
+        // Handle object with nested key (like { translations: { es: { name: '...' } } })
+        if (key) {
+          if (translations[lang] && translations[lang][key]) {
+            text = translations[lang][key];
+          } else if (translations['es'] && translations['es'][key]) {
+            text = translations['es'][key]; // fallback to Spanish
+          }
+        } 
+        // Handle direct string map (like { category_translations: { es: '...' } })
+        else {
+          if (typeof translations[lang] === 'string') {
+            text = translations[lang];
+          } else if (typeof translations['es'] === 'string') {
+            text = translations['es']; // fallback to Spanish
+          }
+        }
+        
+        if (text) {
+          el.textContent = text;
+        }
+      } catch (err) {
+        console.error('Error updating translation for element', el, err);
+      }
+    });
+  }
+
+  // Listen to the custom event
+  window.addEventListener('languageChanged', (e) => {
+    updateTranslations();
+  });
+
+  // Run on load to apply any previously saved language
+  document.addEventListener('astro:page-load', updateTranslations);
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', updateTranslations);
+  } else {
+    updateTranslations();
+  }
+</script>
