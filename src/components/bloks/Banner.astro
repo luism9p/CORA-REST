@@ -38,15 +38,8 @@ function getContainerClass() {
           class={`parallax absolute inset-0 overflow-hidden ${opacity || ""}`}
         >
           {
-            !video?.filename && blok?.image?.filename && (
-              <Picture
-                src={image.filename}
-                alt={image.alt || image.name}
-                className="fade-in"
-                sizes={getSizes()}
-                ar={16 / 9}
-                layout="fill"
-              />
+            !video?.filename && (
+              <img src="/screenshots/fondov1.png" alt="Fondo Cora" class="absolute inset-0 w-full h-full object-cover -z-10 fade-in" />
             )
           }
           {
@@ -56,15 +49,7 @@ function getContainerClass() {
                 client:visible
                 className="fade-in"
               >
-                {blok?.image?.filename && (
-                  <Picture
-                    src={image.filename}
-                    alt={image.alt || image.name}
-                    sizes={getSizes()}
-                    ar={16 / 9}
-                    layout="fill"
-                  />
-                )}
+                <img src="/screenshots/fondov1.png" alt="Fondo Cora" class="absolute inset-0 w-full h-full object-cover -z-10" />
               </VideoInline>
             )
           }

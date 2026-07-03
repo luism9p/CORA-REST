@@ -187,10 +187,10 @@ let socialImage = meta.image ? meta.image + "/m/1200x630/smart/filters:format(pn
   </head>
   <body class={`${surface_page || ""} overflow-x-hidden`}>
     <header
-      class="pointer-events-none fixed inset-x-0 top-0 z-50 transition-all duration-500"
+      class="fixed inset-x-0 top-0 z-[100] transition-all duration-300 bg-white/80 dark:bg-black/80 backdrop-blur-md border-b border-black/5 dark:border-white/10"
     >
       <nav
-        class="relative z-50 flex items-center justify-between w-full gap-3 p-3 text-xl sm:text-3xl"
+        class="relative flex items-center justify-between w-full gap-3 py-2 px-4 sm:px-6 text-xl sm:text-3xl"
       >
         <div class="pointer-events-auto">
           <LanguageSelector />

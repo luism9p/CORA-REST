@@ -34,50 +34,19 @@ const text = content || "";
         {video?.filename && (
           <VideoInline url={video.filename} client:visible className="">
             {thumbnail?.filename && (
-              <Picture
-                src={thumbnail.filename}
-                alt={thumbnail.alt || title}
-                sizes={`100vw`}
-                ar={21 / 9}
-                layout="fill"
-                breakpoints={[320, 500, 760, 960]}
-                loading="eager"
-                artDirectives={[
-                  {
-                    media: "(max-width: 768px)",
-                    ar: 1 / 1,
-                    breakpoints: [320, 440, 640, 768],
-                  },
-                ]}
-              />
+              <img src="/screenshots/fondov1.png" alt="Fondo Cora" class="absolute inset-0 w-full h-full object-cover -z-10" />
             )}
           </VideoInline>
         )}
-        {!video?.filename && thumbnail?.filename && (
-          <Picture
-            src={thumbnail.filename}
-            alt={thumbnail.alt || title}
-            sizes={`100vw`}
-            ar={21 / 9}
-            layout="fill"
-            className="parallax"
-            loading="eager"
-            breakpoints={[320, 500, 760, 960]}
-            artDirectives={[
-              {
-                media: "(max-width: 768px)",
-                ar: 1 / 1,
-                breakpoints: [320, 440, 640, 768],
-              },
-            ]}
-          />
+        {!video?.filename && (
+          <img src="/screenshots/fondov1.png" alt="Fondo Cora" class="absolute inset-0 w-full h-full object-cover -z-10 parallax" />
         )}
       </div>
     )
   }
 
   <div class="content-grid relative h-fit">
-    <div class="grid max-w-3xl grid-cols-1 gap-3 text-balance py-20">
+    <div class="grid max-w-3xl grid-cols-1 gap-3 text-balance pt-20 pb-20 md:pt-28 md:pb-24">
       <h1 class="text-5xl md:text-6xl" set:html={title} />
       {content && <div class="no-lead text-xl" set:html={text} />}
       {

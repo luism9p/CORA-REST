@@ -25,23 +25,51 @@ const { id, surface, menu } = Astro.props;
 ---
 
 <section
-  class={`content-grid py-14 ${surface || ""}`}
+  class={`content-grid pt-4 pb-14 md:pt-10 ${surface || ""}`}
   id={id}
 >
   {/* Renderizado de la navegación horizontal por categorías */}
   {
     menu && menu.length > 1 && (
-      <ul
-        class={`breakout sticky top-[52px] z-30 mb-6 flex flex-nowrap items-center gap-2 overflow-x-auto scrollbar-hide py-3 w-full bg-white/80 dark:bg-black/80 backdrop-blur-sm border-b border-gray-100 dark:border-gray-900`}
-      >
-        {menu.map((cat) => (
-          <li class="flex shrink-0">
-            <a class={`btn-sm flex-shrink-0 whitespace-nowrap text-xs sm:text-sm i18n-element`} data-translations={JSON.stringify(cat.category_translations)} href={`#${cat.category_id}`}>
-              {cat.category_translations.es}
-            </a>
-          </li>
-        ))}
-      </ul>
+      <div class={`breakout sticky top-[52px] z-30 mb-2 w-full bg-white/80 dark:bg-black/80 backdrop-blur-sm border-b border-gray-100 dark:border-gray-900 px-4 sm:px-6 py-3`}>
+        {/* Lista de chips de categorías */}
+        <ul
+          id="category-container"
+          class="flex flex-wrap gap-2 overflow-hidden transition-[max-height] duration-300 ease-in-out max-h-[42px] md:flex-nowrap md:overflow-x-auto md:max-h-none"
+          style="scrollbar-width: none; -ms-overflow-style: none;"
+        >
+          {menu.map((cat) => (
+            <li class="flex shrink-0">
+              <a
+                class="block px-4 py-2 bg-primary text-primary-fg text-xs md:text-sm font-semibold rounded-full whitespace-nowrap transition-colors hover:opacity-80 i18n-element"
+                data-translations={JSON.stringify(cat.category_translations)}
+                href={`#${cat.category_id}`}
+              >
+                {cat.category_translations.es}
+              </a>
+            </li>
+          ))}
+        </ul>
+
+        {/* Botón toggle — solo móvil */}
+        <button
+          id="toggle-categories"
+          class="md:hidden mt-2 mb-1 flex items-center gap-1 text-xs font-medium text-gray-500 dark:text-gray-400 hover:text-black dark:hover:text-white transition-colors bg-transparent border-none outline-none"
+          aria-expanded="false"
+        >
+          <span id="toggle-categories-label">Ver más</span>
+          <svg
+            id="toggle-categories-icon"
+            xmlns="http://www.w3.org/2000/svg"
+            class="h-3.5 w-3.5 transition-transform duration-300"
+            viewBox="0 0 20 20"
+            fill="currentColor"
+            aria-hidden="true"
+          >
+            <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
+          </svg>
+        </button>
+      </div>
     )
   }
 
@@ -130,4 +158,37 @@ const { id, surface, menu } = Astro.props;
   } else {
     updateTranslations();
   }
+
+  // --- Toggle Ver más / Ver menos para categorías ---
+  function initCategoryToggle() {
+    const toggleBtn = document.getElementById('toggle-categories');
+    const container = document.getElementById('category-container');
+    if (!toggleBtn || !container) return;
+
+    const newToggleBtn = toggleBtn.cloneNode(true) as HTMLElement;
+    toggleBtn.parentNode?.replaceChild(newToggleBtn, toggleBtn);
+
+    let isExpanded = false;
+
+    newToggleBtn.addEventListener('click', () => {
+      isExpanded = !isExpanded;
+      const label = newToggleBtn.querySelector<HTMLElement>('#toggle-categories-label');
+      const icon = newToggleBtn.querySelector<HTMLElement>('#toggle-categories-icon');
+
+      if (isExpanded) {
+        container.style.maxHeight = container.scrollHeight + 'px';
+        if (label) label.textContent = 'Ver menos';
+        if (icon) icon.style.transform = 'rotate(180deg)';
+        newToggleBtn.setAttribute('aria-expanded', 'true');
+      } else {
+        container.style.maxHeight = '42px';
+        if (label) label.textContent = 'Ver más';
+        if (icon) icon.style.transform = 'rotate(0deg)';
+        newToggleBtn.setAttribute('aria-expanded', 'false');
+      }
+    });
+  }
+
+  document.addEventListener('DOMContentLoaded', initCategoryToggle);
+  document.addEventListener('astro:page-load', initCategoryToggle);
 </script>
