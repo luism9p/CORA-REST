@@ -170,11 +170,8 @@ sub {
   }
 }
 
-[data-is-scrolling-up="false"][data-is-top="false"] {
-  header {
-    @apply -translate-y-full;
-  }
-}
+
+/* Header is always visible — persistent fixed nav */
 
 /* SURFACES */
 

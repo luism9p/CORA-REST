@@ -1,0 +1,121 @@
+---
+// QrModal.astro — Modal de pago con QR Yape & Plin
+---
+
+<!-- Overlay / Backdrop -->
+<div
+  id="qr-modal"
+  class="fixed inset-0 z-[1000] flex items-center justify-center bg-black/60 backdrop-blur-sm hidden"
+  aria-modal="true"
+  role="dialog"
+  aria-labelledby="qr-modal-title"
+>
+  <!-- Modal box -->
+  <div
+    id="qr-modal-box"
+    class="relative w-[92%] max-w-sm rounded-2xl bg-white p-6 shadow-2xl"
+  >
+    <!-- Close button -->
+    <button
+      id="btn-close-qr"
+      aria-label="Cerrar modal"
+      class="absolute right-4 top-4 flex h-8 w-8 items-center justify-center rounded-full bg-gray-100 text-gray-500 transition-colors hover:bg-gray-200 hover:text-gray-800"
+    >
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" class="h-4 w-4">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />
+      </svg>
+    </button>
+
+    <!-- Header -->
+    <div class="mb-5 pr-8">
+      <p class="text-xs font-semibold uppercase tracking-widest text-red-600">Métodos de pago</p>
+      <h2 id="qr-modal-title" class="mt-1 text-xl font-black text-gray-900">
+        Escanea para pagar
+      </h2>
+    </div>
+
+    <!-- QR Grid -->
+    <div class="grid grid-cols-2 gap-4">
+      <!-- Yape -->
+      <div class="flex flex-col items-center gap-2">
+        <div class="overflow-hidden rounded-xl border border-gray-100 shadow-sm">
+          <img
+            src="/screenshots/yape.jpeg"
+            alt="QR Yape"
+            class="h-auto w-full object-cover"
+            loading="lazy"
+            decoding="async"
+          />
+        </div>
+        <span class="flex items-center gap-1.5 text-sm font-bold text-[#6c2d8f]">
+          <span class="inline-block h-2.5 w-2.5 rounded-full bg-[#6c2d8f]"></span>
+          Yape
+        </span>
+      </div>
+
+      <!-- Plin -->
+      <div class="flex flex-col items-center gap-2">
+        <div class="overflow-hidden rounded-xl border border-gray-100 shadow-sm">
+          <img
+            src="/screenshots/plin.jpeg"
+            alt="QR Plin"
+            class="h-auto w-full object-cover"
+            loading="lazy"
+            decoding="async"
+          />
+        </div>
+        <span class="flex items-center gap-1.5 text-sm font-bold text-[#00b0e0]">
+          <span class="inline-block h-2.5 w-2.5 rounded-full bg-[#00b0e0]"></span>
+          Plin
+        </span>
+      </div>
+    </div>
+
+    <!-- Footer note -->
+    <p class="mt-5 text-center text-xs text-gray-400">
+      Abre tu app, toca <strong class="text-gray-600">Escanear</strong> y apunta al código
+    </p>
+  </div>
+</div>
+
+<script>
+  function initQrModal() {
+    const modal    = document.getElementById('qr-modal');
+    const modalBox = document.getElementById('qr-modal-box');
+    const openBtn  = document.getElementById('btn-open-qr');
+    const closeBtn = document.getElementById('btn-close-qr');
+
+    if (!modal || !openBtn || !closeBtn) return;
+
+    function openModal() {
+      modal.classList.remove('hidden');
+      // Pequeña animación de entrada
+      modalBox?.classList.add('animate-in');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeModal() {
+      modal.classList.add('hidden');
+      document.body.style.overflow = '';
+    }
+
+    openBtn.addEventListener('click', openModal);
+    closeBtn.addEventListener('click', closeModal);
+
+    // Cerrar al hacer clic en el backdrop (fuera de la caja)
+    modal.addEventListener('click', (e) => {
+      if (e.target === modal) closeModal();
+    });
+
+    // Cerrar con Escape
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && !modal.classList.contains('hidden')) {
+        closeModal();
+      }
+    });
+  }
+
+  // Inicializar en carga normal y en navegación de Astro (View Transitions)
+  document.addEventListener('astro:page-load', initQrModal);
+  document.addEventListener('DOMContentLoaded', initQrModal);
+</script>

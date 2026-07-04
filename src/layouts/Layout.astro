@@ -5,6 +5,7 @@ import Link from "@components/navigation/Link.astro";
 import LanguageSelector from "@components/LanguageSelector.astro";
 import ScrollDown from "@components/navigation/ScrollDown.vue";
 import Init from "@components/helpers/Init.vue";
+import QrModal from "@components/ui/QrModal.astro";
 import { Icon } from "astro-icon/components";
 import { SEO } from "astro-seo";
 import { SITE_LANG } from "astro:env/server";
@@ -187,7 +188,7 @@ let socialImage = meta.image ? meta.image + "/m/1200x630/smart/filters:format(pn
   </head>
   <body class={`${surface_page || ""} overflow-x-hidden`}>
     <header
-      class="fixed inset-x-0 top-0 z-[100] transition-all duration-300 bg-white/80 dark:bg-black/80 backdrop-blur-md border-b border-black/5 dark:border-white/10"
+      class="fixed top-0 left-0 w-full z-[999] transition-all duration-300 bg-white/95 dark:bg-black/95 backdrop-blur-md shadow-sm border-b border-black/5 dark:border-white/10"
     >
       <nav
         class="relative flex items-center justify-between w-full gap-3 py-2 px-4 sm:px-6 text-xl sm:text-3xl"
@@ -226,9 +227,12 @@ let socialImage = meta.image ? meta.image + "/m/1200x630/smart/filters:format(pn
         </Sidebar>
       </nav>
     </header>
-    <slot />
+    <main class="pt-20">
+      <slot />
+    </main>
     <ScrollDown client:idle surface={surface_menu} />
     <Footer {settings} lang={lang || SITE_LANG} />
+    <QrModal />
     <Init client:idle />
 
     <svg class="hide hidden">
