@@ -88,14 +88,14 @@
     if (!modal || !openBtn || !closeBtn) return;
 
     function openModal() {
-      modal.classList.remove('hidden');
+      modal?.classList.remove('hidden');
       // Pequeña animación de entrada
       modalBox?.classList.add('animate-in');
       document.body.style.overflow = 'hidden';
     }
 
     function closeModal() {
-      modal.classList.add('hidden');
+      modal?.classList.add('hidden');
       document.body.style.overflow = '';
     }
 

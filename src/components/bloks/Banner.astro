@@ -1,6 +1,5 @@
 ---
 import VideoInline from "@components/media/VideoInline.vue";
-import Picture from "@components/media/Picture.astro";
 import Link from "@components/navigation/Link.astro"; 
 interface Props {
   blok: any;
@@ -8,18 +7,11 @@ interface Props {
 
 const { blok } = Astro.props;
 
-const { content, video, image, surface, container, align, links, opacity } =
+const { content, video, surface, container, align, links, opacity } =
   blok;
 
 const renderedRichText = content || "";
 
-function getSizes() {
-  if (!container) return `100vw `;
-  if (container === "full-width") return `100vw `;
-  if (container === "breakout")
-    return `(min-width: var(--breakout-max-width)) var(--breakout-max-width), (min-width: 768px) 100vw, 100vw `;
-  return `(min-width: var(--content-max-width)) var(--content-max-width), (min-width: 768px) 100vwvw, 100vw `;
-}
 
 function getContainerClass() {
   if (!container || container === "full-width")

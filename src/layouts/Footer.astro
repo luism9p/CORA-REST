@@ -1,7 +1,6 @@
 ---
 import Link from "@components/navigation/Link.astro";
 import OpeningHours from "@components/helpers/OpeningHours.astro";
-import { Icon } from "astro-icon/components";
 
 interface Props {
   settings: any;
@@ -10,7 +9,6 @@ interface Props {
 const { settings, lang } = Astro.props;
 
 const {
-  surface_footer,
   company_name,
   address,
   opening_hours,

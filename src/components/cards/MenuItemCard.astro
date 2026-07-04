@@ -17,7 +17,6 @@ interface Props {
 }
 const blok = Astro.props;
 let { content } = blok;
-const lang = getLangFromUrl(Astro.url);
 
 // Extract Spanish translation as default
 const translation = content.translations?.es || { name: "", description: "" };
@@ -119,7 +118,7 @@ const getLayout = () => {
       <div
         class={`price flex flex-col md:flex-row md:flex-wrap md:items-center justify-end gap-1 pr-4 md:pr-0 ${normalPrices && normalPrices.length > 1 ? "mt-2" : ""}`}
       >
-        {normalPrices.map((price, index) => (
+        {normalPrices.map((price) => (
           <span class="flex items-center gap-1 text-sm md:text-base font-bold">
             {price.label && <span class="text-xs md:text-sm font-normal text-gray-500 mr-0.5">{price.label}</span>}
             <div class="flex items-baseline gap-0.5 whitespace-nowrap">
