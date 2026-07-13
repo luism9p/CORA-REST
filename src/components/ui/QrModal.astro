@@ -1,25 +1,29 @@
 ---
-// QrModal.astro — Modal de pago con QR Yape & Plin
+// QrModal.astro — Modal de métodos de pago: QR Plin y pago con tarjeta (POS)
 ---
 
 <!-- Overlay / Backdrop -->
 <div
   id="qr-modal"
-  class="fixed inset-0 z-[1000] flex items-center justify-center bg-black/60 backdrop-blur-sm hidden"
+  class="qr-modal fixed inset-0 z-[1000] hidden flex items-end justify-center bg-black/60 backdrop-blur-sm sm:items-center"
+  data-state="closed"
   aria-modal="true"
   role="dialog"
   aria-labelledby="qr-modal-title"
 >
-  <!-- Modal box -->
+  <!-- Modal box: bottom sheet en móvil, tarjeta centrada en desktop -->
   <div
     id="qr-modal-box"
-    class="relative w-[92%] max-w-sm rounded-2xl bg-white p-6 shadow-2xl"
+    class="qr-modal-box relative w-full rounded-t-3xl bg-white p-6 pb-8 shadow-2xl sm:w-[92%] sm:max-w-sm sm:rounded-2xl sm:pb-6"
   >
+    <!-- Handle visual (solo móvil) -->
+    <div class="mx-auto mb-3 h-1.5 w-10 rounded-full bg-gray-200 sm:hidden"></div>
+
     <!-- Close button -->
     <button
       id="btn-close-qr"
       aria-label="Cerrar modal"
-      class="absolute right-4 top-4 flex h-8 w-8 items-center justify-center rounded-full bg-gray-100 text-gray-500 transition-colors hover:bg-gray-200 hover:text-gray-800"
+      class="absolute right-3 top-3 flex h-11 w-11 items-center justify-center rounded-full bg-gray-100 text-gray-500 transition-colors duration-150 active:bg-gray-200 active:text-gray-800"
     >
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" class="h-4 w-4">
         <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />
@@ -30,73 +34,118 @@
     <div class="mb-5 pr-8">
       <p class="text-xs font-semibold uppercase tracking-widest text-red-600">Métodos de pago</p>
       <h2 id="qr-modal-title" class="mt-1 text-xl font-black text-gray-900">
-        Escanea para pagar
+        Elige cómo pagar
       </h2>
     </div>
 
-    <!-- QR Grid -->
-    <div class="grid grid-cols-2 gap-4">
-      <!-- Yape -->
-      <div class="flex flex-col items-center gap-2">
-        <div class="overflow-hidden rounded-xl border border-gray-100 shadow-sm">
+    <!-- Plin -->
+    <div class="flex flex-col items-center gap-2">
+      <span class="flex items-center gap-1.5 text-sm font-bold text-[#00b0e0]">
+        <span class="inline-block h-2.5 w-2.5 rounded-full bg-[#00b0e0]"></span>
+        Plin
+      </span>
+      <div class="w-full max-w-[220px] overflow-hidden rounded-xl border border-gray-100 shadow-sm">
+        <picture>
+          <source srcset="/screenshots/plin-qr.webp" type="image/webp" />
           <img
-            src="/screenshots/yape.jpeg"
-            alt="QR Yape"
-            class="h-auto w-full object-cover"
+            src="/screenshots/plin-qr.png"
+            alt="Código QR de Plin para pagar"
+            width="288"
+            height="311"
+            class="h-auto w-full object-contain"
             loading="lazy"
             decoding="async"
           />
-        </div>
-        <span class="flex items-center gap-1.5 text-sm font-bold text-[#6c2d8f]">
-          <span class="inline-block h-2.5 w-2.5 rounded-full bg-[#6c2d8f]"></span>
-          Yape
-        </span>
+        </picture>
       </div>
-
-      <!-- Plin -->
-      <div class="flex flex-col items-center gap-2">
-        <div class="overflow-hidden rounded-xl border border-gray-100 shadow-sm">
-          <img
-            src="/screenshots/plin.jpeg"
-            alt="QR Plin"
-            class="h-auto w-full object-cover"
-            loading="lazy"
-            decoding="async"
-          />
-        </div>
-        <span class="flex items-center gap-1.5 text-sm font-bold text-[#00b0e0]">
-          <span class="inline-block h-2.5 w-2.5 rounded-full bg-[#00b0e0]"></span>
-          Plin
-        </span>
-      </div>
+      <p class="text-center text-xs text-gray-400">
+        Abre tu app Plin, toca <strong class="text-gray-600">Escanear</strong> y apunta al código
+      </p>
     </div>
 
-    <!-- Footer note -->
-    <p class="mt-5 text-center text-xs text-gray-400">
-      Abre tu app, toca <strong class="text-gray-600">Escanear</strong> y apunta al código
-    </p>
+    <!-- Separador -->
+    <div class="my-5 flex items-center gap-3 text-xs font-medium uppercase tracking-widest text-gray-300">
+      <span class="h-px flex-1 bg-gray-200"></span>
+      También aceptamos
+      <span class="h-px flex-1 bg-gray-200"></span>
+    </div>
+
+    <!-- Tarjeta (POS) -->
+    <div class="flex items-start gap-3 rounded-xl border border-gray-100 bg-gray-50 p-4">
+      <span class="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-white shadow-sm text-gray-700">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="h-5 w-5" aria-hidden="true">
+          <rect x="2" y="5" width="20" height="14" rx="2" />
+          <path stroke-linecap="round" d="M2 10h20" />
+        </svg>
+      </span>
+      <div>
+        <p class="text-sm font-bold text-gray-900">Tarjeta (Visa / Mastercard)</p>
+        <p class="mt-0.5 text-xs text-gray-500">
+          Pídele al mesero que te traiga el POS — puede tomar unos minutos.
+        </p>
+      </div>
+    </div>
   </div>
 </div>
 
+<style>
+  .qr-modal {
+    opacity: 0;
+    transition: opacity 0.3s ease-out;
+  }
+  .qr-modal[data-state="open"] {
+    opacity: 1;
+  }
+  .qr-modal-box {
+    transform: translateY(100%);
+    transition: transform 0.35s cubic-bezier(0.32, 0.72, 0, 1);
+  }
+  @media (min-width: 640px) {
+    .qr-modal-box {
+      transform: translateY(0.75rem) scale(0.96);
+    }
+  }
+  .qr-modal[data-state="open"] .qr-modal-box {
+    transform: translateY(0) scale(1);
+  }
+</style>
+
 <script>
   function initQrModal() {
-    const modal    = document.getElementById('qr-modal');
-    const modalBox = document.getElementById('qr-modal-box');
-    const openBtn  = document.getElementById('btn-open-qr');
-    const closeBtn = document.getElementById('btn-close-qr');
+    const modal = document.getElementById('qr-modal');
+    if (!modal || modal.dataset.qrInit === 'true') return;
+    modal.dataset.qrInit = 'true';
 
-    if (!modal || !openBtn || !closeBtn) return;
+    const openBtn = document.getElementById('btn-open-qr');
+    const closeBtn = document.getElementById('btn-close-qr');
+    if (!openBtn || !closeBtn) return;
 
     function openModal() {
-      modal?.classList.remove('hidden');
-      // Pequeña animación de entrada
-      modalBox?.classList.add('animate-in');
+      modal!.classList.remove('hidden');
       document.body.style.overflow = 'hidden';
+      // Deja pintar el estado "cerrado" un instante antes de animar a "abierto"
+      setTimeout(() => {
+        modal!.setAttribute('data-state', 'open');
+      }, 10);
     }
 
     function closeModal() {
-      modal?.classList.add('hidden');
+      modal!.setAttribute('data-state', 'closed');
       document.body.style.overflow = '';
+
+      let hidden = false;
+      const hideOnce = () => {
+        if (hidden) return;
+        hidden = true;
+        modal!.classList.add('hidden');
+        modal!.removeEventListener('transitionend', onTransitionEnd);
+      };
+      const onTransitionEnd = (e: Event) => {
+        if (e.target === modal) hideOnce();
+      };
+      modal!.addEventListener('transitionend', onTransitionEnd);
+      // Respaldo por si transitionend no dispara (p. ej. pestaña en segundo plano)
+      setTimeout(hideOnce, 400);
     }
 
     openBtn.addEventListener('click', openModal);
@@ -109,7 +158,7 @@
 
     // Cerrar con Escape
     document.addEventListener('keydown', (e) => {
-      if (e.key === 'Escape' && !modal.classList.contains('hidden')) {
+      if (e.key === 'Escape' && modal!.getAttribute('data-state') === 'open') {
         closeModal();
       }
     });

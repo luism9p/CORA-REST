@@ -1,0 +1,72 @@
+---
+// src/components/ui/CurrencySelector.astro
+const currencies = [
+  { code: "PEN", symbol: "S/" },
+  { code: "USD", symbol: "$" },
+  { code: "EUR", symbol: "€" },
+  { code: "MXN", symbol: "$" },
+  { code: "COP", symbol: "$" },
+  { code: "ARS", symbol: "$" },
+];
+---
+
+<div id="currency-selector" class="currency-selector relative">
+  <button
+    id="currency-trigger"
+    type="button"
+    aria-haspopup="listbox"
+    aria-expanded="false"
+    class="flex h-11 items-center gap-1.5 bg-white/90 dark:bg-black/90 backdrop-blur-md border border-gray-200 dark:border-gray-800 rounded-full pl-3 pr-2.5 text-xs font-bold shadow-sm active:bg-gray-100 dark:active:bg-gray-800 transition-colors duration-150"
+  >
+    <span id="currency-trigger-symbol">S/</span>
+    <span id="currency-trigger-code">PEN</span>
+    <svg
+      class="currency-chevron h-3 w-3 opacity-50 transition-transform duration-200"
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="3"
+    >
+      <path stroke-linecap="round" stroke-linejoin="round" d="m6 9 6 6 6-6" />
+    </svg>
+  </button>
+
+  <ul
+    id="currency-panel"
+    role="listbox"
+    aria-labelledby="currency-trigger"
+    class="hidden absolute right-0 top-full mt-2 min-w-[132px] overflow-hidden rounded-2xl border border-gray-200 dark:border-gray-800 bg-white/95 dark:bg-black/95 backdrop-blur-md shadow-xl z-50"
+  >
+    {
+      currencies.map((c) => (
+        <li>
+          <button
+            type="button"
+            role="option"
+            data-currency={c.code}
+            class="currency-option flex min-h-11 w-full items-center justify-between gap-4 px-3.5 py-2 text-xs font-bold text-left transition-colors duration-150 active:bg-gray-100 dark:active:bg-gray-800"
+          >
+            <span>{c.code}</span>
+            <span class="opacity-50">{c.symbol}</span>
+          </button>
+        </li>
+      ))
+    }
+  </ul>
+</div>
+
+<script>
+  import { initCurrencyManager } from "@/lib/currencyManager";
+
+  function init() {
+    initCurrencyManager("currency-selector");
+  }
+
+  document.addEventListener("astro:page-load", init);
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", init);
+  } else {
+    init();
+  }
+</script>

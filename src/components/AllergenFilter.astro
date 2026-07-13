@@ -2,102 +2,79 @@
 // src/components/AllergenFilter.astro
 ---
 
-<div class="allergen-filter-container w-full bg-white/95 dark:bg-black/95 backdrop-blur-md sticky top-[57px] z-40 border-b border-gray-200 dark:border-gray-800 transition-colors">
-  <div class="px-4 sm:px-6 lg:px-8 pt-2 pb-2">
-
-    <!-- Chips: en móvil flex-wrap + colapsable, en desktop fila scrollable -->
-    <div
-      id="allergen-container"
-      class="flex flex-wrap gap-2 overflow-hidden transition-[max-height] duration-300 ease-in-out max-h-[42px] md:flex-nowrap md:overflow-x-auto md:max-h-none"
-      style="scrollbar-width: none; -ms-overflow-style: none;"
-    >
-      <button data-exclude="todos" type="button" class="allergen-btn flex-shrink-0 whitespace-nowrap px-4 py-2 rounded-full border text-xs sm:text-sm font-medium transition-colors bg-black text-white border-black dark:bg-white dark:text-black dark:border-white">
-        Todos
+<div
+  class="allergen-filter-container w-full bg-white/95 dark:bg-black/95 backdrop-blur-md sticky z-40 border-b border-gray-200 dark:border-gray-800 transition-colors"
+  style="top: var(--sticky-header-h, 69px);"
+>
+  <div class="px-4 sm:px-6 lg:px-8 py-2">
+    <!-- Chips: una sola línea con scroll lateral (swipe) en todos los tamaños -->
+    <div class="relative">
+      <div
+        id="allergen-container"
+        class="flex flex-nowrap items-center gap-2 overflow-x-auto"
+        style="scrollbar-width: none; -ms-overflow-style: none;"
+      >
+        <button data-exclude="todos" type="button" class="allergen-btn flex min-h-11 flex-shrink-0 items-center whitespace-nowrap rounded-full border px-4 text-xs sm:text-sm font-medium transition-colors duration-150 active:scale-95 bg-black text-white border-black dark:bg-white dark:text-black dark:border-white">
+          Todos
+        </button>
+        <button data-exclude="mariscos" type="button" class="allergen-btn flex min-h-11 flex-shrink-0 items-center whitespace-nowrap rounded-full border px-4 text-xs sm:text-sm font-medium transition-colors duration-150 active:scale-95 bg-white text-gray-700 border-gray-300 active:bg-gray-100 dark:bg-black dark:text-gray-300 dark:border-gray-700 dark:active:bg-gray-800">
+          Sin Mariscos
+        </button>
+        <button data-exclude="pescado" type="button" class="allergen-btn flex min-h-11 flex-shrink-0 items-center whitespace-nowrap rounded-full border px-4 text-xs sm:text-sm font-medium transition-colors duration-150 active:scale-95 bg-white text-gray-700 border-gray-300 active:bg-gray-100 dark:bg-black dark:text-gray-300 dark:border-gray-700 dark:active:bg-gray-800">
+          Sin Pescado
+        </button>
+        <button data-exclude="cítricos" type="button" class="allergen-btn flex min-h-11 flex-shrink-0 items-center whitespace-nowrap rounded-full border px-4 text-xs sm:text-sm font-medium transition-colors duration-150 active:scale-95 bg-white text-gray-700 border-gray-300 active:bg-gray-100 dark:bg-black dark:text-gray-300 dark:border-gray-700 dark:active:bg-gray-800">
+          Sin Cítricos
+        </button>
+        <button data-exclude="gluten" type="button" class="allergen-btn flex min-h-11 flex-shrink-0 items-center whitespace-nowrap rounded-full border px-4 text-xs sm:text-sm font-medium transition-colors duration-150 active:scale-95 bg-white text-gray-700 border-gray-300 active:bg-gray-100 dark:bg-black dark:text-gray-300 dark:border-gray-700 dark:active:bg-gray-800">
+          Sin Gluten
+        </button>
+        <button data-exclude="huevo" type="button" class="allergen-btn flex min-h-11 flex-shrink-0 items-center whitespace-nowrap rounded-full border px-4 text-xs sm:text-sm font-medium transition-colors duration-150 active:scale-95 bg-white text-gray-700 border-gray-300 active:bg-gray-100 dark:bg-black dark:text-gray-300 dark:border-gray-700 dark:active:bg-gray-800">
+          Sin Huevo
+        </button>
+        <button data-exclude="soya" type="button" class="allergen-btn flex min-h-11 flex-shrink-0 items-center whitespace-nowrap rounded-full border px-4 text-xs sm:text-sm font-medium transition-colors duration-150 active:scale-95 bg-white text-gray-700 border-gray-300 active:bg-gray-100 dark:bg-black dark:text-gray-300 dark:border-gray-700 dark:active:bg-gray-800">
+          Sin Soya
+        </button>
+      </div>
+      <button
+        type="button"
+        data-fade="left"
+        aria-label="Ver filtros anteriores"
+        class="absolute inset-y-0 left-0 flex w-10 items-center justify-start bg-gradient-to-r from-white/95 dark:from-black/95 to-transparent pl-0.5 opacity-0 transition-opacity duration-200 active:from-white dark:active:from-black"
+        style="pointer-events: none;"
+      >
+        <svg class="h-5 w-5 animate-pulse-x-reverse text-gray-500 dark:text-gray-300" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true">
+          <path stroke-linecap="round" stroke-linejoin="round" d="m15 6-6 6 6 6" />
+        </svg>
       </button>
-      <button data-exclude="mariscos" type="button" class="allergen-btn flex-shrink-0 whitespace-nowrap px-4 py-2 rounded-full border text-xs sm:text-sm font-medium transition-colors bg-white text-gray-700 border-gray-300 hover:bg-gray-100 dark:bg-black dark:text-gray-300 dark:border-gray-700 dark:hover:bg-gray-800">
-        Sin Mariscos
-      </button>
-      <button data-exclude="pescado" type="button" class="allergen-btn flex-shrink-0 whitespace-nowrap px-4 py-2 rounded-full border text-xs sm:text-sm font-medium transition-colors bg-white text-gray-700 border-gray-300 hover:bg-gray-100 dark:bg-black dark:text-gray-300 dark:border-gray-700 dark:hover:bg-gray-800">
-        Sin Pescado
-      </button>
-      <button data-exclude="cítricos" type="button" class="allergen-btn flex-shrink-0 whitespace-nowrap px-4 py-2 rounded-full border text-xs sm:text-sm font-medium transition-colors bg-white text-gray-700 border-gray-300 hover:bg-gray-100 dark:bg-black dark:text-gray-300 dark:border-gray-700 dark:hover:bg-gray-800">
-        Sin Cítricos
-      </button>
-      <button data-exclude="gluten" type="button" class="allergen-btn flex-shrink-0 whitespace-nowrap px-4 py-2 rounded-full border text-xs sm:text-sm font-medium transition-colors bg-white text-gray-700 border-gray-300 hover:bg-gray-100 dark:bg-black dark:text-gray-300 dark:border-gray-700 dark:hover:bg-gray-800">
-        Sin Gluten
-      </button>
-      <button data-exclude="huevo" type="button" class="allergen-btn flex-shrink-0 whitespace-nowrap px-4 py-2 rounded-full border text-xs sm:text-sm font-medium transition-colors bg-white text-gray-700 border-gray-300 hover:bg-gray-100 dark:bg-black dark:text-gray-300 dark:border-gray-700 dark:hover:bg-gray-800">
-        Sin Huevo
-      </button>
-      <button data-exclude="soya" type="button" class="allergen-btn flex-shrink-0 whitespace-nowrap px-4 py-2 rounded-full border text-xs sm:text-sm font-medium transition-colors bg-white text-gray-700 border-gray-300 hover:bg-gray-100 dark:bg-black dark:text-gray-300 dark:border-gray-700 dark:hover:bg-gray-800">
-        Sin Soya
+      <button
+        type="button"
+        data-fade="right"
+        aria-label="Ver más filtros"
+        class="absolute inset-y-0 right-0 flex w-10 items-center justify-end bg-gradient-to-l from-white/95 dark:from-black/95 to-transparent pr-0.5 opacity-0 transition-opacity duration-200 active:from-white dark:active:from-black"
+        style="pointer-events: none;"
+      >
+        <svg class="h-5 w-5 animate-pulse-x text-gray-500 dark:text-gray-300" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true">
+          <path stroke-linecap="round" stroke-linejoin="round" d="m9 6 6 6-6 6" />
+        </svg>
       </button>
     </div>
-
-    <!-- Botón toggle — solo visible en móvil (md:hidden) -->
-    <button
-      id="toggle-allergens"
-      class="md:hidden mt-1 mb-0 flex items-center gap-1 text-xs font-medium text-gray-500 dark:text-gray-400 hover:text-black dark:hover:text-white transition-colors bg-transparent border-none outline-none"
-      aria-expanded="false"
-    >
-      <span id="toggle-allergens-label">Ver más</span>
-      <svg
-        id="toggle-allergens-icon"
-        xmlns="http://www.w3.org/2000/svg"
-        class="h-3.5 w-3.5 transition-transform duration-300"
-        viewBox="0 0 20 20"
-        fill="currentColor"
-        aria-hidden="true"
-      >
-        <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
-      </svg>
-    </button>
-
   </div>
 </div>
 
 <script>
+  import { initScrollFade } from "@/lib/scrollFade";
+  import { initStickyOffsets } from "@/lib/stickyOffsets";
+
   function initAllergenFilters() {
     const buttons = document.querySelectorAll<HTMLElement>('.allergen-btn');
     const cards = document.querySelectorAll<HTMLElement>('.dish-card');
-
-    console.log(`[Filtros] Inicializando: ${buttons.length} botones, ${cards.length} tarjetas encontradas.`);
 
     if (cards.length === 0) {
       console.error("[Filtros] ERROR: No se encontraron elementos con la clase '.dish-card'.");
       return;
     }
 
-    // --- Toggle Ver más / Ver menos ---
-    const toggleBtn = document.getElementById('toggle-allergens');
-    const allergenContainer = document.getElementById('allergen-container');
-
-    if (toggleBtn && allergenContainer) {
-      const newToggleBtn = toggleBtn.cloneNode(true) as HTMLElement;
-      toggleBtn.parentNode?.replaceChild(newToggleBtn, toggleBtn);
-
-      let isExpanded = false;
-
-      newToggleBtn.addEventListener('click', () => {
-        isExpanded = !isExpanded;
-        const label = newToggleBtn.querySelector<HTMLElement>('#toggle-allergens-label');
-        const icon = newToggleBtn.querySelector<HTMLElement>('#toggle-allergens-icon');
-
-        if (isExpanded) {
-          allergenContainer.style.maxHeight = allergenContainer.scrollHeight + 'px';
-          if (label) label.textContent = 'Ver menos';
-          if (icon) icon.style.transform = 'rotate(180deg)';
-          newToggleBtn.setAttribute('aria-expanded', 'true');
-        } else {
-          allergenContainer.style.maxHeight = '42px';
-          if (label) label.textContent = 'Ver más';
-          if (icon) icon.style.transform = 'rotate(0deg)';
-          newToggleBtn.setAttribute('aria-expanded', 'false');
-        }
-      });
-    }
-
-    // --- Filtrado de alérgenos ---
     buttons.forEach(button => {
       const newBtn = button.cloneNode(true) as HTMLElement;
       if (button.parentNode) {
@@ -115,7 +92,6 @@
 
         // Filtrado
         const excludeWord = newBtn.getAttribute('data-exclude');
-        console.log(`[Filtros] Excluyendo: ${excludeWord}`);
 
         cards.forEach(card => {
           if (excludeWord === 'todos') {
@@ -136,4 +112,13 @@
 
   document.addEventListener('DOMContentLoaded', initAllergenFilters);
   document.addEventListener('astro:page-load', initAllergenFilters);
+
+  function initAllergenScrollFade() {
+    initScrollFade('allergen-container');
+  }
+  document.addEventListener('DOMContentLoaded', initAllergenScrollFade);
+  document.addEventListener('astro:page-load', initAllergenScrollFade);
+
+  document.addEventListener('DOMContentLoaded', initStickyOffsets);
+  document.addEventListener('astro:page-load', initStickyOffsets);
 </script>

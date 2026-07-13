@@ -1,54 +1,132 @@
 ---
 // src/components/LanguageSelector.astro
+const languages = [
+  { code: "es", label: "Español" },
+  { code: "en", label: "English" },
+  { code: "fr", label: "Français" },
+  { code: "it", label: "Italiano" },
+  { code: "de", label: "Deutsch" },
+];
 ---
 
-<div class="language-selector bg-white/90 dark:bg-black/90 backdrop-blur-md border border-gray-200 dark:border-gray-800 rounded-full flex items-center p-1 gap-1 shadow-sm">
-  <button data-lang="es" type="button" class="lang-btn text-xs font-bold px-2.5 py-1.5 rounded-full transition-all duration-200 hover:opacity-100 hover:bg-gray-100 dark:hover:bg-gray-800">ES</button>
-  <button data-lang="en" type="button" class="lang-btn text-xs font-bold px-2.5 py-1.5 rounded-full transition-all duration-200 hover:opacity-100 hover:bg-gray-100 dark:hover:bg-gray-800">EN</button>
-  <button data-lang="fr" type="button" class="lang-btn text-xs font-bold px-2.5 py-1.5 rounded-full transition-all duration-200 hover:opacity-100 hover:bg-gray-100 dark:hover:bg-gray-800">FR</button>
-  <button data-lang="it" type="button" class="lang-btn text-xs font-bold px-2.5 py-1.5 rounded-full transition-all duration-200 hover:opacity-100 hover:bg-gray-100 dark:hover:bg-gray-800">IT</button>
-  <button data-lang="de" type="button" class="lang-btn text-xs font-bold px-2.5 py-1.5 rounded-full transition-all duration-200 hover:opacity-100 hover:bg-gray-100 dark:hover:bg-gray-800">DE</button>
+<div id="language-selector" class="language-selector relative">
+  <button
+    id="language-trigger"
+    type="button"
+    aria-haspopup="listbox"
+    aria-expanded="false"
+    aria-label="Seleccionar idioma"
+    class="flex h-11 min-w-11 items-center justify-center gap-1 bg-white/90 dark:bg-black/90 backdrop-blur-md border border-gray-200 dark:border-gray-800 rounded-full px-3 text-xs font-bold shadow-sm active:bg-gray-100 dark:active:bg-gray-800 transition-colors duration-150"
+  >
+    <svg class="h-4 w-4 opacity-60" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <circle cx="12" cy="12" r="10" />
+      <path stroke-linecap="round" d="M2 12h20M12 2a15.3 15.3 0 0 1 0 20 15.3 15.3 0 0 1 0-20Z" />
+    </svg>
+    <span id="language-trigger-code">ES</span>
+    <svg
+      class="language-chevron h-3 w-3 opacity-50 transition-transform duration-200"
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="3"
+    >
+      <path stroke-linecap="round" stroke-linejoin="round" d="m6 9 6 6 6-6" />
+    </svg>
+  </button>
+
+  <ul
+    id="language-panel"
+    role="listbox"
+    aria-labelledby="language-trigger"
+    class="hidden absolute left-0 top-full mt-2 min-w-[168px] overflow-hidden rounded-2xl border border-gray-200 dark:border-gray-800 bg-white/95 dark:bg-black/95 backdrop-blur-md shadow-xl z-50"
+  >
+    {
+      languages.map((l) => (
+        <li>
+          <button
+            type="button"
+            role="option"
+            data-lang={l.code}
+            class="lang-option flex min-h-11 w-full items-center gap-3 px-3.5 py-2 text-sm font-semibold text-left transition-colors duration-150 active:bg-gray-100 dark:active:bg-gray-800"
+          >
+            <span class="w-6 text-xs font-bold opacity-50">{l.code.toUpperCase()}</span>
+            <span>{l.label}</span>
+          </button>
+        </li>
+      ))
+    }
+  </ul>
 </div>
 
 <script>
   function initLangSelector() {
-    const buttons = document.querySelectorAll('.lang-btn');
-    if (!buttons.length) return;
+    const root = document.getElementById('language-selector');
+    if (!root || root.dataset.langInit === 'true') return;
+    root.dataset.langInit = 'true';
+
+    const trigger = root.querySelector<HTMLButtonElement>('#language-trigger');
+    const panel = root.querySelector<HTMLElement>('#language-panel');
+    const chevron = root.querySelector<HTMLElement>('.language-chevron');
+    const triggerCode = root.querySelector<HTMLElement>('#language-trigger-code');
+    const options = Array.from(root.querySelectorAll<HTMLButtonElement>('.lang-option'));
+    if (!trigger || !panel || !options.length) return;
+
+    const setActive = (lang: string) => {
+      options.forEach((opt) => {
+        const isActive = opt.getAttribute('data-lang') === lang;
+        opt.classList.toggle('bg-black', isActive);
+        opt.classList.toggle('text-white', isActive);
+        opt.classList.toggle('dark:bg-white', isActive);
+        opt.classList.toggle('dark:text-black', isActive);
+        opt.setAttribute('aria-selected', String(isActive));
+      });
+      if (triggerCode) triggerCode.textContent = lang.toUpperCase();
+    };
+
+    const closePanel = () => {
+      panel.classList.add('hidden');
+      trigger.setAttribute('aria-expanded', 'false');
+      chevron?.classList.remove('rotate-180');
+    };
+
+    const openPanel = () => {
+      panel.classList.remove('hidden');
+      trigger.setAttribute('aria-expanded', 'true');
+      chevron?.classList.add('rotate-180');
+    };
 
     // Detección y Almacenamiento
     const savedLang = localStorage.getItem('preferredLanguage') || 'es';
-
-    const updateUI = (activeLang: string) => {
-      buttons.forEach(btn => {
-        if (btn.getAttribute('data-lang') === activeLang) {
-          // Activo
-          btn.classList.add('bg-black', 'text-white', 'dark:bg-white', 'dark:text-black', 'opacity-100');
-          btn.classList.remove('opacity-60', 'hover:bg-gray-100', 'dark:hover:bg-gray-800');
-        } else {
-          // Inactivo
-          btn.classList.remove('bg-black', 'text-white', 'dark:bg-white', 'dark:text-black', 'opacity-100');
-          btn.classList.add('opacity-60', 'hover:bg-gray-100', 'dark:hover:bg-gray-800');
-        }
-      });
-    };
-
-    // Inicializar visualmente y despachar evento al cargar
-    updateUI(savedLang);
+    setActive(savedLang);
     window.dispatchEvent(new CustomEvent('languageChanged', { detail: savedLang }));
 
-    // Interactividad
-    buttons.forEach(btn => {
-      btn.addEventListener('click', (e) => {
-        const target = e.currentTarget as HTMLButtonElement;
-        const newLang = target.getAttribute('data-lang');
-        
+    trigger.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const isOpen = trigger.getAttribute('aria-expanded') === 'true';
+      if (isOpen) closePanel();
+      else openPanel();
+    });
+
+    options.forEach((opt) => {
+      opt.addEventListener('click', () => {
+        const newLang = opt.getAttribute('data-lang');
         if (newLang && newLang !== localStorage.getItem('preferredLanguage')) {
           localStorage.setItem('preferredLanguage', newLang);
-          updateUI(newLang);
+          setActive(newLang);
           // Dispara un evento global personalizado en window llamado languageChanged
           window.dispatchEvent(new CustomEvent('languageChanged', { detail: newLang }));
         }
+        closePanel();
       });
+    });
+
+    document.addEventListener('click', (e) => {
+      if (!root.contains(e.target as Node)) closePanel();
+    });
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') closePanel();
     });
   }
 

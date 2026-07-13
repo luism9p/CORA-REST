@@ -47,7 +47,7 @@ onMounted(() => {
   <div class="contents">
     <Drawer direction="right" @update:open="onOpen" @close="onClose">
       <DrawerTrigger :aria-label="labels.menu"
-        class="pointer-events-auto aspect-square overflow-hidden rounded-full p-2 shadow-lg"
+        class="pointer-events-auto flex h-11 w-11 shrink-0 items-center justify-center overflow-hidden rounded-full p-2 shadow-lg"
         :class="surface || 'surface-secondary'">
         <slot name="icon" />
       </DrawerTrigger>

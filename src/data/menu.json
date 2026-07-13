@@ -8,7 +8,7 @@
     "whatsapp": "51975808856",
     "whatsapp_label": "+51 975 808 856",
     "address": "",
-    "payment_methods": "Efectivo, Visa, Yape, Plin",
+    "payment_methods": "Efectivo, Tarjeta, Plin",
     "font_body": "--font-system-ui",
     "font_headings": "--font-system-ui",
     "font_weight_body": "400",
@@ -1491,7 +1491,78 @@
         "it": "Bevande Naturali",
         "de": "Natürliche Getränke"
       },
-      "items": []
+      "items": [
+        {
+          "id": "vaso-chicha-morada",
+          "translations": {
+            "es": { "name": "Vaso de Chicha Morada", "description": "" },
+            "en": { "name": "Purple Corn Drink (Glass)", "description": "" },
+            "fr": { "name": "Verre de Chicha Morada", "description": "" },
+            "it": { "name": "Bicchiere di Chicha Morada", "description": "" },
+            "de": { "name": "Glas Chicha Morada", "description": "" }
+          },
+          "prices": [
+            { "label": "", "amount": 15.00 }
+          ],
+          "allergens": []
+        },
+        {
+          "id": "chicha-morada-1l",
+          "translations": {
+            "es": { "name": "Chicha Morada 1L", "description": "" },
+            "en": { "name": "Purple Corn Drink 1L", "description": "" },
+            "fr": { "name": "Chicha Morada 1L", "description": "" },
+            "it": { "name": "Chicha Morada 1L", "description": "" },
+            "de": { "name": "Chicha Morada 1L", "description": "" }
+          },
+          "prices": [
+            { "label": "", "amount": 20.00 }
+          ],
+          "allergens": []
+        },
+        {
+          "id": "chicha-morada-1-5l",
+          "translations": {
+            "es": { "name": "Chicha Morada 1.5L", "description": "" },
+            "en": { "name": "Purple Corn Drink 1.5L", "description": "" },
+            "fr": { "name": "Chicha Morada 1.5L", "description": "" },
+            "it": { "name": "Chicha Morada 1.5L", "description": "" },
+            "de": { "name": "Chicha Morada 1.5L", "description": "" }
+          },
+          "prices": [
+            { "label": "", "amount": 5.00 }
+          ],
+          "allergens": []
+        },
+        {
+          "id": "agua-mineral-500ml",
+          "translations": {
+            "es": { "name": "Agua Mineral 500ml", "description": "" },
+            "en": { "name": "Mineral Water 500ml", "description": "" },
+            "fr": { "name": "Eau Minérale 500ml", "description": "" },
+            "it": { "name": "Acqua Minerale 500ml", "description": "" },
+            "de": { "name": "Mineralwasser 500ml", "description": "" }
+          },
+          "prices": [
+            { "label": "", "amount": 3.00 }
+          ],
+          "allergens": []
+        },
+        {
+          "id": "agua-mineral-2l",
+          "translations": {
+            "es": { "name": "Agua Mineral 2L", "description": "" },
+            "en": { "name": "Mineral Water 2L", "description": "" },
+            "fr": { "name": "Eau Minérale 2L", "description": "" },
+            "it": { "name": "Acqua Minerale 2L", "description": "" },
+            "de": { "name": "Mineralwasser 2L", "description": "" }
+          },
+          "prices": [
+            { "label": "", "amount": 6.00 }
+          ],
+          "allergens": []
+        }
+      ]
     },
     {
       "category_id": "gaseosas",
@@ -1502,7 +1573,176 @@
         "it": "Bibite",
         "de": "Softdrinks"
       },
-      "items": []
+      "items": [
+        {
+          "id": "gaseosa-192ml",
+          "translations": {
+            "es": { "name": "Inka Cola, Coca-Cola, Fanta o Sprite (192ml)", "description": "" },
+            "en": { "name": "Inka Cola, Coca-Cola, Fanta or Sprite (192ml)", "description": "" },
+            "fr": { "name": "Inka Cola, Coca-Cola, Fanta ou Sprite (192ml)", "description": "" },
+            "it": { "name": "Inka Cola, Coca-Cola, Fanta o Sprite (192ml)", "description": "" },
+            "de": { "name": "Inka Cola, Coca-Cola, Fanta oder Sprite (192ml)", "description": "" }
+          },
+          "prices": [
+            { "label": "", "amount": 1.50 }
+          ],
+          "allergens": []
+        },
+        {
+          "id": "gaseosa-296ml",
+          "translations": {
+            "es": { "name": "Inka Cola, Coca-Cola, Fanta o Sprite (296ml)", "description": "" },
+            "en": { "name": "Inka Cola, Coca-Cola, Fanta or Sprite (296ml)", "description": "" },
+            "fr": { "name": "Inka Cola, Coca-Cola, Fanta ou Sprite (296ml)", "description": "" },
+            "it": { "name": "Inka Cola, Coca-Cola, Fanta o Sprite (296ml)", "description": "" },
+            "de": { "name": "Inka Cola, Coca-Cola, Fanta oder Sprite (296ml)", "description": "" }
+          },
+          "prices": [
+            { "label": "", "amount": 2.00 }
+          ],
+          "allergens": []
+        },
+        {
+          "id": "gaseosa-500ml",
+          "translations": {
+            "es": { "name": "Inka Cola, Coca-Cola, Fanta o Sprite (500ml)", "description": "" },
+            "en": { "name": "Inka Cola, Coca-Cola, Fanta or Sprite (500ml)", "description": "" },
+            "fr": { "name": "Inka Cola, Coca-Cola, Fanta ou Sprite (500ml)", "description": "" },
+            "it": { "name": "Inka Cola, Coca-Cola, Fanta o Sprite (500ml)", "description": "" },
+            "de": { "name": "Inka Cola, Coca-Cola, Fanta oder Sprite (500ml)", "description": "" }
+          },
+          "prices": [
+            { "label": "", "amount": 4.00 }
+          ],
+          "allergens": []
+        },
+        {
+          "id": "inka-cola-625ml",
+          "translations": {
+            "es": { "name": "Inka Cola 625ml", "description": "" },
+            "en": { "name": "Inka Cola 625ml", "description": "" },
+            "fr": { "name": "Inka Cola 625ml", "description": "" },
+            "it": { "name": "Inka Cola 625ml", "description": "" },
+            "de": { "name": "Inka Cola 625ml", "description": "" }
+          },
+          "prices": [
+            { "label": "", "amount": 5.00 }
+          ],
+          "allergens": []
+        },
+        {
+          "id": "inka-cola-1l",
+          "translations": {
+            "es": { "name": "Inka Cola 1L", "description": "" },
+            "en": { "name": "Inka Cola 1L", "description": "" },
+            "fr": { "name": "Inka Cola 1L", "description": "" },
+            "it": { "name": "Inka Cola 1L", "description": "" },
+            "de": { "name": "Inka Cola 1L", "description": "" }
+          },
+          "prices": [
+            { "label": "", "amount": 7.00 }
+          ],
+          "allergens": []
+        },
+        {
+          "id": "gaseosa-1-5l",
+          "translations": {
+            "es": { "name": "Inka Cola, Coca-Cola, Fanta o Sprite (1.5L)", "description": "" },
+            "en": { "name": "Inka Cola, Coca-Cola, Fanta or Sprite (1.5L)", "description": "" },
+            "fr": { "name": "Inka Cola, Coca-Cola, Fanta ou Sprite (1.5L)", "description": "" },
+            "it": { "name": "Inka Cola, Coca-Cola, Fanta o Sprite (1.5L)", "description": "" },
+            "de": { "name": "Inka Cola, Coca-Cola, Fanta oder Sprite (1.5L)", "description": "" }
+          },
+          "prices": [
+            { "label": "", "amount": 10.00 }
+          ],
+          "allergens": []
+        },
+        {
+          "id": "inka-cola-2-5l",
+          "translations": {
+            "es": { "name": "Inka Cola 2.5L", "description": "" },
+            "en": { "name": "Inka Cola 2.5L", "description": "" },
+            "fr": { "name": "Inka Cola 2.5L", "description": "" },
+            "it": { "name": "Inka Cola 2.5L", "description": "" },
+            "de": { "name": "Inka Cola 2.5L", "description": "" }
+          },
+          "prices": [
+            { "label": "", "amount": 15.00 }
+          ],
+          "allergens": []
+        },
+        {
+          "id": "guarana-450ml",
+          "translations": {
+            "es": { "name": "Guaraná 450ml", "description": "" },
+            "en": { "name": "Guaraná 450ml", "description": "" },
+            "fr": { "name": "Guaraná 450ml", "description": "" },
+            "it": { "name": "Guaraná 450ml", "description": "" },
+            "de": { "name": "Guaraná 450ml", "description": "" }
+          },
+          "prices": [
+            { "label": "", "amount": 3.50 }
+          ],
+          "allergens": []
+        },
+        {
+          "id": "guarana-2l",
+          "translations": {
+            "es": { "name": "Guaraná 2L", "description": "" },
+            "en": { "name": "Guaraná 2L", "description": "" },
+            "fr": { "name": "Guaraná 2L", "description": "" },
+            "it": { "name": "Guaraná 2L", "description": "" },
+            "de": { "name": "Guaraná 2L", "description": "" }
+          },
+          "prices": [
+            { "label": "", "amount": 10.00 }
+          ],
+          "allergens": []
+        },
+        {
+          "id": "guarana-3l",
+          "translations": {
+            "es": { "name": "Guaraná 3L", "description": "" },
+            "en": { "name": "Guaraná 3L", "description": "" },
+            "fr": { "name": "Guaraná 3L", "description": "" },
+            "it": { "name": "Guaraná 3L", "description": "" },
+            "de": { "name": "Guaraná 3L", "description": "" }
+          },
+          "prices": [
+            { "label": "", "amount": 15.00 }
+          ],
+          "allergens": []
+        },
+        {
+          "id": "powerade-600ml",
+          "translations": {
+            "es": { "name": "Powerade 600ml", "description": "" },
+            "en": { "name": "Powerade 600ml", "description": "" },
+            "fr": { "name": "Powerade 600ml", "description": "" },
+            "it": { "name": "Powerade 600ml", "description": "" },
+            "de": { "name": "Powerade 600ml", "description": "" }
+          },
+          "prices": [
+            { "label": "", "amount": 4.00 }
+          ],
+          "allergens": []
+        },
+        {
+          "id": "frugo-300ml",
+          "translations": {
+            "es": { "name": "Frugo 300ml", "description": "" },
+            "en": { "name": "Frugo 300ml", "description": "" },
+            "fr": { "name": "Frugo 300ml", "description": "" },
+            "it": { "name": "Frugo 300ml", "description": "" },
+            "de": { "name": "Frugo 300ml", "description": "" }
+          },
+          "prices": [
+            { "label": "", "amount": 4.00 }
+          ],
+          "allergens": []
+        }
+      ]
     },
     {
       "category_id": "cervezas",
@@ -1513,7 +1753,120 @@
         "it": "Birre",
         "de": "Biere"
       },
-      "items": []
+      "items": [
+        {
+          "id": "pilsen-cristal-lata-355ml",
+          "translations": {
+            "es": { "name": "Pilsen Cristal (lata) 355ml", "description": "" },
+            "en": { "name": "Pilsen Cristal (can) 355ml", "description": "" },
+            "fr": { "name": "Pilsen Cristal (canette) 355ml", "description": "" },
+            "it": { "name": "Pilsen Cristal (lattina) 355ml", "description": "" },
+            "de": { "name": "Pilsen Cristal (Dose) 355ml", "description": "" }
+          },
+          "prices": [
+            { "label": "", "amount": 6.00 }
+          ],
+          "allergens": []
+        },
+        {
+          "id": "cusquena-lata-355ml",
+          "translations": {
+            "es": { "name": "Cusqueña (lata) 355ml", "description": "" },
+            "en": { "name": "Cusqueña (can) 355ml", "description": "" },
+            "fr": { "name": "Cusqueña (canette) 355ml", "description": "" },
+            "it": { "name": "Cusqueña (lattina) 355ml", "description": "" },
+            "de": { "name": "Cusqueña (Dose) 355ml", "description": "" }
+          },
+          "prices": [
+            { "label": "", "amount": 7.00 }
+          ],
+          "allergens": []
+        },
+        {
+          "id": "pilsen-cristal-vidrio-305ml",
+          "translations": {
+            "es": { "name": "Pilsen Cristal (botella) 305ml", "description": "" },
+            "en": { "name": "Pilsen Cristal (bottle) 305ml", "description": "" },
+            "fr": { "name": "Pilsen Cristal (bouteille) 305ml", "description": "" },
+            "it": { "name": "Pilsen Cristal (bottiglia) 305ml", "description": "" },
+            "de": { "name": "Pilsen Cristal (Flasche) 305ml", "description": "" }
+          },
+          "prices": [
+            { "label": "", "amount": 6.00 }
+          ],
+          "allergens": []
+        },
+        {
+          "id": "cusquena-vidrio-310ml",
+          "translations": {
+            "es": { "name": "Cusqueña (botella) 310ml", "description": "" },
+            "en": { "name": "Cusqueña (bottle) 310ml", "description": "" },
+            "fr": { "name": "Cusqueña (bouteille) 310ml", "description": "" },
+            "it": { "name": "Cusqueña (bottiglia) 310ml", "description": "" },
+            "de": { "name": "Cusqueña (Flasche) 310ml", "description": "" }
+          },
+          "prices": [
+            { "label": "", "amount": 7.00 }
+          ],
+          "allergens": []
+        },
+        {
+          "id": "pilsen-cristal-630ml",
+          "translations": {
+            "es": { "name": "Pilsen Cristal 630ml", "description": "" },
+            "en": { "name": "Pilsen Cristal 630ml", "description": "" },
+            "fr": { "name": "Pilsen Cristal 630ml", "description": "" },
+            "it": { "name": "Pilsen Cristal 630ml", "description": "" },
+            "de": { "name": "Pilsen Cristal 630ml", "description": "" }
+          },
+          "prices": [
+            { "label": "", "amount": 10.00 }
+          ],
+          "allergens": []
+        },
+        {
+          "id": "corona-330ml",
+          "translations": {
+            "es": { "name": "Corona 330ml", "description": "" },
+            "en": { "name": "Corona 330ml", "description": "" },
+            "fr": { "name": "Corona 330ml", "description": "" },
+            "it": { "name": "Corona 330ml", "description": "" },
+            "de": { "name": "Corona 330ml", "description": "" }
+          },
+          "prices": [
+            { "label": "", "amount": 12.00 }
+          ],
+          "allergens": []
+        },
+        {
+          "id": "cusquena-620ml",
+          "translations": {
+            "es": { "name": "Cusqueña 620ml", "description": "" },
+            "en": { "name": "Cusqueña 620ml", "description": "" },
+            "fr": { "name": "Cusqueña 620ml", "description": "" },
+            "it": { "name": "Cusqueña 620ml", "description": "" },
+            "de": { "name": "Cusqueña 620ml", "description": "" }
+          },
+          "prices": [
+            { "label": "", "amount": 8.00 }
+          ],
+          "allergens": []
+        },
+        {
+          "id": "mikes-550ml",
+          "translations": {
+            "es": { "name": "Mikes 550ml", "description": "" },
+            "en": { "name": "Mikes 550ml", "description": "" },
+            "fr": { "name": "Mikes 550ml", "description": "" },
+            "it": { "name": "Mikes 550ml", "description": "" },
+            "de": { "name": "Mikes 550ml", "description": "" }
+          },
+          "prices": [
+            { "label": "", "amount": 10.00 }
+          ],
+          "allergens": []
+        }
+      ]
     }
   ]
 }

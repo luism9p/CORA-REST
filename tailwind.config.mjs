@@ -227,12 +227,22 @@ export default {
           from: { height: "var(--radix-collapsible-content-height)" },
           to: { height: 0 },
         },
+        "pulse-x": {
+          "0%, 100%": { transform: "translateX(0)" },
+          "50%": { transform: "translateX(3px)" },
+        },
+        "pulse-x-reverse": {
+          "0%, 100%": { transform: "translateX(0)" },
+          "50%": { transform: "translateX(-3px)" },
+        },
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
         "collapsible-down": "collapsible-down 0.2s ease-in-out",
         "collapsible-up": "collapsible-up 0.2s ease-in-out",
+        "pulse-x": "pulse-x 1.2s ease-in-out infinite",
+        "pulse-x-reverse": "pulse-x-reverse 1.2s ease-in-out infinite",
       },
     },
   },

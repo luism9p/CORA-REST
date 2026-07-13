@@ -3,6 +3,7 @@ import Footer from "./Footer.astro";
 import Sidebar from "@components/navigation/Sidebar.vue";
 import Link from "@components/navigation/Link.astro";
 import LanguageSelector from "@components/LanguageSelector.astro";
+import CurrencySelector from "@components/ui/CurrencySelector.astro";
 import ScrollDown from "@components/navigation/ScrollDown.vue";
 import Init from "@components/helpers/Init.vue";
 import QrModal from "@components/ui/QrModal.astro";
@@ -191,10 +192,11 @@ let socialImage = meta.image ? meta.image + "/m/1200x630/smart/filters:format(pn
       class="fixed top-0 left-0 w-full z-[999] transition-all duration-300 bg-white/95 dark:bg-black/95 backdrop-blur-md shadow-sm border-b border-black/5 dark:border-white/10"
     >
       <nav
-        class="relative flex items-center justify-between w-full gap-3 py-2 px-4 sm:px-6 text-xl sm:text-3xl"
+        class="relative flex items-center justify-between w-full gap-2 py-2 px-3 sm:px-6 text-xl sm:text-3xl"
       >
-        <div class="pointer-events-auto">
+        <div class="pointer-events-auto flex min-w-0 items-center gap-1.5">
           <LanguageSelector />
+          <CurrencySelector />
         </div>
 
         <Sidebar {labels} surface={surface_menu} client:idle>
@@ -218,7 +220,7 @@ let socialImage = meta.image ? meta.image + "/m/1200x630/smart/filters:format(pn
                   <li>
                     <Link
                       blok={link}
-                      className="link flex gap-2 sm:gap-6 hover:text-dark text-balance items-center"
+                      className="link flex min-h-11 gap-2 sm:gap-6 hover:text-dark active:text-dark text-balance items-center"
                     />
                   </li>
                 ))

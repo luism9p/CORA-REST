@@ -33,16 +33,59 @@ const text = content || "";
         {video?.filename && (
           <VideoInline url={video.filename} client:visible className="">
             {thumbnail?.filename && (
-              <img src="/screenshots/fondov1.png" alt="Fondo Cora" class="absolute inset-0 w-full h-full object-cover -z-10" />
+              <picture class="contents">
+                <source srcset="/screenshots/fondov2.avif" type="image/avif" />
+                <source srcset="/screenshots/fondov2.webp" type="image/webp" />
+                <img
+                  src="/screenshots/fondov2.webp"
+                  alt="Fondo Cora"
+                  width="1672"
+                  height="941"
+                  loading="eager"
+                  fetchpriority="high"
+                  decoding="async"
+                  class="absolute inset-0 w-full h-full object-cover -z-10"
+                />
+              </picture>
             )}
           </VideoInline>
         )}
         {!video?.filename && (
-          <img src="/screenshots/fondov1.png" alt="Fondo Cora" class="absolute inset-0 w-full h-full object-cover -z-10 parallax" />
+          <picture class="contents">
+            <source srcset="/screenshots/fondov2.avif" type="image/avif" />
+            <source srcset="/screenshots/fondov2.webp" type="image/webp" />
+            <img
+              src="/screenshots/fondov2.webp"
+              alt="Fondo Cora"
+              width="1672"
+              height="941"
+              loading="eager"
+              fetchpriority="high"
+              decoding="async"
+              class="absolute inset-0 w-full h-full object-cover -z-10 parallax"
+            />
+          </picture>
         )}
       </div>
     )
   }
+
+  {/* Foto de plato: solo en móvil, para darle impacto visual al hero */}
+  <div class="hero-splash pointer-events-none absolute -bottom-2 -right-4 z-20 w-[68%] max-w-[380px] md:hidden">
+    <picture>
+      <source srcset="/screenshots/hero-ceviche-splash.avif" type="image/avif" />
+      <source srcset="/screenshots/hero-ceviche-splash.webp" type="image/webp" />
+      <img
+        src="/screenshots/hero-ceviche-splash.webp"
+        alt="Ceviche fresco de CORA"
+        width="900"
+        height="507"
+        loading="eager"
+        decoding="async"
+        class="hero-splash-pop h-auto w-full drop-shadow-2xl"
+      />
+    </picture>
+  </div>
 
   <div class="content-grid relative h-fit">
     <div class="grid max-w-3xl grid-cols-1 gap-3 text-balance pt-20 pb-20 md:pt-28 md:pb-24">
@@ -107,6 +150,29 @@ const text = content || "";
         font-weight: inherit;
         color: var(--accent-color);
       }
+    }
+  }
+
+  @keyframes hero-splash-float {
+    0%, 100% { transform: rotate(-4deg) translateY(0); }
+    50% { transform: rotate(-4deg) translateY(-8px); }
+  }
+  .hero-splash {
+    animation: hero-splash-float 4.5s ease-in-out infinite;
+  }
+
+  @keyframes hero-splash-pop {
+    0% { opacity: 0; transform: scale(0.85) translateY(12px); }
+    100% { opacity: 1; transform: scale(1) translateY(0); }
+  }
+  .hero-splash-pop {
+    animation: hero-splash-pop 0.9s cubic-bezier(0.16, 1, 0.3, 1) 0.15s both;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .hero-splash,
+    .hero-splash-pop {
+      animation: none;
     }
   }
 </style>

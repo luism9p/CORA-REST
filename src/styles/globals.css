@@ -7,10 +7,22 @@
 }
 html {
   scroll-behavior: smooth;
+  /* Respaldo antes de que el JS de stickyOffsets.js las corrija con la altura real */
+  --sticky-header-h: 69px;
+  --sticky-allergen-h: 69px;
 }
 body {
   font-family: var(--font-body);
   font-weight: var(--font-weight-body, 400);
+}
+
+/* Sensación nativa en táctil: sin flash de highlight ni delay de doble-tap.
+   Los estados de interacción se manejan explícitamente con active: en vez de hover. */
+button,
+a,
+[role="button"] {
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
 }
 /* CONTAINER */
 .content-grid {
