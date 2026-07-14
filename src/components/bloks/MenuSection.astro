@@ -32,7 +32,7 @@ const { id, surface, menu } = Astro.props;
   {
     menu && menu.length > 1 && (
       <div
-        class="breakout sticky z-30 mb-2 w-full bg-white/80 dark:bg-black/80 backdrop-blur-sm border-b border-gray-100 dark:border-gray-900 px-4 sm:px-6 py-3"
+        class="full-width sticky z-30 mb-2 w-full bg-white/80 dark:bg-black/80 backdrop-blur-sm border-b border-gray-100 dark:border-gray-900 px-4 sm:px-6 py-3"
         style="top: calc(var(--sticky-header-h, 69px) + var(--sticky-allergen-h, 69px));"
       >
         {/* Lista de chips de categorías: una sola línea con scroll lateral (swipe) */}
@@ -58,10 +58,10 @@ const { id, surface, menu } = Astro.props;
             type="button"
             data-fade="left"
             aria-label="Ver categorías anteriores"
-            class="absolute inset-y-0 left-0 flex w-10 items-center justify-start bg-gradient-to-r from-white/90 dark:from-black/90 to-transparent pl-0.5 opacity-0 transition-opacity duration-200 active:from-white dark:active:from-black"
+            class="absolute left-1 top-1/2 z-10 flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full bg-white/95 dark:bg-black/95 shadow-md ring-1 ring-black/5 dark:ring-white/10 opacity-0 transition-opacity duration-200 active:bg-white dark:active:bg-black"
             style="pointer-events: none;"
           >
-            <svg class="h-5 w-5 animate-pulse-x-reverse text-gray-500 dark:text-gray-300" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true">
+            <svg class="h-4 w-4 animate-pulse-x-reverse text-gray-600 dark:text-gray-300" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true">
               <path stroke-linecap="round" stroke-linejoin="round" d="m15 6-6 6 6 6" />
             </svg>
           </button>
@@ -69,10 +69,10 @@ const { id, surface, menu } = Astro.props;
             type="button"
             data-fade="right"
             aria-label="Ver más categorías"
-            class="absolute inset-y-0 right-0 flex w-10 items-center justify-end bg-gradient-to-l from-white/90 dark:from-black/90 to-transparent pr-0.5 opacity-0 transition-opacity duration-200 active:from-white dark:active:from-black"
+            class="absolute right-1 top-1/2 z-10 flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full bg-white/95 dark:bg-black/95 shadow-md ring-1 ring-black/5 dark:ring-white/10 opacity-0 transition-opacity duration-200 active:bg-white dark:active:bg-black"
             style="pointer-events: none;"
           >
-            <svg class="h-5 w-5 animate-pulse-x text-gray-500 dark:text-gray-300" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true">
+            <svg class="h-4 w-4 animate-pulse-x text-gray-600 dark:text-gray-300" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true">
               <path stroke-linecap="round" stroke-linejoin="round" d="m9 6 6 6-6 6" />
             </svg>
           </button>
