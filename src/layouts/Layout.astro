@@ -17,8 +17,6 @@ import "@styles/globals.css";
 interface Meta {
   title: string;
   description: string;
-  og_image: string;
-  image: string;
 }
 interface Props {
   meta: Meta;
@@ -101,7 +99,10 @@ const labels = {
   back_to_home: t("back_to_home"),
 };
 
-let socialImage = meta.image ? meta.image + "/m/1200x630/smart/filters:format(png)" : "";
+// Logo de CORA sobre fondo rojo de marca: es lo que se ve en la preview al compartir
+// el link (WhatsApp, Facebook, etc.). Necesita ser una URL absoluta para que los
+// crawlers de esas apps puedan resolverla — se arma a partir de `site` en astro.config.mjs.
+const socialImage = new URL("/screenshots/og-image.png", Astro.site).toString();
 ---
 
 <!doctype html>
@@ -128,6 +129,10 @@ let socialImage = meta.image ? meta.image + "/m/1200x630/smart/filters:format(pn
             name: "og:description",
             content: meta.description,
           },
+          { name: "og:image:width", content: "1200" },
+          { name: "og:image:height", content: "630" },
+          { name: "og:image:type", content: "image/png" },
+          { name: "og:image:alt", content: `Logo de ${settings.company_name}` },
           {
             name: "twitter:image",
             content: socialImage,

@@ -6,7 +6,10 @@ import sitemap from "@astrojs/sitemap";
 
 // https://astro.build/config
 export default defineConfig({
-  site: "https://astrorante.unfolding.io/",
+  // TODO: reemplaza esto por el dominio real una vez publicado (el de Vercel o uno propio).
+  // Se usa para generar URLs absolutas (og:image, sitemap.xml); mientras esté mal, esas
+  // previews (WhatsApp, Facebook, etc.) no van a resolver la imagen del logo.
+  site: "https://cora-lobitos.vercel.app/",
   output: "static",
   integrations: [
     tailwind({
