@@ -22,6 +22,7 @@
     "@astrojs/vue": "^5.0.3",
     "@fontsource-variable/readex-pro": "^5.0.15",
     "@nanostores/vue": "^0.10.0",
+    "@supabase/supabase-js": "^2.112.3",
     "@tailwindcss/container-queries": "^0.1.1",
     "@tailwindcss/nesting": "^0.0.0-insiders.565cd3e",
     "@vueuse/components": "^11.0.3",

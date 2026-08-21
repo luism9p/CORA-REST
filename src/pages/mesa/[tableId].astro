@@ -1,0 +1,16 @@
+---
+import PedidosShell from "@/pedidos/PedidosShell.astro";
+import MesaApp from "@/pedidos/pages/MesaApp.vue";
+
+export function getStaticPaths() {
+  return Array.from({ length: 12 }, (_, i) => ({
+    params: { tableId: String(i + 1) },
+  }));
+}
+
+const { tableId } = Astro.params;
+---
+
+<PedidosShell title={`Mesa ${tableId} · CORA`}>
+  <MesaApp client:load tableId={Number(tableId)} />
+</PedidosShell>

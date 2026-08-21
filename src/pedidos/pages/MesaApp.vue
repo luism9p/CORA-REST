@@ -1,0 +1,240 @@
+<script setup>
+import { ref, computed, watch } from "vue";
+import { useTable } from "@/pedidos/composables/useTable";
+import { useMenu } from "@/pedidos/composables/useMenu";
+import { useCart } from "@/pedidos/composables/useCart";
+import { useTheme } from "@/pedidos/composables/useTheme";
+import { useOrderTracking } from "@/pedidos/composables/useOrderTracking";
+import {
+  getStoredOrderId,
+  setStoredOrderId,
+  clearStoredOrderId,
+} from "@/pedidos/utils/orderStorage";
+
+import LoadingSpinner from "@/pedidos/components/common/LoadingSpinner.vue";
+import CategoryTabs from "@/pedidos/components/menu/CategoryTabs.vue";
+import SearchBar from "@/pedidos/components/menu/SearchBar.vue";
+import MenuItemCard from "@/pedidos/components/menu/MenuItemCard.vue";
+import CartDrawer from "@/pedidos/components/cart/CartDrawer.vue";
+import QuickActions from "@/pedidos/components/QuickActions.vue";
+import ThemeToggleButton from "@/pedidos/components/ThemeToggleButton.vue";
+import OrderTrackingView from "./OrderTrackingView.vue";
+import ThankYouView from "./ThankYouView.vue";
+
+const props = defineProps({
+  tableId: { type: Number, required: true },
+});
+
+const { table, loading: tableLoading, error: tableError } = useTable(props.tableId);
+const { theme, toggleTheme } = useTheme();
+const cart = useCart();
+const { categories, groupedByCategory, loading: menuLoading } = useMenu();
+
+const view = ref("menu"); // 'menu' | 'tracking' | 'thankyou'
+const activeOrderId = ref(null);
+const activeCategory = ref("");
+const searchTerm = ref("");
+const cartOpen = ref(false);
+const initialized = ref(false);
+
+const { order, orderItems, notFound } = useOrderTracking(activeOrderId);
+
+// En cuanto conocemos la mesa, revisamos si ya había un pedido activo
+// guardado en localStorage (recarga de página accidental) antes de mostrar
+// el menú desde cero.
+watch(
+  table,
+  (t) => {
+    if (!t || initialized.value) return;
+    initialized.value = true;
+    const stored = getStoredOrderId(t.numero);
+    if (stored) {
+      activeOrderId.value = stored;
+      view.value = "tracking";
+    }
+  },
+  { immediate: true }
+);
+
+watch(categories, (list) => {
+  if (list.length > 0 && !activeCategory.value) {
+    activeCategory.value = list[0];
+  }
+});
+
+watch(
+  () => order.value?.estado,
+  (estado) => {
+    if (estado === "entregado") view.value = "thankyou";
+  }
+);
+
+// El pedido guardado ya no existe (p. ej. lo borraron desde el admin):
+// limpiamos y volvemos al menú en vez de quedarnos cargando para siempre.
+watch(notFound, (isNotFound) => {
+  if (isNotFound && view.value === "tracking") {
+    if (table.value) clearStoredOrderId(table.value.numero);
+    activeOrderId.value = null;
+    view.value = "menu";
+  }
+});
+
+function normalize(text) {
+  return (text || "")
+    .toLowerCase()
+    .normalize("NFD")
+    .replace(/[̀-ͯ]/g, "");
+}
+
+const filteredItems = computed(() => {
+  const term = normalize(searchTerm.value.trim());
+  if (!term) return null; // null = usar vista normal por categoría
+  const all = Object.values(groupedByCategory.value).flat();
+  return all.filter(
+    (item) =>
+      normalize(item.nombre).includes(term) || normalize(item.descripcion).includes(term)
+  );
+});
+
+function handleConfirmed(orderId) {
+  if (table.value) setStoredOrderId(table.value.numero, orderId);
+  activeOrderId.value = orderId;
+  cartOpen.value = false;
+  view.value = "tracking";
+}
+
+function handleNewOrder() {
+  if (table.value) clearStoredOrderId(table.value.numero);
+  activeOrderId.value = null;
+  view.value = "menu";
+}
+</script>
+
+<template>
+  <div class="mesa-theme-root" :data-theme="theme">
+    <LoadingSpinner v-if="tableLoading" label="Cargando mesa..." />
+
+    <div v-else-if="tableError" class="mesa-app__error">
+      {{ tableError }}
+    </div>
+
+    <template v-else-if="table">
+      <ThemeToggleButton :theme="theme" @toggle="toggleTheme" />
+      <QuickActions :table-id="table.id" />
+
+      <!-- Menú -->
+      <div v-if="view === 'menu'" class="mesa-app__menu">
+        <div class="mesa-app__menu-header">
+          <SearchBar v-model="searchTerm" />
+          <CategoryTabs
+            v-if="!searchTerm"
+            :categories="categories"
+            :active-category="activeCategory"
+            @select="activeCategory = $event"
+          />
+        </div>
+
+        <LoadingSpinner v-if="menuLoading" label="Cargando la carta..." />
+
+        <div v-else class="mesa-app__grid">
+          <MenuItemCard
+            v-for="item in filteredItems ?? groupedByCategory[activeCategory] ?? []"
+            :key="item.id"
+            :item="item"
+          />
+          <p v-if="filteredItems && filteredItems.length === 0" class="mesa-app__empty">
+            No encontramos ningún plato con "{{ searchTerm }}".
+          </p>
+          <p v-else-if="!filteredItems && categories.length === 0" class="mesa-app__empty">
+            La carta todavía no está disponible. Avísale al mesero.
+          </p>
+        </div>
+
+        <button
+          v-if="cart.count.value > 0"
+          type="button"
+          class="mesa-app__cart-fab"
+          @click="cartOpen = true"
+        >
+          Ver pedido ({{ cart.count.value }})
+        </button>
+
+        <CartDrawer :open="cartOpen" :table-id="table.id" @close="cartOpen = false" @confirmed="handleConfirmed" />
+      </div>
+
+      <!-- Seguimiento -->
+      <div v-else-if="view === 'tracking'">
+        <LoadingSpinner v-if="!order" label="Buscando tu pedido..." />
+        <OrderTrackingView v-else :order="order" :order-items="orderItems" />
+      </div>
+
+      <!-- Agradecimiento -->
+      <ThankYouView v-else-if="view === 'thankyou'" @new-order="handleNewOrder" />
+    </template>
+  </div>
+</template>
+
+<style>
+@import "../styles/pedidos.css";
+</style>
+
+<style scoped>
+.mesa-app__error {
+  max-width: 24rem;
+  margin: 4rem auto;
+  text-align: center;
+  color: var(--color-nuevo);
+  font-weight: 600;
+  padding: 0 1.25rem;
+}
+
+.mesa-app__menu {
+  padding: 1rem 1rem 6rem;
+  max-width: 40rem;
+  margin: 0 auto;
+}
+
+.mesa-app__menu-header {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  background: var(--color-bg);
+  padding-bottom: 0.75rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.mesa-app__grid {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  margin-top: 1rem;
+}
+
+.mesa-app__empty {
+  text-align: center;
+  color: var(--color-muted);
+  padding: 2rem 0;
+}
+
+.mesa-app__cart-fab {
+  position: fixed;
+  bottom: 1rem;
+  right: 1rem;
+  left: 1rem;
+  max-width: 24rem;
+  margin: 0 auto;
+  min-height: 3.25rem;
+  border-radius: 9999px;
+  background: var(--color-primary);
+  color: #fff;
+  font-weight: 700;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25);
+  z-index: 30;
+}
+
+.mesa-app__cart-fab:active {
+  background: var(--color-primary-dark);
+}
+</style>

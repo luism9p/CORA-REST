@@ -345,14 +345,14 @@ const getLayout = () => {
       const done = () => {
         if (token !== cleanupToken) return; // ya se disparó otro toggle antes
         if (btn.getAttribute("aria-expanded") === "true") {
-          desc.style.maxHeight = "none";
+          desc!.style.maxHeight = "none";
         } else {
-          desc.classList.add("line-clamp-2");
-          desc.style.maxHeight = "";
-          desc.style.overflow = "";
+          desc!.classList.add("line-clamp-2");
+          desc!.style.maxHeight = "";
+          desc!.style.overflow = "";
         }
       };
-      desc.addEventListener("transitionend", done, { once: true });
+      desc!.addEventListener("transitionend", done, { once: true });
       setTimeout(done, 400);
     }
 

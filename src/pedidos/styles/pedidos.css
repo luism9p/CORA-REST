@@ -1,0 +1,49 @@
+/* src/pedidos/styles/pedidos.css
+   Solo se importa desde componentes del módulo de pedidos (MesaApp.vue /
+   AdminDashboardPage.vue / AdminLoginPage.vue) — nunca desde el stylesheet
+   global del sitio (src/styles/globals.css).
+
+   Los tokens de color repiten los de la marca de CORA (--primary-bg: #CC0000,
+   etc. en src/layouts/Layout.astro), pero con sus propios nombres porque ese
+   archivo expone triples RGB pensados para las utilidades de Tailwind
+   (`rgb(var(--primary-bg) / <alpha>)`), no valores hex sueltos como los que
+   usa este módulo. */
+
+.mesa-theme-root,
+.admin-root {
+  --color-bg: #ffffff;
+  --color-surface: #ffffff;
+  --color-primary: #cc0000;
+  --color-primary-dark: #a30000;
+  --color-text: #1a1a1a;
+  --color-muted: #6b6b6b;
+  --color-border: #e5e5e5;
+
+  --color-nuevo: #d64545;
+  --color-preparando: #e0a622;
+  --color-listo: #3f9142;
+  --color-entregado: #8a8a8a;
+
+  font-family: system-ui, -apple-system, sans-serif;
+  font-size: 18px;
+
+  background: var(--color-bg);
+  color: var(--color-text);
+  min-height: 100%;
+}
+
+/* Modo oscuro: SOLO dentro de .mesa-theme-root (vista de cliente). El panel
+   admin nunca renderiza ese wrapper, así que nunca puede heredar esto —
+   a propósito no se usa `:root[data-theme='dark']`. */
+[data-theme="dark"] {
+  --color-bg: #1a1a1a;
+  --color-surface: #262626;
+  --color-text: #f5f5f5;
+  --color-muted: #a3a3a3;
+  --color-border: #3a3a3a;
+}
+
+.mesa-theme-root *,
+.admin-root * {
+  box-sizing: border-box;
+}
