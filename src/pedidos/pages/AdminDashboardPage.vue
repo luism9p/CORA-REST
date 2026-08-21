@@ -68,6 +68,13 @@ function tableNumero(tableId) {
 
 async function advanceStatus(orderId, status) {
   await supabase.from("orders").update({ estado: status }).eq("id", orderId);
+  // Al entregar, el pedido deja de contar como "activo" (activeOrderFor lo
+  // excluye) y el panel se quedaría mostrando un order=null. Se cierra solo,
+  // que además es el comportamiento esperado: ya no hay nada más que hacer
+  // con ese pedido desde el detalle.
+  if (status === "entregado" && selectedEntry.value?.order?.id === orderId) {
+    selectedTableId.value = null;
+  }
 }
 
 function selectTable(table) {
@@ -114,7 +121,7 @@ async function handleSignOut() {
         </ul>
       </section>
 
-      <div v-if="selectedEntry" class="admin-dashboard__overlay" @click.self="selectedTableId = null">
+      <div v-if="selectedEntry?.order" class="admin-dashboard__overlay" @click.self="selectedTableId = null">
         <OrderDetailPanel
           :order="selectedEntry.order"
           :table-numero="selectedEntry.table.numero"
