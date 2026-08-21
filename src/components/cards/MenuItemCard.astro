@@ -95,8 +95,24 @@ const getLayout = () => {
 
     {
       content.translations && (
-        <div class="max-w-lg pt-1 text-sm text-gray-600 dark:text-gray-400 leading-snug line-clamp-2 md:line-clamp-none i18n-element" data-translations={JSON.stringify(content.translations)} data-key="description">
-          {translation.description}
+        <div class="max-w-lg pt-1">
+          <div
+            id={`desc-${content.id}`}
+            class="dish-desc i18n-element line-clamp-2 text-sm leading-snug text-gray-600 transition-[max-height] duration-300 ease-in-out dark:text-gray-400"
+            data-translations={JSON.stringify(content.translations)}
+            data-key="description"
+          >
+            {translation.description}
+          </div>
+          <button
+            type="button"
+            class="desc-toggle mt-1 text-xs font-bold text-primary transition-opacity duration-150 active:opacity-60"
+            aria-expanded="false"
+            aria-controls={`desc-${content.id}`}
+            hidden
+          >
+            Ver más
+          </button>
         </div>
       )
     }
@@ -263,5 +279,127 @@ const getLayout = () => {
             grid-area: 🌞;
         }
     }
-  
+
 </style>
+
+<script>
+  // "Ver más / Ver menos" para la descripción del plato. Un solo listener
+  // delegado por página (Astro dedupea este <script> aunque el componente
+  // se repita decenas de veces en el menú).
+  const LABELS: Record<string, { more: string; less: string }> = {
+    es: { more: "Ver más", less: "Ver menos" },
+    en: { more: "Read more", less: "Read less" },
+    fr: { more: "Voir plus", less: "Voir moins" },
+    it: { more: "Leggi di più", less: "Leggi meno" },
+    de: { more: "Mehr anzeigen", less: "Weniger anzeigen" },
+  };
+
+  function currentLang() {
+    return localStorage.getItem("preferredLanguage") || "es";
+  }
+
+  function labelFor(expanded: boolean) {
+    const dict = LABELS[currentLang()] || LABELS.es;
+    return expanded ? dict.less : dict.more;
+  }
+
+  // Mide la altura real de 2 líneas y la altura completa, quitando y
+  // reponiendo el clamp en el mismo tick (sin parpadeo visual).
+  function measure(desc: HTMLElement) {
+    desc.classList.remove("line-clamp-2");
+    const full = desc.scrollHeight;
+    desc.classList.add("line-clamp-2");
+    const collapsed = desc.clientHeight;
+    return { full, collapsed };
+  }
+
+  function setupToggle(btn: HTMLButtonElement) {
+    if (btn.dataset.descInit === "true") return;
+    btn.dataset.descInit = "true";
+
+    const desc = document.getElementById(btn.getAttribute("aria-controls") || "");
+    if (!desc) return;
+
+    const { full, collapsed } = measure(desc);
+
+    // El texto ya cabe en 2 líneas: no hace falta el botón.
+    if (full <= collapsed + 2) {
+      btn.remove();
+      return;
+    }
+
+    desc.style.overflow = "hidden";
+    desc.style.maxHeight = `${collapsed}px`;
+    btn.hidden = false;
+    btn.textContent = labelFor(false);
+
+    // Limpieza al terminar la transición: deja la descripción en un estado
+    // "natural" (sin alturas fijas en píxeles) para que no se rompa si el
+    // contenido cambia después (idioma, resize, etc). Se dispara por
+    // transitionend, pero también por un respaldo en caso de que ese evento
+    // no llegue (transiciones desactivadas, prefers-reduced-motion, pestaña
+    // en segundo plano...).
+    let cleanupToken = 0;
+    function scheduleCleanup() {
+      const token = ++cleanupToken;
+      const done = () => {
+        if (token !== cleanupToken) return; // ya se disparó otro toggle antes
+        if (btn.getAttribute("aria-expanded") === "true") {
+          desc.style.maxHeight = "none";
+        } else {
+          desc.classList.add("line-clamp-2");
+          desc.style.maxHeight = "";
+          desc.style.overflow = "";
+        }
+      };
+      desc.addEventListener("transitionend", done, { once: true });
+      setTimeout(done, 400);
+    }
+
+    btn.addEventListener("click", () => {
+      const expanded = btn.getAttribute("aria-expanded") === "true";
+      cleanupToken++; // invalida cualquier limpieza pendiente de un toggle anterior
+
+      if (expanded) {
+        // Colapsar: fija la altura completa actual antes de animar hacia abajo.
+        desc.style.maxHeight = `${desc.scrollHeight}px`;
+        void desc.offsetHeight;
+        // setTimeout en vez de requestAnimationFrame: sigue disparando aunque
+        // la pestaña esté en segundo plano (rAF se pausa ahí).
+        setTimeout(() => {
+          desc.classList.remove("line-clamp-2");
+          desc.style.maxHeight = `${collapsed}px`;
+          scheduleCleanup();
+        }, 10);
+      } else {
+        // Expandir: quita el clamp y anima hacia la altura completa real.
+        desc.classList.remove("line-clamp-2");
+        desc.style.maxHeight = `${desc.scrollHeight}px`;
+        scheduleCleanup();
+      }
+
+      btn.setAttribute("aria-expanded", String(!expanded));
+      btn.textContent = labelFor(!expanded);
+    });
+  }
+
+  function initDescToggles() {
+    document.querySelectorAll<HTMLButtonElement>(".desc-toggle").forEach(setupToggle);
+  }
+
+  function updateToggleLabels() {
+    document.querySelectorAll<HTMLButtonElement>(".desc-toggle:not([hidden])").forEach((btn) => {
+      btn.textContent = labelFor(btn.getAttribute("aria-expanded") === "true");
+    });
+  }
+
+  window.addEventListener("languageChanged", updateToggleLabels);
+
+  document.addEventListener("astro:page-load", initDescToggles);
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", initDescToggles);
+  } else {
+    initDescToggles();
+  }
+</script>
+
