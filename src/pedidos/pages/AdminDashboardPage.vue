@@ -15,6 +15,7 @@ import ShiftStats from "@/pedidos/components/admin/ShiftStats.vue";
 import FilterTabs from "@/pedidos/components/admin/FilterTabs.vue";
 import TableCard from "@/pedidos/components/admin/TableCard.vue";
 import OrderDetailPanel from "@/pedidos/components/admin/OrderDetailPanel.vue";
+import MenuAvailability from "@/pedidos/components/admin/MenuAvailability.vue";
 
 const { session, loading: authLoading, signOut } = useAuth();
 const { tables, loading: tablesLoading } = useTables();
@@ -25,6 +26,7 @@ const { totalRevenue, bestSeller } = useShiftStats(orders);
 
 const filter = ref("todas");
 const selectedTableId = ref(null);
+const view = ref("mesas"); // 'mesas' | 'carta'
 
 // Si no hay sesión, al login. Es guard client-side porque el proyecto es
 // output:'static' (no hay verificación posible en el servidor). Se registra
@@ -98,28 +100,52 @@ async function handleSignOut() {
       </header>
 
       <PendingRequestsBanner :requests="requests" @attend="markAttended" />
-      <ShiftStats :total-revenue="totalRevenue" :best-seller="bestSeller" />
-      <FilterTabs v-model="filter" />
 
-      <TransitionGroup tag="div" name="admin-grid" class="admin-dashboard__grid">
-        <TableCard
-          v-for="entry in filteredTables"
-          :key="entry.table.id"
-          :table="entry.table"
-          :order="entry.order"
-          @select="selectTable"
-        />
-      </TransitionGroup>
+      <div class="admin-dashboard__view-tabs">
+        <button
+          type="button"
+          class="admin-dashboard__view-tab"
+          :class="{ 'admin-dashboard__view-tab--active': view === 'mesas' }"
+          @click="view = 'mesas'"
+        >
+          Mesas
+        </button>
+        <button
+          type="button"
+          class="admin-dashboard__view-tab"
+          :class="{ 'admin-dashboard__view-tab--active': view === 'carta' }"
+          @click="view = 'carta'"
+        >
+          Carta
+        </button>
+      </div>
 
-      <section v-if="deliveredToday.length" class="admin-dashboard__history">
-        <h2>Entregados hoy</h2>
-        <ul>
-          <li v-for="o in deliveredToday" :key="o.id">
-            <span>Mesa {{ tableNumero(o.table_id) }}</span>
-            <span>{{ formatCurrency(o.total) }}</span>
-          </li>
-        </ul>
-      </section>
+      <template v-if="view === 'mesas'">
+        <ShiftStats :total-revenue="totalRevenue" :best-seller="bestSeller" />
+        <FilterTabs v-model="filter" />
+
+        <TransitionGroup tag="div" name="admin-grid" class="admin-dashboard__grid">
+          <TableCard
+            v-for="entry in filteredTables"
+            :key="entry.table.id"
+            :table="entry.table"
+            :order="entry.order"
+            @select="selectTable"
+          />
+        </TransitionGroup>
+
+        <section v-if="deliveredToday.length" class="admin-dashboard__history">
+          <h2>Entregados hoy</h2>
+          <ul>
+            <li v-for="o in deliveredToday" :key="o.id">
+              <span>Mesa {{ tableNumero(o.table_id) }}</span>
+              <span>{{ formatCurrency(o.total) }}</span>
+            </li>
+          </ul>
+        </section>
+      </template>
+
+      <MenuAvailability v-else />
 
       <div v-if="selectedEntry?.order" class="admin-dashboard__overlay" @click.self="selectedTableId = null">
         <OrderDetailPanel
@@ -165,6 +191,28 @@ async function handleSignOut() {
   background: var(--color-surface);
   font-weight: 700;
   font-size: 0.85rem;
+}
+
+.admin-dashboard__view-tabs {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 1.25rem;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.admin-dashboard__view-tab {
+  min-height: 2.75rem;
+  padding: 0 0.25rem;
+  font-weight: 700;
+  font-size: 0.95rem;
+  color: var(--color-muted);
+  border-bottom: 2px solid transparent;
+  margin-bottom: -1px;
+}
+
+.admin-dashboard__view-tab--active {
+  color: var(--color-primary);
+  border-bottom-color: var(--color-primary);
 }
 
 .admin-dashboard__grid {

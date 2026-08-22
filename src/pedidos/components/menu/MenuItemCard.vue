@@ -50,7 +50,8 @@ function decrement() {
       <div class="pedidos-item-card__footer">
         <span class="pedidos-item-card__price">{{ formatCurrency(item.precio) }}</span>
 
-        <button v-if="quantity === 0" type="button" class="pedidos-item-card__add" @click="add">
+        <span v-if="!item.disponible" class="pedidos-item-card__sold-out">Agotado</span>
+        <button v-else-if="quantity === 0" type="button" class="pedidos-item-card__add" @click="add">
           Agregar
         </button>
         <div v-else class="pedidos-stepper">
@@ -134,6 +135,16 @@ function decrement() {
 
 .pedidos-item-card__add:active {
   background: var(--color-primary-dark);
+}
+
+.pedidos-item-card__sold-out {
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--color-muted);
+  border: 1px solid var(--color-border);
+  border-radius: 9999px;
+  padding: 0.35rem 0.75rem;
+  white-space: nowrap;
 }
 
 .pedidos-stepper {

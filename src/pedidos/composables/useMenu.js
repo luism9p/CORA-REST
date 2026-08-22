@@ -34,10 +34,12 @@ export function useMenu() {
 
   onMounted(async () => {
     loading.value = true;
+    // Trae también los agotados: se muestran igual en la carta pero con el
+    // botón de "Agregar" deshabilitado (ver MenuItemCard.vue), en vez de
+    // desaparecer sin explicación.
     const { data, error: dbError } = await supabase
       .from("menu_items")
       .select("*")
-      .eq("disponible", true)
       .order("categoria", { ascending: true })
       .order("nombre", { ascending: true });
 
@@ -47,6 +49,20 @@ export function useMenu() {
       items.value = data || [];
     }
     loading.value = false;
+
+    // El admin puede marcar/desmarcar "Agotado" mientras el cliente ya tiene
+    // el menú abierto — esto lo refleja al instante, sin necesitar recargar.
+    supabase
+      .channel("menu-items-availability")
+      .on(
+        "postgres_changes",
+        { event: "UPDATE", schema: "public", table: "menu_items" },
+        (payload) => {
+          const idx = items.value.findIndex((i) => i.id === payload.new.id);
+          if (idx !== -1) items.value[idx] = payload.new;
+        }
+      )
+      .subscribe();
   });
 
   const categories = computed(() => {
