@@ -33,12 +33,33 @@
   --color-listo: #3f9142;
   --color-entregado: #8a8a8a;
 
+  /* Curvas de movimiento tipo Apple: --ease-sheet es prácticamente la curva
+     de las hojas modales de iOS (decelera fuerte, sin rebote); --ease-spring
+     tiene un ligero overshoot para elementos pequeños e interactivos
+     (botones, contadores); --ease-out es una salida suave para fades. */
+  --ease-sheet: cubic-bezier(0.32, 0.72, 0, 1);
+  --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+
   font-family: system-ui, -apple-system, sans-serif;
   font-size: 18px;
+  font-variant-numeric: tabular-nums; /* precios/contadores no "bailan" de ancho al cambiar */
 
   background: var(--color-bg);
   color: var(--color-text);
   min-height: 100%;
+}
+
+/* Respeta la preferencia del sistema: nada de movimiento decorativo si el
+   usuario pidió reducir animaciones (incluye el gesto de arrastre de las
+   hojas, que cae a un cierre instantáneo vía JS — ver useDragSheet.js). */
+@media (prefers-reduced-motion: reduce) {
+  .mesa-theme-root *,
+  .admin-root * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
 }
 
 /* Modo oscuro: SOLO dentro de .mesa-theme-root (vista de cliente). El panel

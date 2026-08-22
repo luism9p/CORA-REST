@@ -147,15 +147,17 @@ async function handleSignOut() {
 
       <MenuAvailability v-else />
 
-      <div v-if="selectedEntry?.order" class="admin-dashboard__overlay" @click.self="selectedTableId = null">
-        <OrderDetailPanel
-          :order="selectedEntry.order"
-          :table-numero="selectedEntry.table.numero"
-          @close="selectedTableId = null"
-          @advance-status="advanceStatus"
-          @toggle-item="toggleListo"
-        />
-      </div>
+      <Transition name="admin-overlay">
+        <div v-if="selectedEntry?.order" class="admin-dashboard__overlay" @click.self="selectedTableId = null">
+          <OrderDetailPanel
+            :order="selectedEntry.order"
+            :table-numero="selectedEntry.table.numero"
+            @close="selectedTableId = null"
+            @advance-status="advanceStatus"
+            @toggle-item="toggleListo"
+          />
+        </div>
+      </Transition>
     </template>
   </div>
 </template>
@@ -225,7 +227,7 @@ async function handleSignOut() {
 .admin-grid-move,
 .admin-grid-enter-active,
 .admin-grid-leave-active {
-  transition: all 300ms ease;
+  transition: all 400ms var(--ease-spring);
 }
 .admin-grid-enter-from,
 .admin-grid-leave-to {
@@ -268,6 +270,26 @@ async function handleSignOut() {
   align-items: center;
   justify-content: center;
   background: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(3px);
+  -webkit-backdrop-filter: blur(3px);
   padding: 1rem;
+}
+
+.admin-overlay-enter-active {
+  transition: opacity 300ms var(--ease-out);
+}
+.admin-overlay-leave-active {
+  transition: opacity 200ms var(--ease-out);
+}
+.admin-overlay-enter-from,
+.admin-overlay-leave-to {
+  opacity: 0;
+}
+.admin-overlay-enter-active :deep(.admin-detail) {
+  transition: transform 400ms var(--ease-spring), opacity 300ms var(--ease-out);
+}
+.admin-overlay-enter-from :deep(.admin-detail) {
+  transform: scale(0.9) translateY(1rem);
+  opacity: 0;
 }
 </style>

@@ -168,14 +168,16 @@ function handleNewOrder() {
           </p>
         </div>
 
-        <button
-          v-if="cart.count.value > 0"
-          type="button"
-          class="mesa-app__cart-fab"
-          @click="cartOpen = true"
-        >
-          {{ t("viewOrder", cart.count.value) }}
-        </button>
+        <Transition name="mesa-app-fab">
+          <button
+            v-if="cart.count.value > 0"
+            type="button"
+            class="mesa-app__cart-fab"
+            @click="cartOpen = true"
+          >
+            {{ t("viewOrder", cart.count.value) }}
+          </button>
+        </Transition>
 
         <CartDrawer :open="cartOpen" :table-id="table.id" @close="cartOpen = false" @confirmed="handleConfirmed" />
         <CrossSellPrompt />
@@ -252,9 +254,23 @@ function handleNewOrder() {
   white-space: nowrap;
   box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25);
   z-index: 30;
+  transition: transform 400ms var(--ease-spring), background-color 150ms var(--ease-out);
 }
 
 .mesa-app__cart-fab:active {
   background: var(--color-primary-dark);
+  transform: scale(0.94);
+}
+
+.mesa-app-fab-enter-active {
+  transition: opacity 400ms var(--ease-spring), transform 400ms var(--ease-spring);
+}
+.mesa-app-fab-leave-active {
+  transition: opacity 200ms var(--ease-out), transform 200ms var(--ease-out);
+}
+.mesa-app-fab-enter-from,
+.mesa-app-fab-leave-to {
+  opacity: 0;
+  transform: scale(0.7) translateY(0.5rem);
 }
 </style>

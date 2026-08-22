@@ -33,9 +33,10 @@ const { language, toggleLanguage, t } = useLanguage();
   display: flex;
   align-items: center;
   justify-content: center;
+  transition: transform 400ms var(--ease-spring);
 }
 
 .pedidos-language-toggle:active {
-  transform: scale(0.95);
+  transform: scale(0.9);
 }
 </style>

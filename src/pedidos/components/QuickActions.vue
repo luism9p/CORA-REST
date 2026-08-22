@@ -28,7 +28,9 @@ function confirmBillRequest(extra) {
       {{ t("requestBill") }}
     </button>
 
-    <div v-if="toast" class="pedidos-quick-actions__toast">{{ toast }}</div>
+    <Transition name="pedidos-toast">
+      <div v-if="toast" class="pedidos-quick-actions__toast">{{ toast }}</div>
+    </Transition>
 
     <BillRequestModal
       :open="billModalOpen"
@@ -61,10 +63,11 @@ function confirmBillRequest(extra) {
   font-size: 0.85rem;
   font-weight: 700;
   text-align: left;
+  transition: transform 400ms var(--ease-spring);
 }
 
 .pedidos-quick-actions__btn:active {
-  transform: scale(0.97);
+  transform: scale(0.94);
 }
 
 .pedidos-quick-actions__toast {
@@ -80,5 +83,17 @@ function confirmBillRequest(extra) {
   font-weight: 600;
   white-space: nowrap;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.pedidos-toast-enter-active {
+  transition: opacity 400ms var(--ease-spring), transform 400ms var(--ease-spring);
+}
+.pedidos-toast-leave-active {
+  transition: opacity 200ms var(--ease-out), transform 200ms var(--ease-out);
+}
+.pedidos-toast-enter-from,
+.pedidos-toast-leave-to {
+  opacity: 0;
+  transform: translateX(-50%) translateY(0.5rem) scale(0.9);
 }
 </style>

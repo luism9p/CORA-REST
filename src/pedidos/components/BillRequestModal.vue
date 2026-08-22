@@ -2,6 +2,7 @@
 import { ref, computed, watch } from "vue";
 import { formatCurrency } from "@/pedidos/utils/format";
 import { useLanguage } from "@/pedidos/composables/useLanguage";
+import { useDragSheet } from "@/pedidos/composables/useDragSheet";
 
 const props = defineProps({
   open: { type: Boolean, default: false },
@@ -10,6 +11,9 @@ const props = defineProps({
 const emit = defineEmits(["close", "confirm"]);
 
 const { t } = useLanguage();
+const { onPointerDown, onPointerMove, onPointerUp, dragStyle } = useDragSheet({
+  onDismiss: () => emit("close"),
+});
 
 const TIP_OPTIONS = [0, 0.1, 0.15];
 
@@ -63,8 +67,16 @@ function confirm() {
     :aria-label="t('billTitle')"
     @click.self="$emit('close')"
   >
-    <div class="pedidos-bill-modal__box">
-      <div class="pedidos-bill-modal__handle"></div>
+    <div class="pedidos-bill-modal__box" :style="dragStyle">
+      <div
+        class="pedidos-bill-modal__handle-hitbox"
+        @pointerdown="onPointerDown"
+        @pointermove="onPointerMove"
+        @pointerup="onPointerUp"
+        @pointercancel="onPointerUp"
+      >
+        <div class="pedidos-bill-modal__handle"></div>
+      </div>
 
       <div class="pedidos-bill-modal__header">
         <h2>{{ t("billTitle") }}</h2>
@@ -149,9 +161,11 @@ function confirm() {
   align-items: flex-end;
   justify-content: center;
   background: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(3px);
+  -webkit-backdrop-filter: blur(3px);
   opacity: 0;
   pointer-events: none;
-  transition: opacity 250ms ease-out;
+  transition: opacity 250ms var(--ease-out);
 }
 
 .pedidos-bill-modal--open {
@@ -169,11 +183,23 @@ function confirm() {
   border-radius: 1.25rem 1.25rem 0 0;
   padding: 0.75rem 1.25rem 1.5rem;
   transform: translateY(100%);
-  transition: transform 300ms cubic-bezier(0.32, 0.72, 0, 1);
+  transition: transform 400ms var(--ease-sheet);
 }
 
 .pedidos-bill-modal--open .pedidos-bill-modal__box {
   transform: translateY(0);
+}
+
+.pedidos-bill-modal__handle-hitbox {
+  display: flex;
+  justify-content: center;
+  padding: 0.6rem 0 0.85rem;
+  touch-action: none;
+  cursor: grab;
+}
+
+.pedidos-bill-modal__handle-hitbox:active {
+  cursor: grabbing;
 }
 
 .pedidos-bill-modal__handle {
@@ -181,7 +207,6 @@ function confirm() {
   height: 0.35rem;
   border-radius: 9999px;
   background: var(--color-border);
-  margin: 0.5rem auto 0.75rem;
 }
 
 .pedidos-bill-modal__header {
@@ -194,6 +219,7 @@ function confirm() {
 .pedidos-bill-modal__header h2 {
   font-size: 1.2rem;
   font-weight: 800;
+  letter-spacing: -0.01em;
 }
 
 .pedidos-bill-modal__close {
@@ -202,6 +228,11 @@ function confirm() {
   border-radius: 9999px;
   background: var(--color-bg);
   flex-shrink: 0;
+  transition: transform 400ms var(--ease-spring);
+}
+
+.pedidos-bill-modal__close:active {
+  transform: scale(0.9);
 }
 
 .pedidos-bill-modal__row {
@@ -239,12 +270,17 @@ function confirm() {
   color: var(--color-text);
   font-weight: 700;
   font-size: 0.85rem;
+  transition: transform 400ms var(--ease-spring), background-color 150ms var(--ease-out), border-color 150ms var(--ease-out), color 150ms var(--ease-out);
 }
 
 .pedidos-bill-modal__tip-btn--active {
   background: var(--color-primary);
   border-color: var(--color-primary);
   color: #fff;
+}
+
+.pedidos-bill-modal__tip-btn:active {
+  transform: scale(0.94);
 }
 
 .pedidos-bill-modal__custom-tip {
@@ -311,9 +347,11 @@ function confirm() {
   font-weight: 700;
   font-size: 1rem;
   margin-top: 1rem;
+  transition: transform 400ms var(--ease-spring), background-color 150ms var(--ease-out);
 }
 
 .pedidos-bill-modal__confirm:active {
   background: var(--color-primary-dark);
+  transform: scale(0.96);
 }
 </style>

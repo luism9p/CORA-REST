@@ -154,10 +154,12 @@ function decrement() {
   color: #fff;
   font-size: 0.8rem;
   font-weight: 700;
+  transition: transform 400ms var(--ease-spring), background-color 150ms var(--ease-out);
 }
 
 .pedidos-item-card__add:active {
   background: var(--color-primary-dark);
+  transform: scale(0.92);
 }
 
 .pedidos-item-card__sold-out {
@@ -189,6 +191,11 @@ function decrement() {
   font-size: 1.1rem;
   font-weight: 700;
   line-height: 1;
+  transition: transform 400ms var(--ease-spring);
+}
+
+.pedidos-stepper__btn:active {
+  transform: scale(0.85);
 }
 
 .pedidos-stepper__count {
