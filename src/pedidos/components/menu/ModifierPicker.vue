@@ -1,6 +1,7 @@
 <script setup>
 import { ref, computed, watch } from "vue";
 import { useCart } from "@/pedidos/composables/useCart";
+import { useCrossSell } from "@/pedidos/composables/useCrossSell";
 import { formatCurrency } from "@/pedidos/utils/format";
 
 const props = defineProps({
@@ -10,6 +11,7 @@ const props = defineProps({
 const emit = defineEmits(["close"]);
 
 const cart = useCart();
+const crossSell = useCrossSell();
 const selected = ref(new Set());
 const quantity = ref(1);
 
@@ -43,6 +45,7 @@ const unitPrice = computed(() => {
 
 function confirm() {
   cart.addItem(props.item, quantity.value, "", chosenModifiers.value);
+  crossSell.maybeTrigger(props.item);
   emit("close");
 }
 </script>

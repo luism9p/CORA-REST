@@ -17,6 +17,7 @@ import CategoryTabs from "@/pedidos/components/menu/CategoryTabs.vue";
 import SearchBar from "@/pedidos/components/menu/SearchBar.vue";
 import MenuItemCard from "@/pedidos/components/menu/MenuItemCard.vue";
 import CartDrawer from "@/pedidos/components/cart/CartDrawer.vue";
+import CrossSellPrompt from "@/pedidos/components/menu/CrossSellPrompt.vue";
 import QuickActions from "@/pedidos/components/QuickActions.vue";
 import ThemeToggleButton from "@/pedidos/components/ThemeToggleButton.vue";
 import OrderTrackingView from "./OrderTrackingView.vue";
@@ -170,6 +171,7 @@ function handleNewOrder() {
         </button>
 
         <CartDrawer :open="cartOpen" :table-id="table.id" @close="cartOpen = false" @confirmed="handleConfirmed" />
+        <CrossSellPrompt />
       </div>
 
       <!-- Seguimiento -->

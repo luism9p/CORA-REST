@@ -1,6 +1,7 @@
 <script setup>
 import { ref, computed } from "vue";
 import { useCart } from "@/pedidos/composables/useCart";
+import { useCrossSell } from "@/pedidos/composables/useCrossSell";
 import { formatCurrency } from "@/pedidos/utils/format";
 import ModifierPicker from "./ModifierPicker.vue";
 
@@ -9,6 +10,7 @@ const props = defineProps({
 });
 
 const cart = useCart();
+const crossSell = useCrossSell();
 const pickerOpen = ref(false);
 
 const hasModifiers = computed(() => (props.item.modifiers?.length || 0) > 0);
@@ -30,6 +32,7 @@ function add() {
     return;
   }
   cart.addItem(props.item, 1);
+  crossSell.maybeTrigger(props.item);
 }
 
 function increment() {
