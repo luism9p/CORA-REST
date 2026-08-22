@@ -4,6 +4,7 @@ import { useTable } from "@/pedidos/composables/useTable";
 import { useMenu } from "@/pedidos/composables/useMenu";
 import { useCart } from "@/pedidos/composables/useCart";
 import { useTheme } from "@/pedidos/composables/useTheme";
+import { useBusinessHours } from "@/pedidos/composables/useBusinessHours";
 import { useOrderTracking } from "@/pedidos/composables/useOrderTracking";
 import {
   getStoredOrderId,
@@ -20,6 +21,7 @@ import QuickActions from "@/pedidos/components/QuickActions.vue";
 import ThemeToggleButton from "@/pedidos/components/ThemeToggleButton.vue";
 import OrderTrackingView from "./OrderTrackingView.vue";
 import ThankYouView from "./ThankYouView.vue";
+import ClosedView from "./ClosedView.vue";
 
 const props = defineProps({
   tableId: { type: Number, required: true },
@@ -27,6 +29,7 @@ const props = defineProps({
 
 const { table, loading: tableLoading, error: tableError } = useTable(props.tableId);
 const { theme, toggleTheme } = useTheme();
+const { isOpen } = useBusinessHours();
 const cart = useCart();
 const { categories, groupedByCategory, loading: menuLoading } = useMenu();
 
@@ -120,10 +123,17 @@ function handleNewOrder() {
 
     <template v-else-if="table">
       <ThemeToggleButton :theme="theme" @toggle="toggleTheme" />
-      <QuickActions :table-id="table.id" />
+      <!-- Fuera de horario y sin pedido en curso no hay nada que pedir/pedir
+           la cuenta de, así que las acciones rápidas solo se ocultan en ese
+           caso puntual — si ya tienen un pedido activo, se quedan visibles
+           aunque el reloj haya pasado la hora de cierre mientras comían. -->
+      <QuickActions v-if="isOpen || view !== 'menu'" :table-id="table.id" />
+
+      <!-- Cerrado (y sin pedido en curso) -->
+      <ClosedView v-if="view === 'menu' && !isOpen" />
 
       <!-- Menú -->
-      <div v-if="view === 'menu'" class="mesa-app__menu">
+      <div v-else-if="view === 'menu'" class="mesa-app__menu">
         <div class="mesa-app__menu-header">
           <SearchBar v-model="searchTerm" />
           <CategoryTabs
