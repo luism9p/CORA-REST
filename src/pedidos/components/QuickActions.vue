@@ -1,11 +1,20 @@
 <script setup>
+import { ref } from "vue";
 import { useTableRequest } from "@/pedidos/composables/useTableRequest";
+import BillRequestModal from "./BillRequestModal.vue";
 
 const props = defineProps({
   tableId: { type: Number, required: true },
+  orderTotal: { type: Number, default: 0 },
 });
 
 const { toast, sendRequest } = useTableRequest(props.tableId);
+const billModalOpen = ref(false);
+
+function confirmBillRequest(extra) {
+  sendRequest("cuenta", extra);
+  billModalOpen.value = false;
+}
 </script>
 
 <template>
@@ -13,11 +22,18 @@ const { toast, sendRequest } = useTableRequest(props.tableId);
     <button type="button" class="pedidos-quick-actions__btn" @click="sendRequest('mesero')">
       🙋 Llamar mesero
     </button>
-    <button type="button" class="pedidos-quick-actions__btn" @click="sendRequest('cuenta')">
+    <button type="button" class="pedidos-quick-actions__btn" @click="billModalOpen = true">
       🧾 Pedir la cuenta
     </button>
 
     <div v-if="toast" class="pedidos-quick-actions__toast">{{ toast }}</div>
+
+    <BillRequestModal
+      :open="billModalOpen"
+      :total="orderTotal"
+      @close="billModalOpen = false"
+      @confirm="confirmBillRequest"
+    />
   </div>
 </template>
 

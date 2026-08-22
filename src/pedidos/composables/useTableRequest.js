@@ -19,10 +19,11 @@ export function useTableRequest(tableId) {
     }, 3000);
   }
 
-  async function sendRequest(tipo) {
+  async function sendRequest(tipo, extra = {}) {
     const { error } = await supabase.from("table_requests").insert({
       table_id: tableId,
       tipo,
+      ...extra,
     });
 
     if (error) {

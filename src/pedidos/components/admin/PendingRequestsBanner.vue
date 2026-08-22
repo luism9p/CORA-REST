@@ -1,4 +1,6 @@
 <script setup>
+import { formatCurrency } from "@/pedidos/utils/format";
+
 defineProps({
   requests: { type: Array, required: true },
 });
@@ -14,7 +16,14 @@ function describe(req) {
 <template>
   <TransitionGroup v-if="requests.length" tag="div" name="admin-requests" class="admin-requests-banner">
     <div v-for="req in requests" :key="req.id" class="admin-requests-banner__item">
-      <span>{{ describe(req) }}</span>
+      <div class="admin-requests-banner__info">
+        <span>{{ describe(req) }}</span>
+        <span v-if="req.tipo === 'cuenta' && req.total_a_cobrar != null" class="admin-requests-banner__detail">
+          Cobrar {{ formatCurrency(req.total_a_cobrar) }}
+          <template v-if="req.propina > 0"> (incl. {{ formatCurrency(req.propina) }} propina)</template>
+          <template v-if="req.personas > 1"> · entre {{ req.personas }} personas</template>
+        </span>
+      </div>
       <button type="button" @click="$emit('attend', req.id)">Atender</button>
     </div>
   </TransitionGroup>
@@ -39,6 +48,18 @@ function describe(req) {
   padding: 0.75rem 1rem;
   font-weight: 700;
   color: #9a3412;
+}
+
+.admin-requests-banner__info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+  min-width: 0;
+}
+
+.admin-requests-banner__detail {
+  font-size: 0.8rem;
+  font-weight: 600;
 }
 
 .admin-requests-banner__item button {

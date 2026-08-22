@@ -128,7 +128,7 @@ function handleNewOrder() {
            la cuenta de, así que las acciones rápidas solo se ocultan en ese
            caso puntual — si ya tienen un pedido activo, se quedan visibles
            aunque el reloj haya pasado la hora de cierre mientras comían. -->
-      <QuickActions v-if="isOpen || view !== 'menu'" :table-id="table.id" />
+      <QuickActions v-if="isOpen || view !== 'menu'" :table-id="table.id" :order-total="order?.total ?? 0" />
 
       <!-- Cerrado (y sin pedido en curso) -->
       <ClosedView v-if="view === 'menu' && !isOpen" />
