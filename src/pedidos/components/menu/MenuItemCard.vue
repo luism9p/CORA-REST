@@ -123,7 +123,7 @@ function decrement() {
 }
 
 .pedidos-item-card__add {
-  min-height: 2.25rem;
+  min-height: 2.5rem;
   padding: 0 0.9rem;
   border-radius: 9999px;
   background: var(--color-primary);

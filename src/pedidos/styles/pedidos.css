@@ -9,6 +9,15 @@
    (`rgb(var(--primary-bg) / <alpha>)`), no valores hex sueltos como los que
    usa este módulo. */
 
+/* `rem` siempre se calcula contra el <html> real, nunca contra un ancestro
+   con font-size propio — así que el tamaño base de marca (18px, igual que
+   el sitio principal) tiene que ir aquí. Esto es seguro: este archivo solo
+   se carga en el documento propio de PedidosShell.astro (/mesa, /admin),
+   nunca junto al globals.css del sitio principal. */
+:root {
+  font-size: 18px;
+}
+
 .mesa-theme-root,
 .admin-root {
   --color-bg: #ffffff;

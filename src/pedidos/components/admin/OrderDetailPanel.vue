@@ -100,8 +100,8 @@ function advance(status) {
 }
 
 .admin-detail__close {
-  width: 2.25rem;
-  height: 2.25rem;
+  width: 2.5rem;
+  height: 2.5rem;
   border-radius: 9999px;
   background: var(--color-bg);
 }

@@ -219,17 +219,18 @@ function handleNewOrder() {
 }
 
 .mesa-app__cart-fab {
+  /* Esquina inferior derecha, ancho según contenido — no abajo-a-lo-ancho,
+     para no chocar con QuickActions (🙋/🧾) que vive abajo a la izquierda. */
   position: fixed;
   bottom: 1rem;
   right: 1rem;
-  left: 1rem;
-  max-width: 24rem;
-  margin: 0 auto;
   min-height: 3.25rem;
+  padding: 0 1.5rem;
   border-radius: 9999px;
   background: var(--color-primary);
   color: #fff;
   font-weight: 700;
+  white-space: nowrap;
   box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25);
   z-index: 30;
 }
