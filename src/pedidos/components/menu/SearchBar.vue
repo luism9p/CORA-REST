@@ -1,8 +1,12 @@
 <script setup>
+import { useLanguage } from "@/pedidos/composables/useLanguage";
+
 defineProps({
   modelValue: { type: String, default: "" },
 });
 defineEmits(["update:modelValue"]);
+
+const { t } = useLanguage();
 </script>
 
 <template>
@@ -14,7 +18,7 @@ defineEmits(["update:modelValue"]);
     <input
       type="search"
       class="pedidos-search__input"
-      placeholder="Buscar un plato..."
+      :placeholder="t('searchPlaceholder')"
       :value="modelValue"
       @input="$emit('update:modelValue', $event.target.value)"
     />

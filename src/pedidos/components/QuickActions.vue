@@ -1,6 +1,7 @@
 <script setup>
 import { ref } from "vue";
 import { useTableRequest } from "@/pedidos/composables/useTableRequest";
+import { useLanguage } from "@/pedidos/composables/useLanguage";
 import BillRequestModal from "./BillRequestModal.vue";
 
 const props = defineProps({
@@ -9,6 +10,7 @@ const props = defineProps({
 });
 
 const { toast, sendRequest } = useTableRequest(props.tableId);
+const { t } = useLanguage();
 const billModalOpen = ref(false);
 
 function confirmBillRequest(extra) {
@@ -20,10 +22,10 @@ function confirmBillRequest(extra) {
 <template>
   <div class="pedidos-quick-actions">
     <button type="button" class="pedidos-quick-actions__btn" @click="sendRequest('mesero')">
-      🙋 Llamar mesero
+      {{ t("callWaiter") }}
     </button>
     <button type="button" class="pedidos-quick-actions__btn" @click="billModalOpen = true">
-      🧾 Pedir la cuenta
+      {{ t("requestBill") }}
     </button>
 
     <div v-if="toast" class="pedidos-quick-actions__toast">{{ toast }}</div>

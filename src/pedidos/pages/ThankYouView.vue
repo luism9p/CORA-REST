@@ -1,13 +1,16 @@
 <script setup>
+import { useLanguage } from "@/pedidos/composables/useLanguage";
+
 const reviewUrl = import.meta.env.PUBLIC_GOOGLE_REVIEW_URL;
+const { t } = useLanguage();
 defineEmits(["new-order"]);
 </script>
 
 <template>
   <div class="pedidos-thankyou">
     <p class="pedidos-thankyou__emoji">🎉</p>
-    <h2 class="pedidos-thankyou__title">¡Gracias por tu pedido!</h2>
-    <p class="pedidos-thankyou__text">Esperamos que lo hayas disfrutado.</p>
+    <h2 class="pedidos-thankyou__title">{{ t("thankYouTitle") }}</h2>
+    <p class="pedidos-thankyou__text">{{ t("thankYouText") }}</p>
 
     <a
       v-if="reviewUrl"
@@ -16,11 +19,11 @@ defineEmits(["new-order"]);
       rel="noopener noreferrer"
       class="pedidos-thankyou__review"
     >
-      ⭐ Déjanos una reseña
+      {{ t("leaveReview") }}
     </a>
 
     <button type="button" class="pedidos-thankyou__again" @click="$emit('new-order')">
-      Hacer otro pedido
+      {{ t("newOrder") }}
     </button>
   </div>
 </template>

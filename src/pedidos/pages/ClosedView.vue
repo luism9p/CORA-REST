@@ -1,14 +1,15 @@
-<script setup></script>
+<script setup>
+import { useLanguage } from "@/pedidos/composables/useLanguage";
+
+const { t } = useLanguage();
+</script>
 
 <template>
   <div class="pedidos-closed">
     <p class="pedidos-closed__emoji">🕐</p>
-    <h2 class="pedidos-closed__title">Estamos cerrados</h2>
-    <p class="pedidos-closed__text">
-      Atendemos todos los días de <strong>11:30 a.m. a 5:00 p.m.</strong><br />
-      (martes cerrado).
-    </p>
-    <p class="pedidos-closed__sub">Vuelve a intentarlo dentro de nuestro horario de atención.</p>
+    <h2 class="pedidos-closed__title">{{ t("closedTitle") }}</h2>
+    <p class="pedidos-closed__text">{{ t("closedText") }}</p>
+    <p class="pedidos-closed__sub">{{ t("closedSub") }}</p>
   </div>
 </template>
 

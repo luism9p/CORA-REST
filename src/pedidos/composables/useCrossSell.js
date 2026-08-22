@@ -20,7 +20,7 @@ async function loadDrinks() {
   if (drinksCache) return drinksCache;
   const { data } = await supabase
     .from("menu_items")
-    .select("id, nombre, precio, categoria, disponible")
+    .select("id, nombre, nombre_en, precio, categoria, disponible")
     .in("categoria", DRINK_CATEGORIES)
     .eq("disponible", true);
   drinksCache = data || [];

@@ -1,6 +1,7 @@
 <script setup>
 import { ref } from "vue";
 import { useCart } from "@/pedidos/composables/useCart";
+import { useLanguage } from "@/pedidos/composables/useLanguage";
 import { supabase } from "@/pedidos/lib/supabaseClient";
 import { formatCurrency } from "@/pedidos/utils/format";
 import CartItemRow from "./CartItemRow.vue";
@@ -13,6 +14,7 @@ const props = defineProps({
 const emit = defineEmits(["close", "confirmed"]);
 
 const cart = useCart();
+const { t } = useLanguage();
 const paymentMethod = ref("");
 const submitting = ref(false);
 const submitError = ref("");
@@ -33,7 +35,7 @@ async function confirmOrder() {
     .single();
 
   if (orderError || !order) {
-    submitError.value = "No se pudo enviar el pedido, intenta de nuevo.";
+    submitError.value = t("orderError");
     submitting.value = false;
     return;
   }
@@ -51,7 +53,7 @@ async function confirmOrder() {
     .select();
 
   if (itemsError || !insertedItems) {
-    submitError.value = "No se pudo enviar el pedido, intenta de nuevo.";
+    submitError.value = t("orderError");
     submitting.value = false;
     return;
   }
@@ -70,7 +72,7 @@ async function confirmOrder() {
   if (modifierRows.length > 0) {
     const { error: modifiersError } = await supabase.from("order_item_modifiers").insert(modifierRows);
     if (modifiersError) {
-      submitError.value = "No se pudo enviar el pedido, intenta de nuevo.";
+      submitError.value = t("orderError");
       submitting.value = false;
       return;
     }
@@ -89,19 +91,19 @@ async function confirmOrder() {
     :class="{ 'pedidos-cart-modal--open': open }"
     role="dialog"
     aria-modal="true"
-    aria-label="Carrito"
+    :aria-label="t('yourOrder')"
     @click.self="$emit('close')"
   >
     <div class="pedidos-cart-modal__box">
       <div class="pedidos-cart-modal__handle"></div>
 
       <div class="pedidos-cart-modal__header">
-        <h2>Tu pedido</h2>
+        <h2>{{ t("yourOrder") }}</h2>
         <button type="button" class="pedidos-cart-modal__close" aria-label="Cerrar" @click="$emit('close')">✕</button>
       </div>
 
       <div v-if="cart.items.length === 0" class="pedidos-cart-modal__empty">
-        Todavía no agregaste ningún plato.
+        {{ t("emptyCart") }}
       </div>
 
       <template v-else>
@@ -120,7 +122,7 @@ async function confirmOrder() {
         <PaymentMethodSelector v-model="paymentMethod" />
 
         <div class="pedidos-cart-modal__total">
-          <span>Total</span>
+          <span>{{ t("total") }}</span>
           <span>{{ formatCurrency(cart.total.value) }}</span>
         </div>
 
@@ -132,7 +134,7 @@ async function confirmOrder() {
           :disabled="!paymentMethod || submitting"
           @click="confirmOrder"
         >
-          {{ submitting ? "Enviando..." : "Confirmar pedido" }}
+          {{ submitting ? t("sending") : t("confirmOrder") }}
         </button>
       </template>
     </div>

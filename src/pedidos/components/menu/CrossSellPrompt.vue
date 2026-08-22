@@ -1,10 +1,13 @@
 <script setup>
 import { useCrossSell } from "@/pedidos/composables/useCrossSell";
 import { useCart } from "@/pedidos/composables/useCart";
+import { useLanguage } from "@/pedidos/composables/useLanguage";
+import { localizedName } from "@/pedidos/utils/localizedMenuField";
 import { formatCurrency } from "@/pedidos/utils/format";
 
 const crossSell = useCrossSell();
 const cart = useCart();
+const { language, t } = useLanguage();
 
 function addAndClose(drink) {
   cart.addItem(drink, 1);
@@ -16,7 +19,7 @@ function addAndClose(drink) {
   <div class="pedidos-cross-sell" :class="{ 'pedidos-cross-sell--open': crossSell.visible.value }">
     <div class="pedidos-cross-sell__box">
       <div class="pedidos-cross-sell__header">
-        <span>Acompaña tu pedido con...</span>
+        <span>{{ t("crossSellTitle") }}</span>
         <button type="button" class="pedidos-cross-sell__close" aria-label="Cerrar" @click="crossSell.dismiss()">✕</button>
       </div>
       <div class="pedidos-cross-sell__list">
@@ -27,7 +30,7 @@ function addAndClose(drink) {
           class="pedidos-cross-sell__chip"
           @click="addAndClose(drink)"
         >
-          <span>{{ drink.nombre }}</span>
+          <span>{{ localizedName(drink, language) }}</span>
           <span class="pedidos-cross-sell__chip-price">{{ formatCurrency(drink.precio) }}</span>
         </button>
       </div>

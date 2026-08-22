@@ -2,6 +2,8 @@
 import { computed } from "vue";
 import { formatCurrency } from "@/pedidos/utils/format";
 import { lineUnitPrice } from "@/pedidos/composables/useCart";
+import { useLanguage } from "@/pedidos/composables/useLanguage";
+import { localizedName } from "@/pedidos/utils/localizedMenuField";
 
 const props = defineProps({
   line: { type: Object, required: true },
@@ -9,13 +11,15 @@ const props = defineProps({
 });
 const emit = defineEmits(["update-quantity", "update-note", "remove"]);
 
+const { language, t } = useLanguage();
 const lineTotal = computed(() => lineUnitPrice(props.line) * props.line.cantidad);
+const displayName = computed(() => localizedName(props.line.menuItem, language.value));
 </script>
 
 <template>
   <div class="pedidos-cart-row">
     <div class="pedidos-cart-row__main">
-      <span class="pedidos-cart-row__name">{{ line.menuItem.nombre }}</span>
+      <span class="pedidos-cart-row__name">{{ displayName }}</span>
       <span class="pedidos-cart-row__price">{{ formatCurrency(lineTotal) }}</span>
     </div>
 
@@ -28,18 +32,18 @@ const lineTotal = computed(() => lineUnitPrice(props.line) * props.line.cantidad
     <input
       type="text"
       class="pedidos-cart-row__note"
-      placeholder="Nota (ej. sin cebolla)"
+      :placeholder="t('notePlaceholder')"
       :value="line.nota"
       @input="emit('update-note', index, $event.target.value)"
     />
 
     <div class="pedidos-cart-row__footer">
       <div class="pedidos-stepper">
-        <button type="button" class="pedidos-stepper__btn" aria-label="Quitar uno" @click="emit('update-quantity', index, line.cantidad - 1)">−</button>
+        <button type="button" class="pedidos-stepper__btn" :aria-label="t('removeOne')" @click="emit('update-quantity', index, line.cantidad - 1)">−</button>
         <span class="pedidos-stepper__count">{{ line.cantidad }}</span>
-        <button type="button" class="pedidos-stepper__btn" aria-label="Agregar uno" @click="emit('update-quantity', index, line.cantidad + 1)">+</button>
+        <button type="button" class="pedidos-stepper__btn" :aria-label="t('addOne')" @click="emit('update-quantity', index, line.cantidad + 1)">+</button>
       </div>
-      <button type="button" class="pedidos-cart-row__remove" @click="emit('remove', index)">Quitar</button>
+      <button type="button" class="pedidos-cart-row__remove" @click="emit('remove', index)">{{ t("remove") }}</button>
     </div>
   </div>
 </template>

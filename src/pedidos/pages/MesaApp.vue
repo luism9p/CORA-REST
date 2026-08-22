@@ -6,6 +6,7 @@ import { useCart } from "@/pedidos/composables/useCart";
 import { useTheme } from "@/pedidos/composables/useTheme";
 import { useBusinessHours } from "@/pedidos/composables/useBusinessHours";
 import { useOrderTracking } from "@/pedidos/composables/useOrderTracking";
+import { useLanguage } from "@/pedidos/composables/useLanguage";
 import {
   getStoredOrderId,
   setStoredOrderId,
@@ -20,6 +21,7 @@ import CartDrawer from "@/pedidos/components/cart/CartDrawer.vue";
 import CrossSellPrompt from "@/pedidos/components/menu/CrossSellPrompt.vue";
 import QuickActions from "@/pedidos/components/QuickActions.vue";
 import ThemeToggleButton from "@/pedidos/components/ThemeToggleButton.vue";
+import LanguageToggle from "@/pedidos/components/LanguageToggle.vue";
 import OrderTrackingView from "./OrderTrackingView.vue";
 import ThankYouView from "./ThankYouView.vue";
 import ClosedView from "./ClosedView.vue";
@@ -30,6 +32,7 @@ const props = defineProps({
 
 const { table, loading: tableLoading, error: tableError } = useTable(props.tableId);
 const { theme, toggleTheme } = useTheme();
+const { t } = useLanguage();
 const { isOpen } = useBusinessHours();
 const cart = useCart();
 const { categories, groupedByCategory, loading: menuLoading } = useMenu();
@@ -96,7 +99,10 @@ const filteredItems = computed(() => {
   const all = Object.values(groupedByCategory.value).flat();
   return all.filter(
     (item) =>
-      normalize(item.nombre).includes(term) || normalize(item.descripcion).includes(term)
+      normalize(item.nombre).includes(term) ||
+      normalize(item.descripcion).includes(term) ||
+      normalize(item.nombre_en).includes(term) ||
+      normalize(item.descripcion_en).includes(term)
   );
 });
 
@@ -116,7 +122,7 @@ function handleNewOrder() {
 
 <template>
   <div class="mesa-theme-root" :data-theme="theme">
-    <LoadingSpinner v-if="tableLoading" label="Cargando mesa..." />
+    <LoadingSpinner v-if="tableLoading" :label="t('loadingTable')" />
 
     <div v-else-if="tableError" class="mesa-app__error">
       {{ tableError }}
@@ -124,6 +130,7 @@ function handleNewOrder() {
 
     <template v-else-if="table">
       <ThemeToggleButton :theme="theme" @toggle="toggleTheme" />
+      <LanguageToggle />
       <!-- Fuera de horario y sin pedido en curso no hay nada que pedir/pedir
            la cuenta de, así que las acciones rápidas solo se ocultan en ese
            caso puntual — si ya tienen un pedido activo, se quedan visibles
@@ -145,7 +152,7 @@ function handleNewOrder() {
           />
         </div>
 
-        <LoadingSpinner v-if="menuLoading" label="Cargando la carta..." />
+        <LoadingSpinner v-if="menuLoading" :label="t('loadingMenu')" />
 
         <div v-else class="mesa-app__grid">
           <MenuItemCard
@@ -154,10 +161,10 @@ function handleNewOrder() {
             :item="item"
           />
           <p v-if="filteredItems && filteredItems.length === 0" class="mesa-app__empty">
-            No encontramos ningún plato con "{{ searchTerm }}".
+            {{ t("noResultsFor", searchTerm) }}
           </p>
           <p v-else-if="!filteredItems && categories.length === 0" class="mesa-app__empty">
-            La carta todavía no está disponible. Avísale al mesero.
+            {{ t("menuNotReady") }}
           </p>
         </div>
 
@@ -167,7 +174,7 @@ function handleNewOrder() {
           class="mesa-app__cart-fab"
           @click="cartOpen = true"
         >
-          Ver pedido ({{ cart.count.value }})
+          {{ t("viewOrder", cart.count.value) }}
         </button>
 
         <CartDrawer :open="cartOpen" :table-id="table.id" @close="cartOpen = false" @confirmed="handleConfirmed" />
@@ -176,7 +183,7 @@ function handleNewOrder() {
 
       <!-- Seguimiento -->
       <div v-else-if="view === 'tracking'">
-        <LoadingSpinner v-if="!order" label="Buscando tu pedido..." />
+        <LoadingSpinner v-if="!order" :label="t('lookingUpOrder')" />
         <OrderTrackingView v-else :order="order" :order-items="orderItems" />
       </div>
 

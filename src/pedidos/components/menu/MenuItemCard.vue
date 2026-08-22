@@ -2,6 +2,8 @@
 import { ref, computed } from "vue";
 import { useCart } from "@/pedidos/composables/useCart";
 import { useCrossSell } from "@/pedidos/composables/useCrossSell";
+import { useLanguage } from "@/pedidos/composables/useLanguage";
+import { localizedName, localizedDescription } from "@/pedidos/utils/localizedMenuField";
 import { formatCurrency } from "@/pedidos/utils/format";
 import ModifierPicker from "./ModifierPicker.vue";
 
@@ -11,7 +13,11 @@ const props = defineProps({
 
 const cart = useCart();
 const crossSell = useCrossSell();
+const { language, t } = useLanguage();
 const pickerOpen = ref(false);
+
+const displayName = computed(() => localizedName(props.item, language.value));
+const displayDescription = computed(() => localizedDescription(props.item, language.value));
 
 const hasModifiers = computed(() => (props.item.modifiers?.length || 0) > 0);
 
@@ -54,25 +60,25 @@ function decrement() {
     <img
       v-if="item.imagen_url"
       :src="item.imagen_url"
-      :alt="item.nombre"
+      :alt="displayName"
       loading="lazy"
       decoding="async"
       class="pedidos-item-card__image"
     />
     <div class="pedidos-item-card__body">
-      <h3 class="pedidos-item-card__name">{{ item.nombre }}</h3>
-      <p v-if="item.descripcion" class="pedidos-item-card__desc">{{ item.descripcion }}</p>
+      <h3 class="pedidos-item-card__name">{{ displayName }}</h3>
+      <p v-if="displayDescription" class="pedidos-item-card__desc">{{ displayDescription }}</p>
       <div class="pedidos-item-card__footer">
         <span class="pedidos-item-card__price">{{ formatCurrency(item.precio) }}</span>
 
-        <span v-if="!item.disponible" class="pedidos-item-card__sold-out">Agotado</span>
+        <span v-if="!item.disponible" class="pedidos-item-card__sold-out">{{ t("soldOut") }}</span>
         <button v-else-if="quantity === 0" type="button" class="pedidos-item-card__add" @click="add">
-          Agregar
+          {{ t("add") }}
         </button>
         <div v-else class="pedidos-stepper">
-          <button type="button" class="pedidos-stepper__btn" aria-label="Quitar uno" @click="decrement">−</button>
+          <button type="button" class="pedidos-stepper__btn" :aria-label="t('removeOne')" @click="decrement">−</button>
           <span class="pedidos-stepper__count">{{ quantity }}</span>
-          <button type="button" class="pedidos-stepper__btn" aria-label="Agregar uno" @click="increment">+</button>
+          <button type="button" class="pedidos-stepper__btn" :aria-label="t('addOne')" @click="increment">+</button>
         </div>
       </div>
     </div>

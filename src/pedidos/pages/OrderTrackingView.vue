@@ -1,20 +1,30 @@
 <script setup>
 import { computed } from "vue";
-import { STATUS_FLOW, STATUS_LABEL } from "@/pedidos/utils/orderStatus";
+import { STATUS_FLOW } from "@/pedidos/utils/orderStatus";
 import { formatCurrency } from "@/pedidos/utils/format";
 import { modifiersExtra } from "@/pedidos/composables/useCart";
+import { useLanguage } from "@/pedidos/composables/useLanguage";
+import { localizedName } from "@/pedidos/utils/localizedMenuField";
 
 const props = defineProps({
   order: { type: Object, required: true },
   orderItems: { type: Array, default: () => [] },
 });
 
+const { language, t } = useLanguage();
 const currentIndex = computed(() => STATUS_FLOW.indexOf(props.order.estado));
+
+const STATUS_LABEL_KEY = {
+  nuevo: "statusNuevo",
+  preparando: "statusPreparando",
+  listo: "statusListo",
+  entregado: "statusEntregado",
+};
 </script>
 
 <template>
   <div class="pedidos-tracking">
-    <h2 class="pedidos-tracking__title">Tu pedido está en camino</h2>
+    <h2 class="pedidos-tracking__title">{{ t("trackingTitle") }}</h2>
 
     <ol class="pedidos-tracking__steps">
       <li
@@ -27,14 +37,14 @@ const currentIndex = computed(() => STATUS_FLOW.indexOf(props.order.estado));
         }"
       >
         <span class="pedidos-tracking__dot"></span>
-        <span>{{ STATUS_LABEL[status] }}</span>
+        <span>{{ t(STATUS_LABEL_KEY[status]) }}</span>
       </li>
     </ol>
 
     <div class="pedidos-tracking__summary">
       <div v-for="item in orderItems" :key="item.id" class="pedidos-tracking__item">
         <span>
-          {{ item.cantidad }}× {{ item.menu_item?.nombre }}
+          {{ item.cantidad }}× {{ localizedName(item.menu_item, language) }}
           <span v-if="item.modifiers?.length" class="pedidos-tracking__modifiers">
             ({{ item.modifiers.map((m) => m.nombre).join(", ") }})
           </span>
@@ -42,7 +52,7 @@ const currentIndex = computed(() => STATUS_FLOW.indexOf(props.order.estado));
         <span>{{ formatCurrency(((item.menu_item?.precio || 0) + modifiersExtra(item.modifiers)) * item.cantidad) }}</span>
       </div>
       <div class="pedidos-tracking__total">
-        <span>Total</span>
+        <span>{{ t("total") }}</span>
         <span>{{ formatCurrency(order.total) }}</span>
       </div>
     </div>

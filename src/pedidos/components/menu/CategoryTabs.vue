@@ -1,9 +1,18 @@
 <script setup>
+import { useLanguage } from "@/pedidos/composables/useLanguage";
+import { CATEGORY_LABELS_EN } from "@/pedidos/i18n/strings";
+
 defineProps({
   categories: { type: Array, required: true },
   activeCategory: { type: String, default: "" },
 });
 defineEmits(["select"]);
+
+const { language } = useLanguage();
+
+function label(cat) {
+  return language.value === "en" ? CATEGORY_LABELS_EN[cat] ?? cat : cat;
+}
 </script>
 
 <template>
@@ -16,7 +25,7 @@ defineEmits(["select"]);
       :class="{ 'pedidos-tab--active': cat === activeCategory }"
       @click="$emit('select', cat)"
     >
-      {{ cat }}
+      {{ label(cat) }}
     </button>
   </div>
 </template>

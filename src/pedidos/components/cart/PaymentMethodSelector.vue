@@ -1,19 +1,24 @@
 <script setup>
+import { computed } from "vue";
+import { useLanguage } from "@/pedidos/composables/useLanguage";
+
 defineProps({
   modelValue: { type: String, default: "" },
 });
 defineEmits(["update:modelValue"]);
 
-const METHODS = [
-  { value: "efectivo", label: "Efectivo" },
-  { value: "plin", label: "Plin" },
-  { value: "tarjeta", label: "Tarjeta" },
-];
+const { t } = useLanguage();
+
+const METHODS = computed(() => [
+  { value: "efectivo", label: t("payCash") },
+  { value: "plin", label: t("payPlin") },
+  { value: "tarjeta", label: t("payCard") },
+]);
 </script>
 
 <template>
   <div class="pedidos-payment">
-    <p class="pedidos-payment__label">Método de pago</p>
+    <p class="pedidos-payment__label">{{ t("paymentMethod") }}</p>
     <div class="pedidos-payment__options">
       <button
         v-for="method in METHODS"

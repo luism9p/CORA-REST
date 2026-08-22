@@ -1,13 +1,15 @@
 // src/pedidos/composables/useTableRequest.js
 import { ref } from "vue";
 import { supabase } from "@/pedidos/lib/supabaseClient";
+import { useLanguage } from "@/pedidos/composables/useLanguage";
 
 const TOAST_MESSAGES = {
-  mesero: "Ya avisamos al mesero 👍",
-  cuenta: "Ya pedimos tu cuenta 👍",
+  es: { mesero: "Ya avisamos al mesero 👍", cuenta: "Ya pedimos tu cuenta 👍" },
+  en: { mesero: "The waiter has been notified 👍", cuenta: "We requested your bill 👍" },
 };
 
 export function useTableRequest(tableId) {
+  const { language, t } = useLanguage();
   const toast = ref("");
   let toastTimer = null;
 
@@ -27,11 +29,11 @@ export function useTableRequest(tableId) {
     });
 
     if (error) {
-      showToast("No se pudo enviar, intenta de nuevo");
+      showToast(t("requestError"));
       return false;
     }
 
-    showToast(TOAST_MESSAGES[tipo] || "Listo 👍");
+    showToast(TOAST_MESSAGES[language.value][tipo] || t("requestDone"));
     return true;
   }
 

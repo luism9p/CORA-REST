@@ -2,6 +2,8 @@
 import { ref, computed, watch } from "vue";
 import { useCart } from "@/pedidos/composables/useCart";
 import { useCrossSell } from "@/pedidos/composables/useCrossSell";
+import { useLanguage } from "@/pedidos/composables/useLanguage";
+import { localizedName } from "@/pedidos/utils/localizedMenuField";
 import { formatCurrency } from "@/pedidos/utils/format";
 
 const props = defineProps({
@@ -12,6 +14,8 @@ const emit = defineEmits(["close"]);
 
 const cart = useCart();
 const crossSell = useCrossSell();
+const { language, t } = useLanguage();
+const displayName = computed(() => localizedName(props.item, language.value));
 const selected = ref(new Set());
 const quantity = ref(1);
 
@@ -56,14 +60,14 @@ function confirm() {
     :class="{ 'pedidos-modifier-modal--open': open }"
     role="dialog"
     aria-modal="true"
-    :aria-label="item ? `Personalizar ${item.nombre}` : 'Personalizar plato'"
+    :aria-label="displayName"
     @click.self="$emit('close')"
   >
     <div v-if="item" class="pedidos-modifier-modal__box">
       <div class="pedidos-modifier-modal__handle"></div>
 
       <div class="pedidos-modifier-modal__header">
-        <h2>{{ item.nombre }}</h2>
+        <h2>{{ displayName }}</h2>
         <button type="button" class="pedidos-modifier-modal__close" aria-label="Cerrar" @click="$emit('close')">✕</button>
       </div>
 
@@ -86,16 +90,16 @@ function confirm() {
       </ul>
 
       <div class="pedidos-modifier-modal__stepper">
-        <span>Cantidad</span>
+        <span>{{ t("quantity") }}</span>
         <div class="pedidos-stepper">
-          <button type="button" class="pedidos-stepper__btn" aria-label="Quitar uno" @click="quantity = Math.max(1, quantity - 1)">−</button>
+          <button type="button" class="pedidos-stepper__btn" :aria-label="t('removeOne')" @click="quantity = Math.max(1, quantity - 1)">−</button>
           <span class="pedidos-stepper__count">{{ quantity }}</span>
-          <button type="button" class="pedidos-stepper__btn" aria-label="Agregar uno" @click="quantity++">+</button>
+          <button type="button" class="pedidos-stepper__btn" :aria-label="t('addOne')" @click="quantity++">+</button>
         </div>
       </div>
 
       <button type="button" class="pedidos-modifier-modal__confirm" @click="confirm">
-        Agregar · {{ formatCurrency(unitPrice * quantity) }}
+        {{ t("addWithPrice", formatCurrency(unitPrice * quantity)) }}
       </button>
     </div>
   </div>

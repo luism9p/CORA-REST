@@ -1,12 +1,15 @@
 <script setup>
 import { ref, computed, watch } from "vue";
 import { formatCurrency } from "@/pedidos/utils/format";
+import { useLanguage } from "@/pedidos/composables/useLanguage";
 
 const props = defineProps({
   open: { type: Boolean, default: false },
   total: { type: Number, default: 0 },
 });
 const emit = defineEmits(["close", "confirm"]);
+
+const { t } = useLanguage();
 
 const TIP_OPTIONS = [0, 0.1, 0.15];
 
@@ -57,24 +60,24 @@ function confirm() {
     :class="{ 'pedidos-bill-modal--open': open }"
     role="dialog"
     aria-modal="true"
-    aria-label="Pedir la cuenta"
+    :aria-label="t('billTitle')"
     @click.self="$emit('close')"
   >
     <div class="pedidos-bill-modal__box">
       <div class="pedidos-bill-modal__handle"></div>
 
       <div class="pedidos-bill-modal__header">
-        <h2>Pedir la cuenta</h2>
+        <h2>{{ t("billTitle") }}</h2>
         <button type="button" class="pedidos-bill-modal__close" aria-label="Cerrar" @click="$emit('close')">✕</button>
       </div>
 
       <div class="pedidos-bill-modal__row">
-        <span>Total del pedido</span>
+        <span>{{ t("billOrderTotal") }}</span>
         <span>{{ formatCurrency(total) }}</span>
       </div>
 
       <div class="pedidos-bill-modal__section">
-        <span class="pedidos-bill-modal__label">Propina</span>
+        <span class="pedidos-bill-modal__label">{{ t("billTip") }}</span>
         <div class="pedidos-bill-modal__tip-options">
           <button
             v-for="pct in TIP_OPTIONS"
@@ -84,7 +87,7 @@ function confirm() {
             :class="{ 'pedidos-bill-modal__tip-btn--active': tipPercent === pct }"
             @click="selectTip(pct)"
           >
-            {{ pct === 0 ? "Sin propina" : `${pct * 100}%` }}
+            {{ pct === 0 ? t("billNoTip") : `${pct * 100}%` }}
           </button>
           <button
             type="button"
@@ -92,7 +95,7 @@ function confirm() {
             :class="{ 'pedidos-bill-modal__tip-btn--active': tipPercent === null }"
             @click="selectCustomTip"
           >
-            Otro monto
+            {{ t("billCustomTip") }}
           </button>
         </div>
         <input
@@ -101,37 +104,37 @@ function confirm() {
           type="number"
           min="0"
           step="0.5"
-          placeholder="S/ propina"
+          :placeholder="t('billCustomTipPlaceholder')"
           class="pedidos-bill-modal__custom-tip"
         />
       </div>
 
       <div class="pedidos-bill-modal__section">
-        <span class="pedidos-bill-modal__label">Dividir entre</span>
+        <span class="pedidos-bill-modal__label">{{ t("billSplit") }}</span>
         <div class="pedidos-stepper">
           <button type="button" class="pedidos-stepper__btn" aria-label="Menos personas" @click="personas = Math.max(1, personas - 1)">−</button>
-          <span class="pedidos-stepper__count">{{ personas }} {{ personas === 1 ? "persona" : "personas" }}</span>
+          <span class="pedidos-stepper__count">{{ personas }} {{ personas === 1 ? t("billPerson") : t("billPeople") }}</span>
           <button type="button" class="pedidos-stepper__btn" aria-label="Más personas" @click="personas++">+</button>
         </div>
       </div>
 
       <div class="pedidos-bill-modal__summary">
         <div class="pedidos-bill-modal__row">
-          <span>Propina</span>
+          <span>{{ t("billTip") }}</span>
           <span>{{ formatCurrency(tipAmount) }}</span>
         </div>
         <div class="pedidos-bill-modal__row pedidos-bill-modal__row--total">
-          <span>Total con propina</span>
+          <span>{{ t("billTotalWithTip") }}</span>
           <span>{{ formatCurrency(totalWithTip) }}</span>
         </div>
         <div v-if="personas > 1" class="pedidos-bill-modal__row pedidos-bill-modal__row--per-person">
-          <span>Por persona ({{ personas }})</span>
+          <span>{{ t("billPerPerson", personas) }}</span>
           <span>{{ formatCurrency(perPerson) }}</span>
         </div>
       </div>
 
       <button type="button" class="pedidos-bill-modal__confirm" @click="confirm">
-        Confirmar y llamar al mesero
+        {{ t("billConfirm") }}
       </button>
     </div>
   </div>
