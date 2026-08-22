@@ -35,7 +35,7 @@ export function useOrderTracking(orderId) {
 
     const { data: itemsData } = await supabase
       .from("order_items")
-      .select("id, cantidad, nota, listo, menu_item:menu_items(nombre, precio)")
+      .select("id, cantidad, nota, listo, menu_item:menu_items(nombre, precio), modifiers:order_item_modifiers(nombre, precio_extra)")
       .eq("order_id", id);
 
     orderItems.value = itemsData || [];

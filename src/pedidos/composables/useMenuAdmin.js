@@ -12,7 +12,7 @@ export function useMenuAdmin() {
   onMounted(async () => {
     const { data } = await supabase
       .from("menu_items")
-      .select("*")
+      .select("*, modifiers:menu_item_modifiers(id, nombre, precio_extra)")
       .order("categoria", { ascending: true })
       .order("nombre", { ascending: true });
     items.value = data || [];
@@ -38,5 +38,22 @@ export function useMenuAdmin() {
     if (error) item.disponible = previous; // revierte si falló
   }
 
-  return { items, groupedByCategory, loading, setDisponible };
+  async function addModifier(item, nombre, precioExtra) {
+    const { data, error } = await supabase
+      .from("menu_item_modifiers")
+      .insert({ menu_item_id: item.id, nombre, precio_extra: precioExtra })
+      .select()
+      .single();
+    if (!error && data) item.modifiers.push(data);
+    return error;
+  }
+
+  async function removeModifier(item, modifierId) {
+    const previous = item.modifiers;
+    item.modifiers = item.modifiers.filter((m) => m.id !== modifierId); // optimista
+    const { error } = await supabase.from("menu_item_modifiers").delete().eq("id", modifierId);
+    if (error) item.modifiers = previous;
+  }
+
+  return { items, groupedByCategory, loading, setDisponible, addModifier, removeModifier };
 }

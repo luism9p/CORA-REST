@@ -7,17 +7,30 @@
 import { reactive, computed } from "vue";
 
 const state = reactive({
-  items: [], // { menuItem, cantidad, nota }
+  items: [], // { menuItem, cantidad, nota, modifiers }
 });
 
-function addItem(menuItem, cantidad = 1, nota = "") {
+// Firma estable de una combinación de modificadores, para saber si dos
+// líneas del carrito son "la misma" (mismo plato + misma nota + mismos
+// modificadores) y se pueden sumar en vez de crear una línea nueva.
+function modifiersKey(modifiers) {
+  return (modifiers || [])
+    .map((m) => m.nombre)
+    .sort()
+    .join("|");
+}
+
+function addItem(menuItem, cantidad = 1, nota = "", modifiers = []) {
   const existing = state.items.find(
-    (i) => i.menuItem.id === menuItem.id && i.nota === nota
+    (i) =>
+      i.menuItem.id === menuItem.id &&
+      i.nota === nota &&
+      modifiersKey(i.modifiers) === modifiersKey(modifiers)
   );
   if (existing) {
     existing.cantidad += cantidad;
   } else {
-    state.items.push({ menuItem, cantidad, nota });
+    state.items.push({ menuItem, cantidad, nota, modifiers });
   }
 }
 
@@ -41,8 +54,16 @@ function clear() {
   state.items.splice(0, state.items.length);
 }
 
+export function modifiersExtra(modifiers) {
+  return (modifiers || []).reduce((sum, m) => sum + Number(m.precio_extra || 0), 0);
+}
+
+export function lineUnitPrice(line) {
+  return line.menuItem.precio + modifiersExtra(line.modifiers);
+}
+
 const total = computed(() =>
-  state.items.reduce((sum, i) => sum + i.menuItem.precio * i.cantidad, 0)
+  state.items.reduce((sum, i) => sum + lineUnitPrice(i) * i.cantidad, 0)
 );
 
 const count = computed(() => state.items.reduce((sum, i) => sum + i.cantidad, 0));

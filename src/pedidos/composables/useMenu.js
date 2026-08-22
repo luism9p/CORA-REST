@@ -39,7 +39,7 @@ export function useMenu() {
     // desaparecer sin explicación.
     const { data, error: dbError } = await supabase
       .from("menu_items")
-      .select("*")
+      .select("*, modifiers:menu_item_modifiers(id, nombre, precio_extra)")
       .order("categoria", { ascending: true })
       .order("nombre", { ascending: true });
 
@@ -58,8 +58,10 @@ export function useMenu() {
         "postgres_changes",
         { event: "UPDATE", schema: "public", table: "menu_items" },
         (payload) => {
+          // payload.new no trae el join a modifiers: se combina en vez de
+          // reemplazar, para no perder los modificadores ya cargados.
           const idx = items.value.findIndex((i) => i.id === payload.new.id);
-          if (idx !== -1) items.value[idx] = payload.new;
+          if (idx !== -1) items.value[idx] = { ...items.value[idx], ...payload.new };
         }
       )
       .subscribe();

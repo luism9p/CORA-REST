@@ -43,6 +43,9 @@ function advance(status) {
             {{ item.cantidad }}× {{ item.menu_item?.nombre }}
           </span>
         </label>
+        <span v-if="item.modifiers?.length" class="admin-detail__modifiers">
+          {{ item.modifiers.map((m) => m.nombre).join(", ") }}
+        </span>
         <span v-if="item.nota" class="admin-detail__note">"{{ item.nota }}"</span>
       </li>
     </ul>
@@ -135,6 +138,12 @@ function advance(status) {
 
 .admin-detail__item-text--done {
   text-decoration: line-through;
+  color: var(--color-muted);
+}
+
+.admin-detail__modifiers {
+  margin-left: 1.85rem;
+  font-size: 0.85rem;
   color: var(--color-muted);
 }
 

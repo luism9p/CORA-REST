@@ -1,19 +1,29 @@
 <script setup>
+import { computed } from "vue";
 import { formatCurrency } from "@/pedidos/utils/format";
+import { lineUnitPrice } from "@/pedidos/composables/useCart";
 
 const props = defineProps({
   line: { type: Object, required: true },
   index: { type: Number, required: true },
 });
 const emit = defineEmits(["update-quantity", "update-note", "remove"]);
+
+const lineTotal = computed(() => lineUnitPrice(props.line) * props.line.cantidad);
 </script>
 
 <template>
   <div class="pedidos-cart-row">
     <div class="pedidos-cart-row__main">
       <span class="pedidos-cart-row__name">{{ line.menuItem.nombre }}</span>
-      <span class="pedidos-cart-row__price">{{ formatCurrency(line.menuItem.precio * line.cantidad) }}</span>
+      <span class="pedidos-cart-row__price">{{ formatCurrency(lineTotal) }}</span>
     </div>
+
+    <ul v-if="line.modifiers?.length" class="pedidos-cart-row__modifiers">
+      <li v-for="mod in line.modifiers" :key="mod.nombre">
+        + {{ mod.nombre }}<span v-if="Number(mod.precio_extra) > 0"> ({{ formatCurrency(mod.precio_extra) }})</span>
+      </li>
+    </ul>
 
     <input
       type="text"
@@ -49,6 +59,14 @@ const emit = defineEmits(["update-quantity", "update-note", "remove"]);
   gap: 0.5rem;
   font-weight: 700;
   color: var(--color-text);
+}
+
+.pedidos-cart-row__modifiers {
+  font-size: 0.8rem;
+  color: var(--color-muted);
+  display: flex;
+  flex-direction: column;
+  gap: 0.1rem;
 }
 
 .pedidos-cart-row__note {

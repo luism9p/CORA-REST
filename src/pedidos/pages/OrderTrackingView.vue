@@ -2,6 +2,7 @@
 import { computed } from "vue";
 import { STATUS_FLOW, STATUS_LABEL } from "@/pedidos/utils/orderStatus";
 import { formatCurrency } from "@/pedidos/utils/format";
+import { modifiersExtra } from "@/pedidos/composables/useCart";
 
 const props = defineProps({
   order: { type: Object, required: true },
@@ -32,8 +33,13 @@ const currentIndex = computed(() => STATUS_FLOW.indexOf(props.order.estado));
 
     <div class="pedidos-tracking__summary">
       <div v-for="item in orderItems" :key="item.id" class="pedidos-tracking__item">
-        <span>{{ item.cantidad }}× {{ item.menu_item?.nombre }}</span>
-        <span>{{ formatCurrency((item.menu_item?.precio || 0) * item.cantidad) }}</span>
+        <span>
+          {{ item.cantidad }}× {{ item.menu_item?.nombre }}
+          <span v-if="item.modifiers?.length" class="pedidos-tracking__modifiers">
+            ({{ item.modifiers.map((m) => m.nombre).join(", ") }})
+          </span>
+        </span>
+        <span>{{ formatCurrency(((item.menu_item?.precio || 0) + modifiersExtra(item.modifiers)) * item.cantidad) }}</span>
       </div>
       <div class="pedidos-tracking__total">
         <span>Total</span>
@@ -108,6 +114,11 @@ const currentIndex = computed(() => STATUS_FLOW.indexOf(props.order.estado));
   font-size: 0.9rem;
   padding: 0.35rem 0;
   color: var(--color-text);
+}
+
+.pedidos-tracking__modifiers {
+  font-size: 0.8rem;
+  color: var(--color-muted);
 }
 
 .pedidos-tracking__total {

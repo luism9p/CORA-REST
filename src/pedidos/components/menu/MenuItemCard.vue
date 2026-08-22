@@ -1,22 +1,34 @@
 <script setup>
-import { computed } from "vue";
+import { ref, computed } from "vue";
 import { useCart } from "@/pedidos/composables/useCart";
 import { formatCurrency } from "@/pedidos/utils/format";
+import ModifierPicker from "./ModifierPicker.vue";
 
 const props = defineProps({
   item: { type: Object, required: true },
 });
 
 const cart = useCart();
+const pickerOpen = ref(false);
 
+const hasModifiers = computed(() => (props.item.modifiers?.length || 0) > 0);
+
+// Con modificadores, cada combinación es su propia línea del carrito (ver
+// modifiersKey en useCart.js), así que no hay "una" cantidad simple que
+// mostrar aquí — se edita desde el carrito. Sin modificadores, se mantiene
+// el stepper de siempre para no agregar fricción a la mayoría de platos.
 const lineIndex = computed(() =>
-  cart.items.findIndex((i) => i.menuItem.id === props.item.id && i.nota === "")
+  cart.items.findIndex((i) => i.menuItem.id === props.item.id && i.nota === "" && !i.modifiers?.length)
 );
 const quantity = computed(() =>
   lineIndex.value === -1 ? 0 : cart.items[lineIndex.value].cantidad
 );
 
 function add() {
+  if (hasModifiers.value) {
+    pickerOpen.value = true;
+    return;
+  }
   cart.addItem(props.item, 1);
 }
 
@@ -61,6 +73,8 @@ function decrement() {
         </div>
       </div>
     </div>
+
+    <ModifierPicker :open="pickerOpen" :item="item" @close="pickerOpen = false" />
   </div>
 </template>
 

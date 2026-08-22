@@ -45,12 +45,35 @@ async function confirmOrder() {
     nota: line.nota || null,
   }));
 
-  const { error: itemsError } = await supabase.from("order_items").insert(rows);
+  const { data: insertedItems, error: itemsError } = await supabase
+    .from("order_items")
+    .insert(rows)
+    .select();
 
-  if (itemsError) {
+  if (itemsError || !insertedItems) {
     submitError.value = "No se pudo enviar el pedido, intenta de nuevo.";
     submitting.value = false;
     return;
+  }
+
+  // insert() preserva el orden de las filas insertadas, así que se puede
+  // emparejar 1 a 1 con cart.items para saber a qué order_item corresponde
+  // cada selección de modificadores.
+  const modifierRows = cart.items.flatMap((line, i) =>
+    (line.modifiers || []).map((mod) => ({
+      order_item_id: insertedItems[i].id,
+      nombre: mod.nombre,
+      precio_extra: mod.precio_extra,
+    }))
+  );
+
+  if (modifierRows.length > 0) {
+    const { error: modifiersError } = await supabase.from("order_item_modifiers").insert(modifierRows);
+    if (modifiersError) {
+      submitError.value = "No se pudo enviar el pedido, intenta de nuevo.";
+      submitting.value = false;
+      return;
+    }
   }
 
   cart.clear();
