@@ -35,7 +35,7 @@ export function useOrderTracking(orderId) {
 
     const { data: itemsData } = await supabase
       .from("order_items")
-      .select("id, cantidad, nota, listo, menu_item:menu_items(nombre, nombre_en, precio), modifiers:order_item_modifiers(nombre, precio_extra)")
+      .select("id, cantidad, nota, estado, menu_item:menu_items(nombre, nombre_en, precio), modifiers:order_item_modifiers(nombre, precio_extra)")
       .eq("order_id", id);
 
     orderItems.value = itemsData || [];
@@ -59,6 +59,19 @@ export function useOrderTracking(orderId) {
         () => {
           order.value = null;
           notFound.value = true;
+        }
+      )
+      .on(
+        // Despachos parciales: el admin marca cada plato por separado
+        // (preparando/listo_para_servir/en_mesa), y esto lo refleja en la
+        // pantalla del cliente al instante, sin recargar.
+        "postgres_changes",
+        { event: "UPDATE", schema: "public", table: "order_items", filter: `order_id=eq.${id}` },
+        (payload) => {
+          const idx = orderItems.value.findIndex((i) => i.id === payload.new.id);
+          // payload.new no trae los joins a menu_item/modifiers: se combina
+          // en vez de reemplazar, para no perderlos.
+          if (idx !== -1) orderItems.value[idx] = { ...orderItems.value[idx], ...payload.new };
         }
       )
       .subscribe();

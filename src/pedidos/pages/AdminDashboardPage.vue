@@ -21,7 +21,7 @@ const { session, loading: authLoading, signOut } = useAuth();
 const { tables, loading: tablesLoading } = useTables();
 const { orders } = useOrdersRealtime();
 const { requests, markAttended } = useTableRequestsRealtime();
-const { toggleListo } = useOrderItems();
+const { setItemStatus } = useOrderItems();
 const { totalRevenue, bestSeller } = useShiftStats(orders);
 
 const filter = ref("todas");
@@ -154,7 +154,7 @@ async function handleSignOut() {
             :table-numero="selectedEntry.table.numero"
             @close="selectedTableId = null"
             @advance-status="advanceStatus"
-            @toggle-item="toggleListo"
+            @set-item-status="setItemStatus"
           />
         </div>
       </Transition>

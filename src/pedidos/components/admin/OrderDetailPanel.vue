@@ -1,23 +1,36 @@
 <script setup>
 import { computed } from "vue";
 import StatusBadge from "./StatusBadge.vue";
-import { nextStatus, STATUS_LABEL } from "@/pedidos/utils/orderStatus";
+import { nextStatus, STATUS_LABEL, ITEM_STATUS_FLOW, ITEM_STATUS_LABEL } from "@/pedidos/utils/orderStatus";
 import { formatCurrency } from "@/pedidos/utils/format";
 
 const props = defineProps({
   order: { type: Object, required: true },
   tableNumero: { type: Number, required: true },
 });
-const emit = defineEmits(["close", "advance-status", "toggle-item"]);
+const emit = defineEmits(["close", "advance-status", "set-item-status"]);
 
+const ITEM_STATUS_ICON = {
+  preparando: "🕒",
+  listo_para_servir: "🔔",
+  en_mesa: "✅",
+};
+
+// El atajo de "avanzar pedido a Listo" no exige que cada plato ya esté
+// físicamente en la mesa (eso lo decide el mesero plato por plato) — solo
+// que ninguno siga en cocina.
 const allItemsReady = computed(
-  () => props.order.order_items.length > 0 && props.order.order_items.every((i) => i.listo)
+  () => props.order.order_items.length > 0 && props.order.order_items.every((i) => i.estado !== "preparando")
 );
 
 const next = computed(() => nextStatus(props.order.estado));
 
 function advance(status) {
   emit("advance-status", props.order.id, status);
+}
+
+function setItemStatus(itemId, estado) {
+  emit("set-item-status", itemId, estado);
 }
 </script>
 
@@ -33,16 +46,25 @@ function advance(status) {
 
     <ul class="admin-detail__items">
       <li v-for="item in order.order_items" :key="item.id" class="admin-detail__item">
-        <label class="admin-detail__item-label">
-          <input
-            type="checkbox"
-            :checked="item.listo"
-            @change="$emit('toggle-item', item.id, $event.target.checked)"
-          />
-          <span :class="{ 'admin-detail__item-text--done': item.listo }">
+        <div class="admin-detail__item-row">
+          <span :class="{ 'admin-detail__item-text--done': item.estado === 'en_mesa' }">
             {{ item.cantidad }}× {{ item.menu_item?.nombre }}
           </span>
-        </label>
+          <div class="admin-detail__status-group" role="group" :aria-label="`Estado de ${item.menu_item?.nombre}`">
+            <button
+              v-for="status in ITEM_STATUS_FLOW"
+              :key="status"
+              type="button"
+              class="admin-detail__status-btn"
+              :class="{ 'admin-detail__status-btn--active': item.estado === status }"
+              :aria-label="ITEM_STATUS_LABEL[status]"
+              :aria-pressed="item.estado === status"
+              @click="setItemStatus(item.id, status)"
+            >
+              {{ ITEM_STATUS_ICON[status] }}
+            </button>
+          </div>
+        </div>
         <span v-if="item.modifiers?.length" class="admin-detail__modifiers">
           {{ item.modifiers.map((m) => m.nombre).join(", ") }}
         </span>
@@ -124,16 +146,12 @@ function advance(status) {
   border-bottom: 1px solid var(--color-border);
 }
 
-.admin-detail__item-label {
+.admin-detail__item-row {
   display: flex;
   align-items: center;
-  gap: 0.6rem;
+  justify-content: space-between;
+  gap: 0.75rem;
   font-weight: 700;
-}
-
-.admin-detail__item-label input {
-  width: 1.25rem;
-  height: 1.25rem;
 }
 
 .admin-detail__item-text--done {
@@ -141,14 +159,39 @@ function advance(status) {
   color: var(--color-muted);
 }
 
+.admin-detail__status-group {
+  display: flex;
+  gap: 0.3rem;
+  flex-shrink: 0;
+}
+
+.admin-detail__status-btn {
+  width: 2.25rem;
+  height: 2.25rem;
+  border-radius: 9999px;
+  border: 1px solid var(--color-border);
+  background: var(--color-bg);
+  font-size: 1rem;
+  opacity: 0.45;
+  transition: transform 400ms var(--ease-spring), opacity 150ms var(--ease-out), border-color 150ms var(--ease-out);
+}
+
+.admin-detail__status-btn--active {
+  opacity: 1;
+  border-color: var(--color-primary);
+  background: color-mix(in srgb, var(--color-primary) 10%, transparent);
+}
+
+.admin-detail__status-btn:active {
+  transform: scale(0.88);
+}
+
 .admin-detail__modifiers {
-  margin-left: 1.85rem;
   font-size: 0.85rem;
   color: var(--color-muted);
 }
 
 .admin-detail__note {
-  margin-left: 1.85rem;
   font-size: 0.85rem;
   font-style: italic;
   color: var(--color-muted);

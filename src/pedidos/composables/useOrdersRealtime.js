@@ -4,7 +4,7 @@ import { supabase } from "@/pedidos/lib/supabaseClient";
 import { useAlertSound } from "./useAlertSound";
 
 const ORDER_ITEMS_SELECT =
-  "id, cantidad, nota, listo, menu_item:menu_items(nombre, precio), modifiers:order_item_modifiers(nombre, precio_extra)";
+  "id, cantidad, nota, estado, menu_item:menu_items(nombre, precio), modifiers:order_item_modifiers(nombre, precio_extra)";
 
 function startOfToday() {
   const d = new Date();

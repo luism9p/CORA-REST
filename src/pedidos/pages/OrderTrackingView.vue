@@ -20,6 +20,15 @@ const STATUS_LABEL_KEY = {
   listo: "statusListo",
   entregado: "statusEntregado",
 };
+
+// Estado de cada plato (despachos parciales): en mesas con pedidos grandes,
+// esto le muestra al cliente qué platos ya le llevaron aunque el pedido
+// completo todavía no se haya marcado como "Entregado".
+const ITEM_STATUS_LABEL_KEY = {
+  preparando: "itemPreparando",
+  listo_para_servir: "itemListoParaServir",
+  en_mesa: "itemEnMesa",
+};
 </script>
 
 <template>
@@ -43,13 +52,18 @@ const STATUS_LABEL_KEY = {
 
     <div class="pedidos-tracking__summary">
       <div v-for="item in orderItems" :key="item.id" class="pedidos-tracking__item">
-        <span>
-          {{ item.cantidad }}× {{ localizedName(item.menu_item, language) }}
+        <div class="pedidos-tracking__item-main">
+          <span>{{ item.cantidad }}× {{ localizedName(item.menu_item, language) }}</span>
+          <span>{{ formatCurrency(((item.menu_item?.precio || 0) + modifiersExtra(item.modifiers)) * item.cantidad) }}</span>
+        </div>
+        <div class="pedidos-tracking__item-meta">
+          <span class="pedidos-tracking__badge" :class="`pedidos-tracking__badge--${item.estado}`">
+            {{ t(ITEM_STATUS_LABEL_KEY[item.estado]) }}
+          </span>
           <span v-if="item.modifiers?.length" class="pedidos-tracking__modifiers">
             ({{ item.modifiers.map((m) => m.nombre).join(", ") }})
           </span>
-        </span>
-        <span>{{ formatCurrency(((item.menu_item?.precio || 0) + modifiersExtra(item.modifiers)) * item.cantidad) }}</span>
+        </div>
       </div>
       <div class="pedidos-tracking__total">
         <span>{{ t("total") }}</span>
@@ -119,16 +133,70 @@ const STATUS_LABEL_KEY = {
 }
 
 .pedidos-tracking__item {
+  padding: 0.5rem 0;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.pedidos-tracking__item:last-child {
+  border-bottom: none;
+}
+
+.pedidos-tracking__item-main {
   display: flex;
   justify-content: space-between;
   font-size: 0.9rem;
-  padding: 0.35rem 0;
+  font-weight: 600;
   color: var(--color-text);
+}
+
+.pedidos-tracking__item-meta {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: 0.3rem;
 }
 
 .pedidos-tracking__modifiers {
   font-size: 0.8rem;
   color: var(--color-muted);
+}
+
+.pedidos-tracking__badge {
+  display: inline-flex;
+  align-items: center;
+  font-size: 0.75rem;
+  font-weight: 700;
+  padding: 0.2rem 0.6rem;
+  border-radius: 9999px;
+}
+
+.pedidos-tracking__badge--preparando {
+  color: #b45309;
+  background: color-mix(in srgb, #b45309 12%, transparent);
+}
+
+.pedidos-tracking__badge--listo_para_servir {
+  color: #fff;
+  background: var(--color-primary);
+  animation: pedidos-badge-pulse 1.4s var(--ease-out) infinite;
+}
+
+.pedidos-tracking__badge--en_mesa {
+  color: var(--color-muted);
+  background: color-mix(in srgb, var(--color-muted) 15%, transparent);
+}
+
+@keyframes pedidos-badge-pulse {
+  0%,
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(1.06);
+    opacity: 0.85;
+  }
 }
 
 .pedidos-tracking__total {

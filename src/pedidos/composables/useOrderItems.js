@@ -5,9 +5,9 @@
 import { supabase } from "@/pedidos/lib/supabaseClient";
 
 export function useOrderItems() {
-  async function toggleListo(itemId, listo) {
-    await supabase.from("order_items").update({ listo }).eq("id", itemId);
+  async function setItemStatus(itemId, estado) {
+    await supabase.from("order_items").update({ estado }).eq("id", itemId);
   }
 
-  return { toggleListo };
+  return { setItemStatus };
 }
