@@ -41,5 +41,30 @@ export function useShiftReport(orders) {
       .sort((a, b) => b.total - a.total);
   });
 
-  return { completedOrders, totalIngresos, totalPropinas, ticketPromedio, byPaymentMethod };
+  // Efectivo vs. todo lo demás (Plin, Tarjeta) — vista rápida de cuánto del
+  // día hay que cuadrar en caja física vs. lo que ya liquidó la pasarela.
+  const efectivoVsDigital = computed(() => {
+    let efectivo = 0;
+    let digital = 0;
+    for (const entry of byPaymentMethod.value) {
+      if (entry.method === "efectivo") efectivo += entry.total;
+      else digital += entry.total;
+    }
+    const total = efectivo + digital;
+    return {
+      efectivo,
+      digital,
+      efectivoPercent: total === 0 ? 0 : (efectivo / total) * 100,
+      digitalPercent: total === 0 ? 0 : (digital / total) * 100,
+    };
+  });
+
+  return {
+    completedOrders,
+    totalIngresos,
+    totalPropinas,
+    ticketPromedio,
+    byPaymentMethod,
+    efectivoVsDigital,
+  };
 }

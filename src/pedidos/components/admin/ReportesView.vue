@@ -1,13 +1,22 @@
 <script setup>
-import { computed } from "vue";
+import { ref, computed } from "vue";
 import { useShiftReport, PAYMENT_METHOD_LABEL } from "@/pedidos/composables/useShiftReport";
 import { formatCurrency } from "@/pedidos/utils/format";
 import { downloadCsv } from "@/pedidos/utils/csv";
+import ReportOrderModal from "./ReportOrderModal.vue";
 
 const props = defineProps({
   orders: { type: Array, required: true },
   tableNumero: { type: Function, required: true },
 });
+
+const selectedOrder = ref(null);
+const orderModalOpen = ref(false);
+
+function openOrder(order) {
+  selectedOrder.value = order;
+  orderModalOpen.value = true;
+}
 
 // Identidad → color fijo (nunca por posición/monto): así el color de
 // "Efectivo" no cambia según qué método haya facturado más ese día.
@@ -19,8 +28,14 @@ const PAYMENT_METHOD_COLOR = {
 const FALLBACK_COLOR = "#898781";
 
 const ordersRef = computed(() => props.orders);
-const { completedOrders, totalIngresos, totalPropinas, ticketPromedio, byPaymentMethod } =
-  useShiftReport(ordersRef);
+const {
+  completedOrders,
+  totalIngresos,
+  totalPropinas,
+  ticketPromedio,
+  byPaymentMethod,
+  efectivoVsDigital,
+} = useShiftReport(ordersRef);
 
 const donutGradient = computed(() => {
   if (totalIngresos.value === 0) return null;
@@ -107,6 +122,42 @@ function exportCsv() {
           </li>
         </ul>
       </div>
+
+      <p v-if="completedOrders.length > 0" class="admin-reportes__cash-split">
+        💵 {{ efectivoVsDigital.efectivoPercent.toFixed(0) }}% efectivo · 💳
+        {{ efectivoVsDigital.digitalPercent.toFixed(0) }}% digital
+      </p>
+    </section>
+
+    <section v-if="completedOrders.length > 0" class="admin-reportes__history">
+      <h2 class="admin-reportes__section-title">Historial del día</h2>
+      <div class="admin-reportes__table-scroll">
+        <table class="admin-reportes__table">
+          <thead>
+            <tr>
+              <th>Hora</th>
+              <th>Mesa</th>
+              <th>Método</th>
+              <th>Total</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr
+              v-for="o in completedOrders"
+              :key="o.id"
+              class="admin-reportes__table-row"
+              tabindex="0"
+              @click="openOrder(o)"
+              @keydown.enter="openOrder(o)"
+            >
+              <td>{{ formatTime(o.created_at) }}</td>
+              <td>Mesa {{ tableNumero(o.table_id) }}</td>
+              <td>{{ PAYMENT_METHOD_LABEL[o.metodo_pago] || o.metodo_pago }}</td>
+              <td>{{ formatCurrency(o.total) }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
     </section>
 
     <button
@@ -117,6 +168,13 @@ function exportCsv() {
     >
       ⬇ Exportar CSV
     </button>
+
+    <ReportOrderModal
+      :open="orderModalOpen"
+      :order="selectedOrder"
+      :table-numero="selectedOrder ? tableNumero(selectedOrder.table_id) : null"
+      @close="orderModalOpen = false"
+    />
   </div>
 </template>
 
@@ -247,6 +305,66 @@ function exportCsv() {
   font-size: 0.8rem;
   min-width: 2.5rem;
   text-align: right;
+}
+
+.admin-reportes__cash-split {
+  margin-top: 1rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--color-border);
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--color-muted);
+}
+
+.admin-reportes__history {
+  padding: 1.25rem;
+  border-radius: 1rem;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  margin-bottom: 1.5rem;
+}
+
+.admin-reportes__table-scroll {
+  overflow-x: auto;
+}
+
+.admin-reportes__table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.9rem;
+}
+
+.admin-reportes__table th {
+  text-align: left;
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--color-muted);
+  padding: 0 0.5rem 0.6rem;
+  white-space: nowrap;
+}
+
+.admin-reportes__table td {
+  padding: 0.65rem 0.5rem;
+  border-top: 1px solid var(--color-border);
+  color: var(--color-text);
+  white-space: nowrap;
+}
+
+.admin-reportes__table-row {
+  cursor: pointer;
+  transition: background-color 150ms var(--ease-out);
+}
+
+.admin-reportes__table-row:hover,
+.admin-reportes__table-row:focus-visible {
+  background: var(--color-bg);
+}
+
+.admin-reportes__table-row:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: -2px;
 }
 
 .admin-reportes__export {
