@@ -6,8 +6,8 @@ import { useOrdersRealtime } from "@/pedidos/composables/useOrdersRealtime";
 import { useTableRequestsRealtime } from "@/pedidos/composables/useTableRequestsRealtime";
 import { useOrderItems } from "@/pedidos/composables/useOrderItems";
 import { useShiftStats } from "@/pedidos/composables/useShiftStats";
+import { useKitchenQueue } from "@/pedidos/composables/useKitchenQueue";
 import { supabase } from "@/pedidos/lib/supabaseClient";
-import { formatCurrency } from "@/pedidos/utils/format";
 
 import LoadingSpinner from "@/pedidos/components/common/LoadingSpinner.vue";
 import PendingRequestsBanner from "@/pedidos/components/admin/PendingRequestsBanner.vue";
@@ -17,6 +17,7 @@ import TableCard from "@/pedidos/components/admin/TableCard.vue";
 import OrderDetailPanel from "@/pedidos/components/admin/OrderDetailPanel.vue";
 import MenuAvailability from "@/pedidos/components/admin/MenuAvailability.vue";
 import ReportesView from "@/pedidos/components/admin/ReportesView.vue";
+import KitchenQueue from "@/pedidos/components/admin/KitchenQueue.vue";
 
 const { session, loading: authLoading, signOut } = useAuth();
 const { tables, loading: tablesLoading } = useTables();
@@ -63,7 +64,7 @@ const selectedEntry = computed(
   () => tablesWithOrders.value.find((t) => t.table.id === selectedTableId.value) || null
 );
 
-const deliveredToday = computed(() => orders.value.filter((o) => o.estado === "entregado"));
+const { kitchenQueue } = useKitchenQueue(tablesWithOrders);
 
 function tableNumero(tableId) {
   return tables.value.find((t) => t.id === tableId)?.numero;
@@ -148,15 +149,7 @@ async function handleSignOut() {
           />
         </TransitionGroup>
 
-        <section v-if="deliveredToday.length" class="admin-dashboard__history">
-          <h2>Entregados hoy</h2>
-          <ul>
-            <li v-for="o in deliveredToday" :key="o.id">
-              <span>Mesa {{ tableNumero(o.table_id) }}</span>
-              <span>{{ formatCurrency(o.total) }}</span>
-            </li>
-          </ul>
-        </section>
+        <KitchenQueue :items="kitchenQueue" />
       </template>
 
       <MenuAvailability v-else-if="view === 'carta'" />
@@ -257,32 +250,6 @@ async function handleSignOut() {
 }
 .admin-grid-leave-active {
   position: absolute;
-}
-
-.admin-dashboard__history {
-  border-top: 1px solid var(--color-border);
-  padding-top: 1.25rem;
-}
-
-.admin-dashboard__history h2 {
-  font-size: 1rem;
-  font-weight: 800;
-  margin-bottom: 0.75rem;
-}
-
-.admin-dashboard__history ul {
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-}
-
-.admin-dashboard__history li {
-  display: flex;
-  justify-content: space-between;
-  font-size: 0.9rem;
-  /* Más oscuro que --color-muted (#6b6b6b): mismo criterio que "Libre" en
-     TableCard — margen extra de contraste para WCAG AA. */
-  color: #374151;
 }
 
 .admin-dashboard__overlay {
