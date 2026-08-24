@@ -16,6 +16,11 @@ const { t } = useLanguage();
 const billModalOpen = ref(false);
 
 async function confirmBillRequest(extra) {
+  // Segunda capa de seguridad: aunque el botón ya está deshabilitado sin
+  // pedido, esto evita que una alerta de S/ 0.00 llegue al mesero si la UI
+  // fallara (ej. el botón se habilitó con datos viejos por algún bug).
+  if (props.orderTotal === 0) return;
+
   sendRequest("cuenta", extra);
   // La propina queda en el pedido (no solo en la notificación al mesero),
   // que es lo que después alimenta el reporte de cierre de caja. El query
@@ -33,7 +38,12 @@ async function confirmBillRequest(extra) {
     <button type="button" class="pedidos-quick-actions__btn" @click="sendRequest('mesero')">
       {{ t("callWaiter") }}
     </button>
-    <button type="button" class="pedidos-quick-actions__btn" @click="billModalOpen = true">
+    <button
+      type="button"
+      class="pedidos-quick-actions__btn"
+      :disabled="orderTotal === 0"
+      @click="billModalOpen = true"
+    >
       {{ t("requestBill") }}
     </button>
 
@@ -77,6 +87,10 @@ async function confirmBillRequest(extra) {
 
 .pedidos-quick-actions__btn:active {
   transform: scale(0.94);
+}
+
+.pedidos-quick-actions__btn:disabled {
+  opacity: 0.5;
 }
 
 .pedidos-quick-actions__toast {
