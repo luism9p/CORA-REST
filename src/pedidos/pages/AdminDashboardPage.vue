@@ -206,24 +206,40 @@ async function handleSignOut() {
 
 .admin-dashboard__view-tabs {
   display: flex;
-  gap: 0.5rem;
+  gap: 1.5rem;
   margin-bottom: 1.25rem;
-  border-bottom: 1px solid var(--color-border);
+  border-bottom: 1px solid var(--color-border); /* misma línea base para las 3 pestañas */
 }
 
 .admin-dashboard__view-tab {
-  min-height: 2.75rem;
-  padding: 0 0.25rem;
-  font-weight: 700;
+  /* Reset: sin esto, un <button> sin más estilo muestra el fondo/borde 3D
+     nativo del navegador — es justo ese aspecto "de botón antiguo" que se
+     estaba viendo detrás de la lógica de estado que ya existía. */
+  appearance: none;
+  background: none;
+  border: none;
+  padding: 0.75rem 0.1rem;
+  margin-bottom: -1px; /* el borde inferior de la pestaña activa pisa la línea base */
   font-size: 0.95rem;
+  font-weight: 400;
   color: var(--color-muted);
-  border-bottom: 2px solid transparent;
-  margin-bottom: -1px;
+  border-bottom: 2px solid transparent; /* transparente y no "sin borde": mismo alto en ambos estados */
+  cursor: pointer;
+  transition: color 150ms var(--ease-out), border-color 150ms var(--ease-out);
+}
+
+.admin-dashboard__view-tab:hover {
+  color: #374151;
 }
 
 .admin-dashboard__view-tab--active {
   color: var(--color-primary);
+  font-weight: 500;
   border-bottom-color: var(--color-primary);
+}
+
+.admin-dashboard__view-tab--active:hover {
+  color: var(--color-primary);
 }
 
 .admin-dashboard__view-tab:focus-visible {
