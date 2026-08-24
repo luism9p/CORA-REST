@@ -62,9 +62,12 @@ function formatTime(iso) {
 }
 
 function orderDetail(order) {
+  // " | " y no "; " — el CSV ahora usa ";" como delimitador de columnas,
+  // así que un separador interno igual sería confuso de leer a simple
+  // vista aunque las comillas lo mantengan técnicamente válido.
   return (order.order_items || [])
     .map((i) => `${i.cantidad}x ${i.menu_item?.nombre || "?"}`)
-    .join("; ");
+    .join(" | ");
 }
 
 function exportCsv() {
@@ -78,7 +81,11 @@ function exportCsv() {
     Number(o.total || 0).toFixed(2),
   ]);
   const today = new Date().toISOString().slice(0, 10);
-  downloadCsv(`cierre-caja-${today}.csv`, headers, rows);
+  // Columna 2 ("Detalle del Pedido") siempre entre comillas: es texto libre
+  // que puede traer comas (nombres de platos, modificadores) — con ";" como
+  // delimitador ya no rompería la fila, pero igual queda más a prueba de
+  // balas dejarlo explícitamente entre comillas.
+  downloadCsv(`cierre-caja-${today}.csv`, headers, rows, { quoteColumns: [2] });
 }
 </script>
 
