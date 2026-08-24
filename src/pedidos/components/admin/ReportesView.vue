@@ -35,6 +35,7 @@ const {
   ticketPromedio,
   byPaymentMethod,
   efectivoVsDigital,
+  topProducts,
 } = useShiftReport(ordersRef);
 
 const donutGradient = computed(() => {
@@ -80,6 +81,11 @@ function exportCsv() {
     Number(o.propina || 0).toFixed(2),
     Number(o.total || 0).toFixed(2),
   ]);
+  // Fila final de sumatoria: mismas columnas que el resto, con las primeras
+  // vacías, "TOTAL" en Método de Pago, y las sumas ya calculadas arriba
+  // (totalPropinas/totalIngresos) en vez de volver a recorrer los pedidos.
+  rows.push(["", "", "", "TOTAL", totalPropinas.value.toFixed(2), totalIngresos.value.toFixed(2)]);
+
   const today = new Date().toISOString().slice(0, 10);
   // Columna 2 ("Detalle del Pedido") siempre entre comillas: es texto libre
   // que puede traer comas (nombres de platos, modificadores) — con ";" como
@@ -91,50 +97,80 @@ function exportCsv() {
 
 <template>
   <div class="admin-reportes">
-    <div class="admin-reportes__cards">
-      <div class="admin-reportes__card">
-        <span class="admin-reportes__card-label">Ingresos brutos</span>
-        <span class="admin-reportes__card-value">{{ formatCurrency(totalIngresos) }}</span>
+    <div class="admin-reportes__top">
+      <div class="admin-reportes__cards">
+        <div class="admin-reportes__card">
+          <span class="admin-reportes__card-label">Ingresos brutos</span>
+          <span class="admin-reportes__card-value">{{ formatCurrency(totalIngresos) }}</span>
+        </div>
+        <div class="admin-reportes__card">
+          <span class="admin-reportes__card-label">Propinas</span>
+          <span class="admin-reportes__card-value">{{ formatCurrency(totalPropinas) }}</span>
+        </div>
+        <div class="admin-reportes__card">
+          <span class="admin-reportes__card-label">Ticket promedio</span>
+          <span class="admin-reportes__card-value">{{ formatCurrency(ticketPromedio) }}</span>
+        </div>
       </div>
-      <div class="admin-reportes__card">
-        <span class="admin-reportes__card-label">Propinas</span>
-        <span class="admin-reportes__card-value">{{ formatCurrency(totalPropinas) }}</span>
-      </div>
-      <div class="admin-reportes__card">
-        <span class="admin-reportes__card-label">Ticket promedio</span>
-        <span class="admin-reportes__card-value">{{ formatCurrency(ticketPromedio) }}</span>
-      </div>
+
+      <button
+        type="button"
+        class="admin-reportes__export"
+        :disabled="completedOrders.length === 0"
+        @click="exportCsv"
+      >
+        ⬇️ Exportar CSV
+      </button>
     </div>
 
-    <section class="admin-reportes__breakdown">
-      <h2 class="admin-reportes__section-title">Desglose por método de pago</h2>
+    <div class="admin-reportes__columns">
+      <section class="admin-reportes__breakdown">
+        <h2 class="admin-reportes__section-title">Desglose por método de pago</h2>
 
-      <p v-if="completedOrders.length === 0" class="admin-reportes__empty">
-        Todavía no hay pedidos entregados hoy.
-      </p>
-      <div v-else class="admin-reportes__breakdown-body">
-        <div class="admin-reportes__donut" :style="{ background: donutGradient }">
-          <div class="admin-reportes__donut-hole">
-            <span class="admin-reportes__donut-total">{{ formatCurrency(totalIngresos) }}</span>
-            <span class="admin-reportes__donut-caption">Total</span>
+        <p v-if="completedOrders.length === 0" class="admin-reportes__empty">
+          Todavía no hay pedidos entregados hoy.
+        </p>
+        <template v-else>
+          <div class="admin-reportes__breakdown-body">
+            <div class="admin-reportes__donut" :style="{ background: donutGradient }">
+              <div class="admin-reportes__donut-hole">
+                <span class="admin-reportes__donut-total">{{ formatCurrency(totalIngresos) }}</span>
+                <span class="admin-reportes__donut-caption">Total</span>
+              </div>
+            </div>
+
+            <ul class="admin-reportes__legend">
+              <li v-for="entry in byPaymentMethod" :key="entry.method" class="admin-reportes__legend-row">
+                <span class="admin-reportes__legend-dot" :style="{ background: methodColor(entry.method) }"></span>
+                <span class="admin-reportes__legend-label">{{ entry.label }}</span>
+                <span class="admin-reportes__legend-value">{{ formatCurrency(entry.total) }}</span>
+                <span class="admin-reportes__legend-percent">{{ entry.percent.toFixed(0) }}%</span>
+              </li>
+            </ul>
           </div>
-        </div>
 
-        <ul class="admin-reportes__legend">
-          <li v-for="entry in byPaymentMethod" :key="entry.method" class="admin-reportes__legend-row">
-            <span class="admin-reportes__legend-dot" :style="{ background: methodColor(entry.method) }"></span>
-            <span class="admin-reportes__legend-label">{{ entry.label }}</span>
-            <span class="admin-reportes__legend-value">{{ formatCurrency(entry.total) }}</span>
-            <span class="admin-reportes__legend-percent">{{ entry.percent.toFixed(0) }}%</span>
+          <p class="admin-reportes__cash-split">
+            💵 {{ efectivoVsDigital.efectivoPercent.toFixed(0) }}% efectivo · 💳
+            {{ efectivoVsDigital.digitalPercent.toFixed(0) }}% digital
+          </p>
+        </template>
+      </section>
+
+      <section class="admin-reportes__top-products">
+        <h2 class="admin-reportes__section-title">Platos más vendidos</h2>
+
+        <p v-if="topProducts.length === 0" class="admin-reportes__empty">
+          Todavía no hay pedidos entregados hoy.
+        </p>
+        <ol v-else class="admin-reportes__top-products-list">
+          <li v-for="(product, index) in topProducts" :key="product.nombre">
+            <span class="admin-reportes__top-products-rank">{{ index + 1 }}</span>
+            <span class="admin-reportes__top-products-name">{{ product.nombre }}</span>
+            <span class="admin-reportes__top-products-qty">{{ product.cantidad }}</span>
           </li>
-        </ul>
-      </div>
-
-      <p v-if="completedOrders.length > 0" class="admin-reportes__cash-split">
-        💵 {{ efectivoVsDigital.efectivoPercent.toFixed(0) }}% efectivo · 💳
-        {{ efectivoVsDigital.digitalPercent.toFixed(0) }}% digital
-      </p>
-    </section>
+        </ol>
+      </section>
+    </div>
 
     <section v-if="completedOrders.length > 0" class="admin-reportes__history">
       <h2 class="admin-reportes__section-title">Historial del día</h2>
@@ -167,15 +203,6 @@ function exportCsv() {
       </div>
     </section>
 
-    <button
-      type="button"
-      class="admin-reportes__export"
-      :disabled="completedOrders.length === 0"
-      @click="exportCsv"
-    >
-      ⬇ Exportar CSV
-    </button>
-
     <ReportOrderModal
       :open="orderModalOpen"
       :order="selectedOrder"
@@ -186,11 +213,20 @@ function exportCsv() {
 </template>
 
 <style scoped>
+.admin-reportes__top {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+  flex-wrap: wrap;
+  margin-bottom: 1.5rem;
+}
+
 .admin-reportes__cards {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 0.75rem;
-  margin-bottom: 1.5rem;
+  flex: 1;
+  min-width: 16rem;
 }
 
 .admin-reportes__card {
@@ -223,12 +259,63 @@ function exportCsv() {
   margin-bottom: 1rem;
 }
 
-.admin-reportes__breakdown {
+.admin-reportes__columns {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+@media (max-width: 640px) {
+  .admin-reportes__columns {
+    grid-template-columns: 1fr;
+  }
+}
+
+.admin-reportes__breakdown,
+.admin-reportes__top-products {
   padding: 1.25rem;
   border-radius: 1rem;
   background: var(--color-surface);
   border: 1px solid var(--color-border);
-  margin-bottom: 1.5rem;
+}
+
+.admin-reportes__top-products-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+
+.admin-reportes__top-products-list li {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  font-size: 0.9rem;
+}
+
+.admin-reportes__top-products-rank {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.5rem;
+  height: 1.5rem;
+  border-radius: 9999px;
+  background: var(--color-bg);
+  color: var(--color-muted);
+  font-size: 0.75rem;
+  font-weight: 800;
+  flex-shrink: 0;
+}
+
+.admin-reportes__top-products-name {
+  font-weight: 700;
+  color: var(--color-text);
+}
+
+.admin-reportes__top-products-qty {
+  margin-left: auto;
+  color: var(--color-muted);
+  font-weight: 600;
 }
 
 .admin-reportes__empty {
@@ -341,6 +428,10 @@ function exportCsv() {
   font-size: 0.9rem;
 }
 
+.admin-reportes__table thead {
+  background: #f9fafb;
+}
+
 .admin-reportes__table th {
   text-align: left;
   font-size: 0.7rem;
@@ -348,7 +439,7 @@ function exportCsv() {
   text-transform: uppercase;
   letter-spacing: 0.05em;
   color: var(--color-muted);
-  padding: 0 0.5rem 0.6rem;
+  padding: 0.6rem 0.5rem;
   white-space: nowrap;
 }
 
@@ -357,6 +448,11 @@ function exportCsv() {
   border-top: 1px solid var(--color-border);
   color: var(--color-text);
   white-space: nowrap;
+}
+
+.admin-reportes__table th:last-child,
+.admin-reportes__table td:last-child {
+  text-align: right;
 }
 
 .admin-reportes__table-row {
@@ -375,14 +471,17 @@ function exportCsv() {
 }
 
 .admin-reportes__export {
-  width: 100%;
-  min-height: 3rem;
+  flex-shrink: 0;
+  min-height: 2.75rem;
+  padding: 0 1.1rem;
   border-radius: 9999px;
-  background: var(--color-primary);
-  color: #fff;
+  border: 1px solid var(--color-border);
+  background: var(--color-surface);
+  color: var(--color-text);
   font-weight: 700;
-  font-size: 0.95rem;
-  transition: transform 400ms var(--ease-spring), background-color 150ms var(--ease-out), opacity 150ms;
+  font-size: 0.85rem;
+  white-space: nowrap;
+  transition: transform 400ms var(--ease-spring), border-color 150ms var(--ease-out), opacity 150ms;
 }
 
 .admin-reportes__export:disabled {
@@ -390,7 +489,7 @@ function exportCsv() {
 }
 
 .admin-reportes__export:not(:disabled):active {
-  background: var(--color-primary-dark);
-  transform: scale(0.97);
+  border-color: var(--color-primary);
+  transform: scale(0.96);
 }
 </style>

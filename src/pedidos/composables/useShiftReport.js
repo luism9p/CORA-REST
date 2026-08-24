@@ -59,6 +59,21 @@ export function useShiftReport(orders) {
     };
   });
 
+  const topProducts = computed(() => {
+    const counts = new Map();
+    for (const o of completedOrders.value) {
+      for (const item of o.order_items || []) {
+        const nombre = item.menu_item?.nombre;
+        if (!nombre) continue;
+        counts.set(nombre, (counts.get(nombre) || 0) + item.cantidad);
+      }
+    }
+    return Array.from(counts.entries())
+      .map(([nombre, cantidad]) => ({ nombre, cantidad }))
+      .sort((a, b) => b.cantidad - a.cantidad)
+      .slice(0, 5);
+  });
+
   return {
     completedOrders,
     totalIngresos,
@@ -66,5 +81,6 @@ export function useShiftReport(orders) {
     ticketPromedio,
     byPaymentMethod,
     efectivoVsDigital,
+    topProducts,
   };
 }
