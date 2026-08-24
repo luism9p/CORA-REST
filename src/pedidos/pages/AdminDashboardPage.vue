@@ -16,6 +16,7 @@ import FilterTabs from "@/pedidos/components/admin/FilterTabs.vue";
 import TableCard from "@/pedidos/components/admin/TableCard.vue";
 import OrderDetailPanel from "@/pedidos/components/admin/OrderDetailPanel.vue";
 import MenuAvailability from "@/pedidos/components/admin/MenuAvailability.vue";
+import ReportesView from "@/pedidos/components/admin/ReportesView.vue";
 
 const { session, loading: authLoading, signOut } = useAuth();
 const { tables, loading: tablesLoading } = useTables();
@@ -26,7 +27,7 @@ const { totalRevenue, bestSeller } = useShiftStats(orders);
 
 const filter = ref("todas");
 const selectedTableId = ref(null);
-const view = ref("mesas"); // 'mesas' | 'carta'
+const view = ref("mesas"); // 'mesas' | 'carta' | 'reportes'
 
 // Si no hay sesión, al login. Es guard client-side porque el proyecto es
 // output:'static' (no hay verificación posible en el servidor). Se registra
@@ -118,6 +119,14 @@ async function handleSignOut() {
         >
           Carta
         </button>
+        <button
+          type="button"
+          class="admin-dashboard__view-tab"
+          :class="{ 'admin-dashboard__view-tab--active': view === 'reportes' }"
+          @click="view = 'reportes'"
+        >
+          Reportes
+        </button>
       </div>
 
       <template v-if="view === 'mesas'">
@@ -145,7 +154,9 @@ async function handleSignOut() {
         </section>
       </template>
 
-      <MenuAvailability v-else />
+      <MenuAvailability v-else-if="view === 'carta'" />
+
+      <ReportesView v-else :orders="orders" :table-numero="tableNumero" />
 
       <Transition name="admin-overlay">
         <div v-if="selectedEntry?.order" class="admin-dashboard__overlay" @click.self="selectedTableId = null">

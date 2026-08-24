@@ -2,10 +2,12 @@
 import { ref } from "vue";
 import { useTableRequest } from "@/pedidos/composables/useTableRequest";
 import { useLanguage } from "@/pedidos/composables/useLanguage";
+import { supabase } from "@/pedidos/lib/supabaseClient";
 import BillRequestModal from "./BillRequestModal.vue";
 
 const props = defineProps({
   tableId: { type: Number, required: true },
+  orderId: { type: String, default: null },
   orderTotal: { type: Number, default: 0 },
 });
 
@@ -13,8 +15,15 @@ const { toast, sendRequest } = useTableRequest(props.tableId);
 const { t } = useLanguage();
 const billModalOpen = ref(false);
 
-function confirmBillRequest(extra) {
+async function confirmBillRequest(extra) {
   sendRequest("cuenta", extra);
+  // La propina queda en el pedido (no solo en la notificación al mesero),
+  // que es lo que después alimenta el reporte de cierre de caja. El query
+  // builder de Supabase es "thenable" perezoso — sin awaitarlo, la petición
+  // nunca sale.
+  if (props.orderId) {
+    await supabase.from("orders").update({ propina: extra.propina }).eq("id", props.orderId);
+  }
   billModalOpen.value = false;
 }
 </script>
