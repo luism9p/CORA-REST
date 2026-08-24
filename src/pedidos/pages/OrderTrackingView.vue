@@ -1,6 +1,5 @@
 <script setup>
 import { computed } from "vue";
-import { STATUS_FLOW } from "@/pedidos/utils/orderStatus";
 import { formatCurrency } from "@/pedidos/utils/format";
 import { modifiersExtra } from "@/pedidos/composables/useCart";
 import { useLanguage } from "@/pedidos/composables/useLanguage";
@@ -12,14 +11,6 @@ const props = defineProps({
 });
 
 const { language, t } = useLanguage();
-const currentIndex = computed(() => STATUS_FLOW.indexOf(props.order.estado));
-
-const STATUS_LABEL_KEY = {
-  nuevo: "statusNuevo",
-  preparando: "statusPreparando",
-  listo: "statusListo",
-  entregado: "statusEntregado",
-};
 
 // Estado de cada plato (despachos parciales): en mesas con pedidos grandes,
 // esto le muestra al cliente qué platos ya le llevaron aunque el pedido
@@ -29,26 +20,42 @@ const ITEM_STATUS_LABEL_KEY = {
   listo_para_servir: "itemListoParaServir",
   en_mesa: "itemEnMesa",
 };
+
+// Reemplaza el viejo indicador de estado general del pedido (Nuevo →
+// Preparando → Listo → Entregado): con despachos parciales ese estado ya no
+// existe por plato, así que el progreso real se arma sumando cuántas
+// unidades de comida (no líneas del pedido) ya llegaron a la mesa.
+const totalProductos = computed(() => props.orderItems.reduce((sum, i) => sum + i.cantidad, 0));
+
+const productosEntregados = computed(() =>
+  props.orderItems
+    .filter((i) => i.estado === "en_mesa")
+    .reduce((sum, i) => sum + i.cantidad, 0)
+);
+
+const progressPercent = computed(() =>
+  totalProductos.value === 0 ? 0 : (productosEntregados.value / totalProductos.value) * 100
+);
 </script>
 
 <template>
   <div class="pedidos-tracking">
     <h2 class="pedidos-tracking__title">{{ t("trackingTitle") }}</h2>
 
-    <ol class="pedidos-tracking__steps">
-      <li
-        v-for="(status, index) in STATUS_FLOW"
-        :key="status"
-        class="pedidos-tracking__step"
-        :class="{
-          'pedidos-tracking__step--done': index < currentIndex,
-          'pedidos-tracking__step--current': index === currentIndex,
-        }"
+    <div class="pedidos-tracking__progress">
+      <p class="pedidos-tracking__progress-text">
+        {{ t("progressSummary", productosEntregados, totalProductos) }}
+      </p>
+      <div
+        class="pedidos-tracking__progress-track"
+        role="progressbar"
+        :aria-valuenow="productosEntregados"
+        :aria-valuemin="0"
+        :aria-valuemax="totalProductos"
       >
-        <span class="pedidos-tracking__dot"></span>
-        <span>{{ t(STATUS_LABEL_KEY[status]) }}</span>
-      </li>
-    </ol>
+        <div class="pedidos-tracking__progress-fill" :style="{ width: `${progressPercent}%` }"></div>
+      </div>
+    </div>
 
     <div class="pedidos-tracking__summary">
       <div v-for="item in orderItems" :key="item.id" class="pedidos-tracking__item">
@@ -87,44 +94,29 @@ const ITEM_STATUS_LABEL_KEY = {
   margin-bottom: 2rem;
 }
 
-.pedidos-tracking__steps {
-  display: flex;
-  flex-direction: column;
-  gap: 1.25rem;
+.pedidos-tracking__progress {
   margin-bottom: 2rem;
 }
 
-.pedidos-tracking__step {
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
+.pedidos-tracking__progress-text {
+  font-size: 14px;
   color: var(--color-muted);
-  font-weight: 600;
+  margin-bottom: 0.5rem;
 }
 
-.pedidos-tracking__dot {
-  width: 1.25rem;
-  height: 1.25rem;
+.pedidos-tracking__progress-track {
+  width: 100%;
+  height: 0.6rem;
+  background: var(--color-border);
   border-radius: 9999px;
-  border: 2px solid var(--color-border);
-  flex-shrink: 0;
+  overflow: hidden;
 }
 
-.pedidos-tracking__step--done {
-  color: var(--color-text);
-}
-.pedidos-tracking__step--done .pedidos-tracking__dot {
-  background: var(--color-listo);
-  border-color: var(--color-listo);
-}
-
-.pedidos-tracking__step--current {
-  color: var(--color-primary);
-}
-.pedidos-tracking__step--current .pedidos-tracking__dot {
+.pedidos-tracking__progress-fill {
+  height: 100%;
   background: var(--color-primary);
-  border-color: var(--color-primary);
-  box-shadow: 0 0 0 4px color-mix(in srgb, var(--color-primary) 25%, transparent);
+  border-radius: 9999px;
+  transition: width 0.4s ease-in-out;
 }
 
 .pedidos-tracking__summary {
