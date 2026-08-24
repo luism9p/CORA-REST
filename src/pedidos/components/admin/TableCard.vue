@@ -93,6 +93,13 @@ const slaLevel = computed(() => {
   box-shadow: 0 4px 14px rgba(0, 0, 0, 0.08);
 }
 
+/* Azul (no rojo) a propósito: el rojo ya está tomado por "urgente" (borde
+   de estado, fondo --critical) — un foco rojo se confundiría con eso. */
+.admin-table-card:focus-visible {
+  outline: 3px solid #2563eb;
+  outline-offset: 2px;
+}
+
 .admin-table-card--active:active {
   transform: scale(0.96);
 }
@@ -105,7 +112,10 @@ const slaLevel = computed(() => {
 
 .admin-table-card__free {
   font-size: 0.8rem;
-  color: var(--color-muted);
+  /* Más oscuro que --color-muted (#6b6b6b) a propósito: ese gris ya pasa
+     WCAG AA por poco, pero "Libre" es texto secundario importante para
+     leer rápido a distancia — se le da margen extra con gray-700. */
+  color: #374151;
   font-weight: 600;
 }
 

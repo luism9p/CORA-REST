@@ -133,7 +133,12 @@ async function handleSignOut() {
         <ShiftStats :total-revenue="totalRevenue" :best-seller="bestSeller" />
         <FilterTabs v-model="filter" />
 
-        <TransitionGroup tag="div" name="admin-grid" class="admin-dashboard__grid">
+        <TransitionGroup
+          tag="div"
+          name="admin-grid"
+          class="admin-dashboard__grid"
+          aria-live="polite"
+        >
           <TableCard
             v-for="entry in filteredTables"
             :key="entry.table.id"
@@ -228,6 +233,11 @@ async function handleSignOut() {
   border-bottom-color: var(--color-primary);
 }
 
+.admin-dashboard__view-tab:focus-visible {
+  outline: 3px solid #2563eb;
+  outline-offset: 2px;
+}
+
 .admin-dashboard__grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(6.5rem, 1fr));
@@ -270,7 +280,9 @@ async function handleSignOut() {
   display: flex;
   justify-content: space-between;
   font-size: 0.9rem;
-  color: var(--color-muted);
+  /* Más oscuro que --color-muted (#6b6b6b): mismo criterio que "Libre" en
+     TableCard — margen extra de contraste para WCAG AA. */
+  color: #374151;
 }
 
 .admin-dashboard__overlay {

@@ -50,4 +50,9 @@ const OPTIONS = [
   border-color: var(--color-primary);
   color: #fff;
 }
+
+.admin-filter-tabs__btn:focus-visible {
+  outline: 3px solid #2563eb;
+  outline-offset: 2px;
+}
 </style>
