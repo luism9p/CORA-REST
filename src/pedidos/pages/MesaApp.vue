@@ -39,6 +39,7 @@ const { categories, groupedByCategory, loading: menuLoading } = useMenu();
 
 const view = ref("menu"); // 'menu' | 'tracking' | 'thankyou'
 const activeOrderId = ref(null);
+const justAddedToTable = ref(false);
 const activeCategory = ref("");
 const searchTerm = ref("");
 const cartOpen = ref(false);
@@ -106,9 +107,10 @@ const filteredItems = computed(() => {
   );
 });
 
-function handleConfirmed(orderId) {
+function handleConfirmed(orderId, wasAddition) {
   if (table.value) setStoredOrderId(table.value.numero, orderId);
   activeOrderId.value = orderId;
+  justAddedToTable.value = Boolean(wasAddition);
   cartOpen.value = false;
   view.value = "tracking";
 }
@@ -191,7 +193,12 @@ function handleNewOrder() {
       <!-- Seguimiento -->
       <div v-else-if="view === 'tracking'">
         <LoadingSpinner v-if="!order" :label="t('lookingUpOrder')" />
-        <OrderTrackingView v-else :order="order" :order-items="orderItems" />
+        <OrderTrackingView
+          v-else
+          :order="order"
+          :order-items="orderItems"
+          :just-added="justAddedToTable"
+        />
       </div>
 
       <!-- Agradecimiento -->

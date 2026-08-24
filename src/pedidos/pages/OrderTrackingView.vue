@@ -1,5 +1,5 @@
 <script setup>
-import { computed } from "vue";
+import { computed, ref, watch } from "vue";
 import { formatCurrency } from "@/pedidos/utils/format";
 import { modifiersExtra } from "@/pedidos/composables/useCart";
 import { useLanguage } from "@/pedidos/composables/useLanguage";
@@ -8,9 +8,30 @@ import { localizedName } from "@/pedidos/utils/localizedMenuField";
 const props = defineProps({
   order: { type: Object, required: true },
   orderItems: { type: Array, default: () => [] },
+  justAdded: { type: Boolean, default: false },
 });
 
 const { language, t } = useLanguage();
+
+// Otro celular de la misma mesa ya tenía un pedido activo, así que este
+// envío se sumó a esa cuenta en vez de crear un pedido nuevo (ver
+// submit_table_order() / CartDrawer.vue). Mismo patrón de toast que
+// useTableRequest.js: aparece y se retira solo, no bloquea la pantalla.
+const showAddedToast = ref(false);
+let addedToastTimer = null;
+
+watch(
+  () => props.justAdded,
+  (justAdded) => {
+    if (!justAdded) return;
+    showAddedToast.value = true;
+    clearTimeout(addedToastTimer);
+    addedToastTimer = setTimeout(() => {
+      showAddedToast.value = false;
+    }, 3000);
+  },
+  { immediate: true }
+);
 
 // Estado de cada plato (despachos parciales): en mesas con pedidos grandes,
 // esto le muestra al cliente qué platos ya le llevaron aunque el pedido
@@ -77,6 +98,12 @@ const progressPercent = computed(() =>
         <span>{{ formatCurrency(order.total) }}</span>
       </div>
     </div>
+
+    <Transition name="pedidos-tracking-toast">
+      <div v-if="showAddedToast" class="pedidos-tracking__added-toast">
+        {{ t("orderAddedToTable") }}
+      </div>
+    </Transition>
   </div>
 </template>
 
@@ -198,5 +225,34 @@ const progressPercent = computed(() =>
   margin-top: 0.75rem;
   padding-top: 0.75rem;
   border-top: 1px solid var(--color-border);
+}
+
+.pedidos-tracking__added-toast {
+  position: fixed;
+  bottom: 1rem;
+  left: 50%;
+  transform: translateX(-50%);
+  max-width: calc(100% - 2rem);
+  background: var(--color-text);
+  color: var(--color-bg);
+  padding: 0.6rem 1.1rem;
+  border-radius: 9999px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  text-align: center;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  z-index: 50;
+}
+
+.pedidos-tracking-toast-enter-active {
+  transition: opacity 400ms var(--ease-spring), transform 400ms var(--ease-spring);
+}
+.pedidos-tracking-toast-leave-active {
+  transition: opacity 200ms var(--ease-out), transform 200ms var(--ease-out);
+}
+.pedidos-tracking-toast-enter-from,
+.pedidos-tracking-toast-leave-to {
+  opacity: 0;
+  transform: translateX(-50%) translateY(0.5rem) scale(0.9);
 }
 </style>

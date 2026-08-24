@@ -6,12 +6,20 @@
 import { ref, watch, onUnmounted } from "vue";
 import { supabase } from "@/pedidos/lib/supabaseClient";
 
+const ORDER_ITEMS_SELECT =
+  "id, cantidad, nota, estado, menu_item:menu_items(nombre, nombre_en, precio), modifiers:order_item_modifiers(nombre, precio_extra)";
+
 export function useOrderTracking(orderId) {
   const order = ref(null);
   const orderItems = ref([]);
   const loading = ref(true);
   const notFound = ref(false);
   let channel = null;
+
+  async function fetchItems(id) {
+    const { data } = await supabase.from("order_items").select(ORDER_ITEMS_SELECT).eq("order_id", id);
+    orderItems.value = data || [];
+  }
 
   async function fetchOrder(id) {
     loading.value = true;
@@ -32,13 +40,7 @@ export function useOrderTracking(orderId) {
     }
 
     order.value = data;
-
-    const { data: itemsData } = await supabase
-      .from("order_items")
-      .select("id, cantidad, nota, estado, menu_item:menu_items(nombre, nombre_en, precio), modifiers:order_item_modifiers(nombre, precio_extra)")
-      .eq("order_id", id);
-
-    orderItems.value = itemsData || [];
+    await fetchItems(id);
     loading.value = false;
   }
 
@@ -72,6 +74,20 @@ export function useOrderTracking(orderId) {
           // payload.new no trae los joins a menu_item/modifiers: se combina
           // en vez de reemplazar, para no perderlos.
           if (idx !== -1) orderItems.value[idx] = { ...orderItems.value[idx], ...payload.new };
+        }
+      )
+      .on(
+        // Otro celular de la misma mesa puede sumar platos a este mismo
+        // pedido (ver submit_table_order()): sin esto, la pantalla de
+        // seguimiento del primer cliente actualizaba el total en vivo (por
+        // la suscripción a orders) pero el plato nuevo no aparecía en la
+        // lista hasta recargar. payload.new tampoco trae los joins acá, así
+        // que se refetchea la lista completa en vez de intentar armar el
+        // join a mano.
+        "postgres_changes",
+        { event: "INSERT", schema: "public", table: "order_items", filter: `order_id=eq.${id}` },
+        () => {
+          fetchItems(id);
         }
       )
       .subscribe();

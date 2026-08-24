@@ -28,64 +28,41 @@ async function confirmOrder() {
   submitting.value = true;
   submitError.value = "";
 
-  const { data: order, error: orderError } = await supabase
-    .from("orders")
-    .insert({
-      table_id: props.tableId,
-      total: cart.total.value,
-      metodo_pago: paymentMethod.value,
-    })
-    .select()
-    .single();
-
-  if (orderError || !order) {
-    submitError.value = t("orderError");
-    submitting.value = false;
-    return;
-  }
-
-  const rows = cart.items.map((line) => ({
-    order_id: order.id,
+  // Varios celulares pueden escanear el mismo tag NFC de esta mesa y
+  // confirmar casi al mismo tiempo. Por eso esto no es un insert directo:
+  // submit_table_order() decide en una sola transacción atómica en el
+  // servidor si esto es un pedido nuevo o una adición al que ya está activo
+  // en la mesa (y suma los platos + el total ahí, no acá) — dos llamadas
+  // simultáneas para la misma mesa no pueden crear dos pedidos duplicados.
+  const items = cart.items.map((line) => ({
     menu_item_id: line.menuItem.id,
     cantidad: line.cantidad,
     nota: line.nota || null,
+    modifiers: (line.modifiers || []).map((mod) => ({
+      nombre: mod.nombre,
+      precio_extra: mod.precio_extra,
+    })),
   }));
 
-  const { data: insertedItems, error: itemsError } = await supabase
-    .from("order_items")
-    .insert(rows)
-    .select();
+  const { data, error } = await supabase
+    .rpc("submit_table_order", {
+      p_table_id: props.tableId,
+      p_metodo_pago: paymentMethod.value,
+      p_delta_total: cart.total.value,
+      p_items: items,
+    })
+    .single();
 
-  if (itemsError || !insertedItems) {
+  if (error || !data) {
     submitError.value = t("orderError");
     submitting.value = false;
     return;
-  }
-
-  // insert() preserva el orden de las filas insertadas, así que se puede
-  // emparejar 1 a 1 con cart.items para saber a qué order_item corresponde
-  // cada selección de modificadores.
-  const modifierRows = cart.items.flatMap((line, i) =>
-    (line.modifiers || []).map((mod) => ({
-      order_item_id: insertedItems[i].id,
-      nombre: mod.nombre,
-      precio_extra: mod.precio_extra,
-    }))
-  );
-
-  if (modifierRows.length > 0) {
-    const { error: modifiersError } = await supabase.from("order_item_modifiers").insert(modifierRows);
-    if (modifiersError) {
-      submitError.value = t("orderError");
-      submitting.value = false;
-      return;
-    }
   }
 
   cart.clear();
   paymentMethod.value = "";
   submitting.value = false;
-  emit("confirmed", order.id);
+  emit("confirmed", data.order_id, data.was_addition);
 }
 </script>
 
