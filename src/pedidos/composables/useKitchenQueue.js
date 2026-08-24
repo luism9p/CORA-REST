@@ -19,8 +19,10 @@ export function useKitchenQueue(tablesWithOrders) {
       for (const item of order.order_items || []) {
         if (item.estado !== "preparando") continue;
         items.push({
+          id: item.id,
           nombrePlato: item.menu_item?.nombre || "?",
           cantidad: item.cantidad,
+          nota: item.nota || "",
           numeroMesa: table.numero,
           timestamp: order.created_at,
         });
