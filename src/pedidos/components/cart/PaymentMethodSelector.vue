@@ -11,7 +11,11 @@ const { t } = useLanguage();
 
 const METHODS = computed(() => [
   { value: "efectivo", label: t("payCash") },
-  { value: "plin", label: t("payPlin") },
+  // Valor guardado en BD: "Yape/Plin" (no "plin") — la dueña pidió que la
+  // billetera digital cubra ambas apps. Los pedidos históricos con
+  // metodo_pago="plin" se quedan como están (ver migración); esto solo
+  // cambia lo que se guarda de ahora en adelante.
+  { value: "Yape/Plin", label: t("payPlin") },
   { value: "tarjeta", label: t("payCard") },
 ]);
 </script>
@@ -46,18 +50,26 @@ const METHODS = computed(() => [
 
 .pedidos-payment__options {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  /* minmax(0, 1fr) y no un "1fr" a secas: un track 1fr no se encoge más
+     allá del ancho de su contenido, así que "Yape / Plin" podía forzar la
+     columna a desbordar el grid en pantallas angostas. Con minmax(0, 1fr)
+     las 3 columnas quedan realmente fluidas y el texto envuelve en vez de
+     romper el layout. */
+  grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 0.5rem;
 }
 
 .pedidos-payment__option {
   min-height: 2.75rem;
+  padding: 0.4rem 0.3rem;
   border-radius: 0.5rem;
   border: 1px solid var(--color-border);
   background: var(--color-surface);
   color: var(--color-text);
   font-weight: 600;
-  font-size: 0.9rem;
+  font-size: 0.82rem;
+  line-height: 1.15;
+  text-align: center;
   transition: background-color 150ms, color 150ms, border-color 150ms;
 }
 

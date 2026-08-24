@@ -6,7 +6,10 @@ import { computed } from "vue";
 
 export const PAYMENT_METHOD_LABEL = {
   efectivo: "Efectivo",
+  // "plin" (minúscula) sigue mapeado para pedidos históricos de antes del
+  // cambio a "Yape/Plin" — no se reescriben, solo se etiquetan igual de bien.
   plin: "Plin",
+  "Yape/Plin": "Yape / Plin",
   tarjeta: "Tarjeta",
 };
 

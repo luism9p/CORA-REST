@@ -23,7 +23,8 @@ function openOrder(order) {
 const PAYMENT_METHOD_COLOR = {
   efectivo: "#cc0000",
   tarjeta: "#2a78d6",
-  plin: "#1baf7a",
+  plin: "#1baf7a", // pedidos históricos previos al cambio a "Yape/Plin"
+  "Yape/Plin": "#eb6834", // validado junto a los otros 3 (dataviz skill)
 };
 const FALLBACK_COLOR = "#898781";
 
