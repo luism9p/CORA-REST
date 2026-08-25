@@ -217,7 +217,13 @@ function handleNewOrder() {
           </button>
         </Transition>
 
-        <CartDrawer :open="cartOpen" :table-id="table.id" @close="cartOpen = false" @confirmed="handleConfirmed" />
+        <CartDrawer
+          :open="cartOpen"
+          :table-id="table.id"
+          :table-numero="table.numero"
+          @close="cartOpen = false"
+          @confirmed="handleConfirmed"
+        />
         <CrossSellPrompt />
       </div>
 

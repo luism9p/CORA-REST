@@ -5,12 +5,17 @@ import { useLanguage } from "@/pedidos/composables/useLanguage";
 import { useDragSheet } from "@/pedidos/composables/useDragSheet";
 import { supabase } from "@/pedidos/lib/supabaseClient";
 import { formatCurrency } from "@/pedidos/utils/format";
+import { getStoredSession, isSessionValid } from "@/pedidos/utils/session";
 import CartItemRow from "./CartItemRow.vue";
 import PaymentMethodSelector from "./PaymentMethodSelector.vue";
 
 const props = defineProps({
   open: { type: Boolean, default: false },
   tableId: { type: Number, required: true },
+  // Distinto de tableId (la PK): la sesión de check-in se guarda en
+  // localStorage por número de mesa (ver utils/session.js), igual que el
+  // pedido en curso en orderStorage.js.
+  tableNumero: { type: Number, required: true },
 });
 const emit = defineEmits(["close", "confirmed"]);
 
@@ -25,6 +30,19 @@ const { onPointerDown, onPointerMove, onPointerUp, dragStyle } = useDragSheet({
 
 async function confirmOrder() {
   if (!paymentMethod.value || cart.items.length === 0 || submitting.value) return;
+
+  // El backend es quien de verdad hace cumplir esto — submit_table_order
+  // rechaza la llamada si el session_token no existe o venció (ver
+  // migración require_session_token_for_orders) — pero no tiene sentido ni
+  // armar el payload si ya sabemos acá que no hay sesión válida. Alerta
+  // bloqueante a propósito: no es un error que se pueda ignorar y seguir
+  // pidiendo, hay que recargar para pasar el check-in de nuevo.
+  const session = getStoredSession(props.tableNumero);
+  if (!isSessionValid(session)) {
+    alert(t("sessionExpiredAlert"));
+    return;
+  }
+
   submitting.value = true;
   submitError.value = "";
 
@@ -50,6 +68,7 @@ async function confirmOrder() {
       p_metodo_pago: paymentMethod.value,
       p_delta_total: cart.total.value,
       p_items: items,
+      p_session_token: session.token,
     })
     .single();
 
