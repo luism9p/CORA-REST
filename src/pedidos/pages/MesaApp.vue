@@ -7,13 +7,16 @@ import { useTheme } from "@/pedidos/composables/useTheme";
 import { useBusinessHours } from "@/pedidos/composables/useBusinessHours";
 import { useOrderTracking } from "@/pedidos/composables/useOrderTracking";
 import { useLanguage } from "@/pedidos/composables/useLanguage";
+import { useCheckIn } from "@/pedidos/composables/useCheckIn";
 import {
   getStoredOrderId,
   setStoredOrderId,
   clearStoredOrderId,
 } from "@/pedidos/utils/orderStorage";
+import { getStoredSession, isSessionValid } from "@/pedidos/utils/session";
 
 import LoadingSpinner from "@/pedidos/components/common/LoadingSpinner.vue";
+import LocationCheck from "@/pedidos/components/LocationCheck.vue";
 import CategoryTabs from "@/pedidos/components/menu/CategoryTabs.vue";
 import SearchBar from "@/pedidos/components/menu/SearchBar.vue";
 import MenuItemCard from "@/pedidos/components/menu/MenuItemCard.vue";
@@ -37,7 +40,7 @@ const { isOpen } = useBusinessHours();
 const cart = useCart();
 const { categories, groupedByCategory, loading: menuLoading } = useMenu();
 
-const view = ref("menu"); // 'menu' | 'tracking' | 'thankyou'
+const view = ref("locationCheck"); // 'locationCheck' | 'menu' | 'tracking' | 'thankyou'
 const activeOrderId = ref(null);
 const justAddedToTable = ref(false);
 const activeCategory = ref("");
@@ -46,10 +49,13 @@ const cartOpen = ref(false);
 const initialized = ref(false);
 
 const { order, orderItems, notFound } = useOrderTracking(activeOrderId);
+const { checking: checkingIn, error: checkInError, checkIn } = useCheckIn();
 
-// En cuanto conocemos la mesa, revisamos si ya había un pedido activo
-// guardado en localStorage (recarga de página accidental) antes de mostrar
-// el menú desde cero.
+// En cuanto conocemos la mesa: si ya había un pedido activo guardado en
+// localStorage (recarga de página accidental), va directo a seguimiento —
+// eso ya implica que en algún momento pasó el check-in. Si no, decide entre
+// menú y check-in según si todavía hay una sesión de geolocalización
+// vigente para esta mesa (ver utils/session.js).
 watch(
   table,
   (t) => {
@@ -59,10 +65,23 @@ watch(
     if (stored) {
       activeOrderId.value = stored;
       view.value = "tracking";
+      return;
     }
+    view.value = isSessionValid(getStoredSession(t.numero)) ? "menu" : "locationCheck";
   },
   { immediate: true }
 );
+
+async function handleLocated({ latitude, longitude }) {
+  if (!table.value) return;
+  const success = await checkIn({
+    tableNumber: table.value.numero,
+    tableId: table.value.id,
+    latitude,
+    longitude,
+  });
+  if (success) view.value = "menu";
+}
 
 watch(categories, (list) => {
   if (list.length > 0 && !activeCategory.value) {
@@ -131,24 +150,36 @@ function handleNewOrder() {
     </div>
 
     <template v-else-if="table">
-      <ThemeToggleButton :theme="theme" @toggle="toggleTheme" />
-      <LanguageToggle />
-      <!-- Fuera de horario y sin pedido en curso no hay nada que pedir/pedir
-           la cuenta de, así que las acciones rápidas solo se ocultan en ese
-           caso puntual — si ya tienen un pedido activo, se quedan visibles
-           aunque el reloj haya pasado la hora de cierre mientras comían. -->
-      <QuickActions
-        v-if="isOpen || view !== 'menu'"
-        :table-id="table.id"
-        :order-id="order?.id ?? null"
-        :order-total="order?.total ?? 0"
+      <!-- Check-in de geolocalización: gatea todo lo demás (nav, acciones
+           rápidas, menú) hasta confirmar con el backend que el cliente está
+           en el restaurante. LocationCheck ya ocupa toda la pantalla, así
+           que no tiene sentido montar el resto de la interfaz detrás. -->
+      <LocationCheck
+        v-if="view === 'locationCheck'"
+        :checking="checkingIn"
+        :server-error="checkInError"
+        @located="handleLocated"
       />
 
-      <!-- Cerrado (y sin pedido en curso) -->
-      <ClosedView v-if="view === 'menu' && !isOpen" />
+      <template v-else>
+        <ThemeToggleButton :theme="theme" @toggle="toggleTheme" />
+        <LanguageToggle />
+        <!-- Fuera de horario y sin pedido en curso no hay nada que pedir/pedir
+             la cuenta de, así que las acciones rápidas solo se ocultan en ese
+             caso puntual — si ya tienen un pedido activo, se quedan visibles
+             aunque el reloj haya pasado la hora de cierre mientras comían. -->
+        <QuickActions
+          v-if="isOpen || view !== 'menu'"
+          :table-id="table.id"
+          :order-id="order?.id ?? null"
+          :order-total="order?.total ?? 0"
+        />
 
-      <!-- Menú -->
-      <div v-else-if="view === 'menu'" class="mesa-app__menu">
+        <!-- Cerrado (y sin pedido en curso) -->
+        <ClosedView v-if="view === 'menu' && !isOpen" />
+
+        <!-- Menú -->
+        <div v-else-if="view === 'menu'" class="mesa-app__menu">
         <div class="mesa-app__menu-header">
           <SearchBar v-model="searchTerm" />
           <CategoryTabs
@@ -203,6 +234,7 @@ function handleNewOrder() {
 
       <!-- Agradecimiento -->
       <ThankYouView v-else-if="view === 'thankyou'" @new-order="handleNewOrder" />
+      </template>
     </template>
   </div>
 </template>

@@ -1,38 +1,56 @@
 <script setup>
-import { ref } from "vue";
+import { ref, computed } from "vue";
 import { useLanguage } from "@/pedidos/composables/useLanguage";
 
-// Emite las coordenadas crudas para quien integre este componente en el
-// flujo de /mesa/N — a propósito no llama a ningún backend acá todavía
-// (ver punto 6 del pedido: primero confirmar con console.log que la
-// extracción funciona, la validación del servidor es un paso aparte).
+// Emite las coordenadas crudas — quien orquesta el flujo de /mesa/N (ver
+// MesaApp.vue + useCheckIn.js) es quien llama a la Edge Function check-in
+// con ellas. Este componente no sabe nada de fetch/localStorage: solo pide
+// el GPS y refleja, vía props, cómo va esa llamada del padre.
+const props = defineProps({
+  // true mientras el padre está validando las coordenadas contra el
+  // backend — el botón se queda en "Buscando..." aunque el GPS ya haya
+  // respondido, porque para el cliente sigue siendo la misma espera.
+  checking: { type: Boolean, default: false },
+  // Mensaje de la Edge Function ("Estás fuera de la zona...", "El
+  // restaurante se encuentra cerrado.") cuando el check-in fue rechazado.
+  serverError: { type: String, default: "" },
+});
 const emit = defineEmits(["located"]);
 
 const { t } = useLanguage();
 
-const status = ref("idle"); // 'idle' | 'loading' | 'error'
-const errorMessage = ref("");
+const geoStatus = ref("idle"); // 'idle' | 'loading' | 'error'
+const geoErrorMessage = ref("");
+
+const isBusy = computed(() => geoStatus.value === "loading" || props.checking);
+// El error del backend tiene prioridad: si el padre acaba de rechazar un
+// intento, eso es lo último que pasó, no el permiso de GPS de antes.
+const displayedError = computed(
+  () => props.serverError || (geoStatus.value === "error" ? geoErrorMessage.value : "")
+);
 
 function requestLocation() {
   if (!navigator.geolocation) {
-    status.value = "error";
-    errorMessage.value = t("locationUnsupported");
+    geoStatus.value = "error";
+    geoErrorMessage.value = t("locationUnsupported");
     return;
   }
 
-  status.value = "loading";
-  errorMessage.value = "";
+  geoStatus.value = "loading";
+  geoErrorMessage.value = "";
 
   navigator.geolocation.getCurrentPosition(
     (position) => {
       const { latitude, longitude } = position.coords;
       console.log("[LocationCheck] Ubicación capturada:", latitude, longitude);
-      status.value = "idle";
+      // A partir de acá, "Buscando..." lo controla `checking` (prop del
+      // padre) mientras dura la llamada al backend.
+      geoStatus.value = "idle";
       emit("located", { latitude, longitude });
     },
     () => {
-      status.value = "error";
-      errorMessage.value = t("locationDenied");
+      geoStatus.value = "error";
+      geoErrorMessage.value = t("locationDenied");
     }
   );
 }
@@ -48,13 +66,13 @@ function requestLocation() {
       <button
         type="button"
         class="pedidos-location__btn"
-        :disabled="status === 'loading'"
+        :disabled="isBusy"
         @click="requestLocation"
       >
-        {{ status === "loading" ? t("locationSearching") : t("locationAllow") }}
+        {{ isBusy ? t("locationSearching") : t("locationAllow") }}
       </button>
 
-      <p v-if="status === 'error'" class="pedidos-location__error">{{ errorMessage }}</p>
+      <p v-if="displayedError" class="pedidos-location__error" role="alert">{{ displayedError }}</p>
     </div>
   </div>
 </template>

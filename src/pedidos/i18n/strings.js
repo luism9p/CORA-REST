@@ -73,6 +73,7 @@ export const STRINGS = {
     locationSearching: "Buscando...",
     locationDenied: "Necesitamos acceso a tu ubicación para continuar. Por favor, habilita el GPS en tu navegador.",
     locationUnsupported: "Tu navegador no soporta la geolocalización.",
+    locationCheckInError: "No se pudo verificar tu ubicación. Intenta de nuevo.",
   },
   en: {
     loadingTable: "Loading table...",
@@ -144,6 +145,7 @@ export const STRINGS = {
     locationSearching: "Searching...",
     locationDenied: "We need access to your location to continue. Please enable GPS in your browser.",
     locationUnsupported: "Your browser doesn't support geolocation.",
+    locationCheckInError: "We couldn't verify your location. Please try again.",
   },
 };
 
