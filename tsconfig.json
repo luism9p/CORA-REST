@@ -15,5 +15,11 @@
         "name": "@astrojs/ts-plugin"
       }
     ]
-  }
+  },
+  "exclude": [
+    "dist",
+    "node_modules",
+    "supabase",
+    "Astrorante"
+  ]
 }
