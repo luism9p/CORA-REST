@@ -66,6 +66,13 @@ export const STRINGS = {
     themeToLight: "Cambiar a modo claro",
     themeToDark: "Cambiar a modo oscuro",
     languageToggle: "Switch to English",
+    locationTitle: "¡Ya casi estamos!",
+    locationText:
+      "Para mostrarte la carta y habilitar los pedidos a tu mesa, necesitamos confirmar que te encuentras en el restaurante.",
+    locationAllow: "Permitir Ubicación",
+    locationSearching: "Buscando...",
+    locationDenied: "Necesitamos acceso a tu ubicación para continuar. Por favor, habilita el GPS en tu navegador.",
+    locationUnsupported: "Tu navegador no soporta la geolocalización.",
   },
   en: {
     loadingTable: "Loading table...",
@@ -130,6 +137,13 @@ export const STRINGS = {
     themeToLight: "Switch to light mode",
     themeToDark: "Switch to dark mode",
     languageToggle: "Cambiar a español",
+    locationTitle: "Almost there!",
+    locationText:
+      "To show you the menu and enable ordering to your table, we need to confirm you're at the restaurant.",
+    locationAllow: "Allow Location",
+    locationSearching: "Searching...",
+    locationDenied: "We need access to your location to continue. Please enable GPS in your browser.",
+    locationUnsupported: "Your browser doesn't support geolocation.",
   },
 };
 
