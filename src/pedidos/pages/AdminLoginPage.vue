@@ -9,14 +9,23 @@ const submitting = ref(false);
 
 const { session, loading, signIn } = useAuth();
 
-// Si ya hay sesión (o llega mientras está en esta página), va directo al
+// A dónde manda cada cuenta: la del mesero tiene { role: "mesero" } en su
+// user_metadata (se configura al crear el usuario desde el dashboard de
+// Supabase, no algo que esta app pueda hacer) y va a la vista recortada;
+// cualquier otra cuenta (la del dueño/admin, sin ese metadata) va al panel
+// completo, igual que siempre.
+function destinationFor(currentSession) {
+  return currentSession?.user?.user_metadata?.role === "mesero" ? "/mesero" : "/admin";
+}
+
+// Si ya hay sesión (o llega mientras está en esta página), va directo a su
 // panel. Dentro de onMounted a propósito: este componente también se
 // renderiza en el servidor (client:load), donde `window` no existe.
 onMounted(() => {
   watch(
     session,
     (s) => {
-      if (s) window.location.href = "/admin";
+      if (s) window.location.href = destinationFor(s);
     },
     { immediate: true }
   );
@@ -31,7 +40,11 @@ async function handleSubmit() {
     error.value = "Correo o contraseña incorrectos.";
     return;
   }
-  window.location.href = "/admin";
+  // No se redirige acá mismo: signIn() dispara el evento de Supabase Auth
+  // que actualiza `session` de forma asíncrona (onAuthStateChange), así
+  // que leer session.value en esta misma línea puede seguir siendo null
+  // por una carrera. El watch(session, ...) de arriba es quien navega en
+  // cuanto la sesión realmente llega, ya con el rol correcto disponible.
 }
 </script>
 

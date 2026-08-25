@@ -30,16 +30,23 @@ const filter = ref("todas");
 const selectedTableId = ref(null);
 const view = ref("mesas"); // 'mesas' | 'carta' | 'reportes'
 
-// Si no hay sesión, al login. Es guard client-side porque el proyecto es
-// output:'static' (no hay verificación posible en el servidor). Se registra
-// dentro de onMounted a propósito: Astro sigue renderizando este componente
-// en el servidor aunque use client:load, y ahí `window` no existe.
+// Si no hay sesión, al login; si la sesión es de un mesero (user_metadata
+// role: "mesero", configurado al crear ese usuario en Supabase), a su
+// vista recortada — este panel completo (Carta, Reportes, ingresos) no es
+// para esa cuenta aunque escriba la URL a mano. Es guard client-side
+// porque el proyecto es output:'static' (no hay verificación posible en el
+// servidor). Se registra dentro de onMounted a propósito: Astro sigue
+// renderizando este componente en el servidor aunque use client:load, y
+// ahí `window` no existe.
 onMounted(() => {
   watch(
     authLoading,
     (isLoading) => {
-      if (!isLoading && !session.value) {
+      if (isLoading) return;
+      if (!session.value) {
         window.location.href = "/admin/login";
+      } else if (session.value.user?.user_metadata?.role === "mesero") {
+        window.location.href = "/mesero";
       }
     },
     { immediate: true }

@@ -6,6 +6,11 @@ import { STATUS_COLOR } from "@/pedidos/utils/orderStatus";
 const props = defineProps({
   table: { type: Object, required: true },
   order: { type: Object, default: null },
+  // El panel admin solo deja entrar a una mesa con pedido activo. La vista
+  // de mesero también necesita poder tocar una mesa libre para tomar un
+  // pedido a mano — default false para no cambiar nada del comportamiento
+  // existente en /admin.
+  interactive: { type: Boolean, default: false },
 });
 defineEmits(["select"]);
 
@@ -49,12 +54,12 @@ const slaLevel = computed(() => {
     type="button"
     class="admin-table-card"
     :class="{
-      'admin-table-card--active': !!order,
+      'admin-table-card--active': !!order || interactive,
       'admin-table-card--warning': slaLevel === 'warning',
       'admin-table-card--critical': slaLevel === 'critical',
     }"
     :style="{ borderColor }"
-    @click="order && $emit('select', table)"
+    @click="(order || interactive) && $emit('select', table)"
   >
     <span class="admin-table-card__number">Mesa {{ table.numero }}</span>
     <StatusBadge v-if="order" :status="order.estado" />

@@ -24,6 +24,7 @@ import PendingRequestsBanner from "@/pedidos/components/admin/PendingRequestsBan
 import FilterTabs from "@/pedidos/components/admin/FilterTabs.vue";
 import TableCard from "@/pedidos/components/admin/TableCard.vue";
 import OrderDetailPanel from "@/pedidos/components/admin/OrderDetailPanel.vue";
+import ManualOrderPanel from "@/pedidos/components/admin/ManualOrderPanel.vue";
 
 const { session, loading: authLoading, signOut } = useAuth();
 const { tables, loading: tablesLoading } = useTables();
@@ -109,18 +110,26 @@ async function handleSignOut() {
           :key="entry.table.id"
           :table="entry.table"
           :order="entry.order"
+          interactive
           @select="selectTable"
         />
       </TransitionGroup>
 
       <Transition name="admin-overlay">
-        <div v-if="selectedEntry?.order" class="admin-dashboard__overlay" @click.self="selectedTableId = null">
+        <div v-if="selectedEntry" class="admin-dashboard__overlay" @click.self="selectedTableId = null">
           <OrderDetailPanel
+            v-if="selectedEntry.order"
             :order="selectedEntry.order"
             :table-numero="selectedEntry.table.numero"
             @close="selectedTableId = null"
             @advance-status="advanceStatus"
             @set-item-status="setItemStatus"
+          />
+          <ManualOrderPanel
+            v-else
+            :table="selectedEntry.table"
+            @close="selectedTableId = null"
+            @submitted="selectedTableId = null"
           />
         </div>
       </Transition>
@@ -205,10 +214,12 @@ async function handleSignOut() {
 .admin-overlay-leave-to {
   opacity: 0;
 }
-.admin-overlay-enter-active :deep(.admin-detail) {
+.admin-overlay-enter-active :deep(.admin-detail),
+.admin-overlay-enter-active :deep(.manual-order) {
   transition: transform 400ms var(--ease-spring), opacity 300ms var(--ease-out);
 }
-.admin-overlay-enter-from :deep(.admin-detail) {
+.admin-overlay-enter-from :deep(.admin-detail),
+.admin-overlay-enter-from :deep(.manual-order) {
   transform: scale(0.9) translateY(1rem);
   opacity: 0;
 }

@@ -3,7 +3,7 @@ import { ref } from "vue";
 import { useCart } from "@/pedidos/composables/useCart";
 import { useLanguage } from "@/pedidos/composables/useLanguage";
 import { useDragSheet } from "@/pedidos/composables/useDragSheet";
-import { supabase } from "@/pedidos/lib/supabaseClient";
+import { useSubmitOrder } from "@/pedidos/composables/useSubmitOrder";
 import { formatCurrency } from "@/pedidos/utils/format";
 import { getStoredSession, isSessionValid } from "@/pedidos/utils/session";
 import CartItemRow from "./CartItemRow.vue";
@@ -22,7 +22,7 @@ const emit = defineEmits(["close", "confirmed"]);
 const cart = useCart();
 const { t } = useLanguage();
 const paymentMethod = ref("");
-const submitting = ref(false);
+const { submitting, submitOrder } = useSubmitOrder();
 const submitError = ref("");
 const { onPointerDown, onPointerMove, onPointerUp, dragStyle } = useDragSheet({
   onDismiss: () => emit("close"),
@@ -43,7 +43,6 @@ async function confirmOrder() {
     return;
   }
 
-  submitting.value = true;
   submitError.value = "";
 
   // Varios celulares pueden escanear el mismo tag NFC de esta mesa y
@@ -52,36 +51,22 @@ async function confirmOrder() {
   // servidor si esto es un pedido nuevo o una adición al que ya está activo
   // en la mesa (y suma los platos + el total ahí, no acá) — dos llamadas
   // simultáneas para la misma mesa no pueden crear dos pedidos duplicados.
-  const items = cart.items.map((line) => ({
-    menu_item_id: line.menuItem.id,
-    cantidad: line.cantidad,
-    nota: line.nota || null,
-    modifiers: (line.modifiers || []).map((mod) => ({
-      nombre: mod.nombre,
-      precio_extra: mod.precio_extra,
-    })),
-  }));
+  const result = await submitOrder({
+    tableId: props.tableId,
+    metodoPago: paymentMethod.value,
+    total: cart.total.value,
+    items: cart.items,
+    sessionToken: session.token,
+  });
 
-  const { data, error } = await supabase
-    .rpc("submit_table_order", {
-      p_table_id: props.tableId,
-      p_metodo_pago: paymentMethod.value,
-      p_delta_total: cart.total.value,
-      p_items: items,
-      p_session_token: session.token,
-    })
-    .single();
-
-  if (error || !data) {
+  if (!result) {
     submitError.value = t("orderError");
-    submitting.value = false;
     return;
   }
 
   cart.clear();
   paymentMethod.value = "";
-  submitting.value = false;
-  emit("confirmed", data.order_id, data.was_addition);
+  emit("confirmed", result.order_id, result.was_addition);
 }
 </script>
 

@@ -1,5 +1,5 @@
 // src/pedidos/composables/useMenu.js
-import { ref, computed, onMounted } from "vue";
+import { ref, computed, onMounted, onUnmounted } from "vue";
 import { supabase } from "@/pedidos/lib/supabaseClient";
 
 // Orden natural de la carta de CORA (el mismo de src/data/menu.json), para
@@ -31,6 +31,7 @@ export function useMenu() {
   const items = ref([]);
   const loading = ref(true);
   const error = ref(null);
+  let channel = null;
 
   onMounted(async () => {
     loading.value = true;
@@ -52,7 +53,7 @@ export function useMenu() {
 
     // El admin puede marcar/desmarcar "Agotado" mientras el cliente ya tiene
     // el menú abierto — esto lo refleja al instante, sin necesitar recargar.
-    supabase
+    channel = supabase
       .channel("menu-items-availability")
       .on(
         "postgres_changes",
@@ -65,6 +66,15 @@ export function useMenu() {
         }
       )
       .subscribe();
+  });
+
+  // MesaApp.vue monta esto una sola vez para toda la vida de la página, así
+  // que nunca importó no desuscribirse. ManualOrderPanel.vue (vista de
+  // mesero) lo monta y desmonta cada vez que se abre/cierra un pedido
+  // manual — sin este cleanup, cada apertura dejaba un canal de realtime
+  // nuevo sin cerrar, acumulándose durante todo el turno.
+  onUnmounted(() => {
+    if (channel) supabase.removeChannel(channel);
   });
 
   const categories = computed(() => {
