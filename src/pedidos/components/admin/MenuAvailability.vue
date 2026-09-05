@@ -4,7 +4,7 @@ import { useMenuAdmin } from "@/pedidos/composables/useMenuAdmin";
 import { formatCurrency } from "@/pedidos/utils/format";
 import LoadingSpinner from "@/pedidos/components/common/LoadingSpinner.vue";
 
-const { groupedByCategory, loading, setDisponible, addModifier, removeModifier } = useMenuAdmin();
+const { groupedByCategory, loading, setDisponible, setInventariable, addModifier, removeModifier } = useMenuAdmin();
 
 const expandedItemId = ref(null);
 const newModifierName = ref("");
@@ -23,6 +23,31 @@ async function submitModifier(item) {
   await addModifier(item, nombre, precioExtra);
   newModifierName.value = "";
   newModifierPrice.value = "";
+}
+
+// Activar inventario pide un stock inicial antes de confirmar (por eso no
+// es un toggle optimista directo como `disponible`); desactivarlo no
+// necesita nada de esto, se apaga al toque.
+const activatingItemId = ref(null);
+const initialStock = ref("0");
+
+function startActivating(item) {
+  activatingItemId.value = item.id;
+  initialStock.value = "0";
+}
+
+function cancelActivating() {
+  activatingItemId.value = null;
+}
+
+async function confirmActivating(item) {
+  const cantidad = Number(initialStock.value) || 0;
+  await setInventariable(item, true, cantidad);
+  activatingItemId.value = null;
+}
+
+async function deactivateInventory(item) {
+  await setInventariable(item, false);
 }
 </script>
 
@@ -54,6 +79,31 @@ async function submitModifier(item) {
               @click="setDisponible(item, !item.disponible)"
             >
               <span class="menu-availability__switch-knob" />
+            </button>
+            <span class="menu-availability__inventory-label">Inventario</span>
+            <button
+              type="button"
+              class="menu-availability__switch"
+              :class="{ 'menu-availability__switch--on': item.inventariable }"
+              role="switch"
+              :aria-checked="item.inventariable"
+              :aria-label="`Inventario de ${item.nombre}`"
+              @click="item.inventariable ? deactivateInventory(item) : startActivating(item)"
+            >
+              <span class="menu-availability__switch-knob" />
+            </button>
+          </div>
+
+          <div v-if="activatingItemId === item.id" class="menu-availability__inventory-activate">
+            <label>
+              Stock inicial
+              <input v-model="initialStock" type="number" step="1" min="0" />
+            </label>
+            <button type="button" class="menu-availability__modifier-add" @click="confirmActivating(item)">
+              Activar
+            </button>
+            <button type="button" class="menu-availability__modifier-remove" @click="cancelActivating">
+              Cancelar
             </button>
           </div>
 
@@ -244,5 +294,43 @@ async function submitModifier(item) {
 
 .menu-availability__switch--on .menu-availability__switch-knob {
   transform: translateX(1.25rem);
+}
+
+.menu-availability__inventory-label {
+  flex-shrink: 0;
+  font-size: 0.7rem;
+  font-weight: 700;
+  color: var(--color-muted);
+  white-space: nowrap;
+}
+
+.menu-availability__inventory-activate {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+  padding: 0.75rem 0.9rem;
+  border-top: 1px solid var(--color-border);
+  background: var(--color-bg);
+  font-size: 0.85rem;
+}
+
+.menu-availability__inventory-activate label {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-weight: 600;
+  color: var(--color-text);
+}
+
+.menu-availability__inventory-activate input {
+  width: 5rem;
+  min-height: 2.25rem;
+  padding: 0 0.6rem;
+  border-radius: 0.5rem;
+  border: 1px solid var(--color-border);
+  background: var(--color-surface);
+  color: var(--color-text);
+  font-size: 16px;
 }
 </style>

@@ -17,6 +17,7 @@ import TableCard from "@/pedidos/components/admin/TableCard.vue";
 import OrderDetailPanel from "@/pedidos/components/admin/OrderDetailPanel.vue";
 import MenuAvailability from "@/pedidos/components/admin/MenuAvailability.vue";
 import ReportesView from "@/pedidos/components/admin/ReportesView.vue";
+import InventoryView from "@/pedidos/components/admin/InventoryView.vue";
 import KitchenQueue from "@/pedidos/components/admin/KitchenQueue.vue";
 
 const { session, loading: authLoading, signOut } = useAuth();
@@ -28,7 +29,7 @@ const { totalRevenue, bestSeller } = useShiftStats(orders);
 
 const filter = ref("todas");
 const selectedTableId = ref(null);
-const view = ref("mesas"); // 'mesas' | 'carta' | 'reportes'
+const view = ref("mesas"); // 'mesas' | 'carta' | 'reportes' | 'inventario'
 
 // Si no hay sesión, al login; si la sesión es de un mesero (user_metadata
 // role: "mesero", configurado al crear ese usuario en Supabase), a su
@@ -135,6 +136,14 @@ async function handleSignOut() {
         >
           Reportes
         </button>
+        <button
+          type="button"
+          class="admin-dashboard__view-tab"
+          :class="{ 'admin-dashboard__view-tab--active': view === 'inventario' }"
+          @click="view = 'inventario'"
+        >
+          Inventario
+        </button>
       </div>
 
       <template v-if="view === 'mesas'">
@@ -161,7 +170,9 @@ async function handleSignOut() {
 
       <MenuAvailability v-else-if="view === 'carta'" />
 
-      <ReportesView v-else :orders="orders" :table-numero="tableNumero" />
+      <ReportesView v-else-if="view === 'reportes'" :orders="orders" :table-numero="tableNumero" />
+
+      <InventoryView v-else />
 
       <Transition name="admin-overlay">
         <div v-if="selectedEntry?.order" class="admin-dashboard__overlay" @click.self="selectedTableId = null">

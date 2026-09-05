@@ -38,6 +38,32 @@ export function useMenuAdmin() {
     if (error) item.disponible = previous; // revierte si falló
   }
 
+  // Activar pasa por un RPC (crea la fila de stock inicial + su movimiento
+  // de auditoría — ver enable_menu_item_inventory) porque
+  // menu_item_inventory no tiene ninguna policy de escritura directa a
+  // propósito. Desactivar es solo apagar el flag: no borra el contador ni
+  // el historial, así que un .update() directo alcanza, igual que
+  // setDisponible.
+  async function setInventariable(item, enabled, cantidadInicial = 0) {
+    if (enabled) {
+      const { error } = await supabase.rpc("enable_menu_item_inventory", {
+        p_menu_item_id: item.id,
+        p_cantidad_inicial: cantidadInicial,
+      });
+      if (!error) item.inventariable = true;
+      return error;
+    }
+
+    const previous = item.inventariable;
+    item.inventariable = false; // optimista
+    const { error } = await supabase
+      .from("menu_items")
+      .update({ inventariable: false })
+      .eq("id", item.id);
+    if (error) item.inventariable = previous;
+    return error;
+  }
+
   async function addModifier(item, nombre, precioExtra) {
     const { data, error } = await supabase
       .from("menu_item_modifiers")
@@ -55,5 +81,5 @@ export function useMenuAdmin() {
     if (error) item.modifiers = previous;
   }
 
-  return { items, groupedByCategory, loading, setDisponible, addModifier, removeModifier };
+  return { items, groupedByCategory, loading, setDisponible, setInventariable, addModifier, removeModifier };
 }
