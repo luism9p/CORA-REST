@@ -18,10 +18,13 @@ const tablesWithOrders = computed(() =>
 
 const { kitchenQueue } = useKitchenQueue(tablesWithOrders);
 
-// Un ticket por mesa, no por plato: la cocina despacha la mesa entera de
-// una vez, no plato por plato. Todos los ítems de una misma mesa comparten
-// en la práctica el mismo pedido activo, así que el timestamp del ticket
-// es el más antiguo del grupo (por si alguna vez conviven dos timestamps
+// Un ticket por mesa, pero el despacho sigue siendo plato por plato: la
+// dueña aclaró que en cocina los platos de una mesa no salen todos juntos
+// (uno termina antes que el resto), así que agrupar era solo para que se
+// siga viendo de qué mesa es cada cosa — no para mandar la comanda entera
+// de una sola vez. Todos los ítems de una misma mesa comparten en la
+// práctica el mismo pedido activo, así que el timestamp del ticket es el
+// más antiguo del grupo (por si alguna vez conviven dos timestamps
 // distintos, ver la nota de useKitchenQueue.js sobre adiciones al pedido).
 const tableGroups = computed(() => {
   const byMesa = new Map();
@@ -59,16 +62,17 @@ function elapsedLabel(timestamp) {
   return `${String(minutes).padStart(2, "0")}:${String(seconds).padStart(2, "0")}`;
 }
 
-// Feedback optimista: el botón se apaga apenas se toca, sin esperar a que la
-// suscripción realtime baje el cambio y la tarjeta desaparezca de
-// tableGroups. En una pantalla de cocina, un doble toque accidental no debe
+// Feedback optimista: el botón de un plato se apaga apenas se toca, sin
+// esperar a que la suscripción realtime baje el cambio y ese plato
+// desaparezca de su ticket (y el ticket entero cuando ya no le queda
+// ninguno). En una pantalla de cocina, un doble toque accidental no debe
 // reenviar el update dos veces. El try/finally libera el botón si algo
 // falla a mitad de camino, en vez de dejarlo bloqueado para siempre.
-const dispatchingTables = ref(new Set());
+const dispatchingItems = ref(new Set());
 
-async function dispatchTable(group) {
-  if (dispatchingTables.value.has(group.numeroMesa)) return;
-  dispatchingTables.value.add(group.numeroMesa);
+async function dispatchItem(item) {
+  if (dispatchingItems.value.has(item.id)) return;
+  dispatchingItems.value.add(item.id);
   try {
     // /cocina corre sin login (anon) a propósito, y order_items no tiene
     // policy de UPDATE para ese rol — solo para `authenticated` (ver
@@ -76,11 +80,9 @@ async function dispatchTable(group) {
     // corre logueado). Por eso esto pasa por un RPC angosto en vez de
     // supabase.from("order_items").update(...): dispatch_order_items()
     // solo permite la transición preparando -> listo_para_servir, nada más.
-    await supabase.rpc("dispatch_order_items", {
-      p_item_ids: group.items.map((item) => item.id),
-    });
+    await supabase.rpc("dispatch_order_items", { p_item_ids: [item.id] });
   } finally {
-    dispatchingTables.value.delete(group.numeroMesa);
+    dispatchingItems.value.delete(item.id);
   }
 }
 </script>
@@ -98,35 +100,36 @@ async function dispatchTable(group) {
       <p v-if="tableGroups.length === 0" class="kds-empty">No hay pedidos en preparación.</p>
 
       <div v-else class="kds-grid">
-        <article
-          v-for="group in tableGroups"
-          :key="group.numeroMesa"
-          class="kds-card"
-          :class="{ 'kds-card--dispatching': dispatchingTables.has(group.numeroMesa) }"
-        >
+        <article v-for="group in tableGroups" :key="group.numeroMesa" class="kds-card">
           <div class="kds-card__header">
             <span class="kds-card__mesa">Mesa {{ group.numeroMesa }}</span>
             <span class="kds-card__timer">⏱ {{ elapsedLabel(group.timestamp) }}</span>
           </div>
 
           <ul class="kds-card__items">
-            <li v-for="item in group.items" :key="item.id" class="kds-item">
+            <li
+              v-for="item in group.items"
+              :key="item.id"
+              class="kds-item"
+              :class="{ 'kds-item--dispatching': dispatchingItems.has(item.id) }"
+            >
               <div class="kds-item__row">
-                <span class="kds-item__qty">[ {{ item.cantidad }}x ]</span>
-                <span class="kds-item__name">{{ item.nombrePlato }}</span>
+                <div class="kds-item__info">
+                  <span class="kds-item__qty">[ {{ item.cantidad }}x ]</span>
+                  <span class="kds-item__name">{{ item.nombrePlato }}</span>
+                </div>
+                <button
+                  type="button"
+                  class="kds-item__dispatch"
+                  :disabled="dispatchingItems.has(item.id)"
+                  @click="dispatchItem(item)"
+                >
+                  {{ dispatchingItems.has(item.id) ? "..." : "Enviar" }}
+                </button>
               </div>
               <p v-if="item.nota" class="kds-item__nota">📝 {{ item.nota }}</p>
             </li>
           </ul>
-
-          <button
-            type="button"
-            class="kds-card__dispatch"
-            :disabled="dispatchingTables.has(group.numeroMesa)"
-            @click="dispatchTable(group)"
-          >
-            {{ dispatchingTables.has(group.numeroMesa) ? "Enviando..." : "Despachar Mesa" }}
-          </button>
         </article>
       </div>
     </template>
@@ -203,11 +206,6 @@ async function dispatchTable(group) {
   border: 1px solid var(--color-border);
   border-radius: 0.75rem;
   padding: 1.25rem;
-  transition: opacity 200ms ease-out;
-}
-
-.kds-card--dispatching {
-  opacity: 0.5;
 }
 
 .kds-card__header {
@@ -236,13 +234,36 @@ async function dispatchTable(group) {
 .kds-card__items {
   display: flex;
   flex-direction: column;
-  gap: 0.65rem;
+  gap: 0.6rem;
+}
+
+.kds-item {
+  padding-bottom: 0.6rem;
+  border-bottom: 1px solid var(--color-border);
+  transition: opacity 200ms ease-out;
+}
+
+.kds-item:last-child {
+  padding-bottom: 0;
+  border-bottom: none;
+}
+
+.kds-item--dispatching {
+  opacity: 0.5;
 }
 
 .kds-item__row {
   display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+}
+
+.kds-item__info {
+  display: flex;
   align-items: baseline;
   gap: 0.6rem;
+  min-width: 0;
 }
 
 .kds-item__qty {
@@ -259,7 +280,7 @@ async function dispatchTable(group) {
 }
 
 .kds-item__nota {
-  margin: 0.2rem 0 0;
+  margin: 0.3rem 0 0;
   font-size: 0.85rem;
   font-style: italic;
   /* Amarillo tenue: opacidad reducida en vez de un amarillo neón — es una
@@ -268,29 +289,30 @@ async function dispatchTable(group) {
   color: rgb(234 179 8 / 75%);
 }
 
-.kds-card__dispatch {
-  margin-top: 0.25rem;
-  min-height: 3.5rem;
+.kds-item__dispatch {
+  flex-shrink: 0;
+  min-height: 2.5rem;
+  padding: 0 1rem;
   border: none;
-  border-radius: 0.75rem;
+  border-radius: 0.5rem;
   background: #059669;
   color: #fff;
-  font-size: 1.1rem;
+  font-size: 0.9rem;
   font-weight: 700;
   cursor: pointer;
   transition: background-color 150ms ease-out, opacity 150ms ease-out;
 }
 
-.kds-card__dispatch:hover:not(:disabled) {
+.kds-item__dispatch:hover:not(:disabled) {
   background: #047857;
 }
 
-.kds-card__dispatch:disabled {
+.kds-item__dispatch:disabled {
   cursor: default;
   opacity: 0.6;
 }
 
-.kds-card__dispatch:focus-visible {
+.kds-item__dispatch:focus-visible {
   outline: 3px solid #34d399;
   outline-offset: 2px;
 }
